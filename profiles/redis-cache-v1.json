@@ -1,0 +1,9 @@
+{
+  "profile": "redis-cache-v1",
+  "enabledByDefault": false,
+  "authoritative": false,
+  "maxmemoryMiBInitial": 32,
+  "eviction": "allkeys-lfu",
+  "authorizesAccess": false,
+  "mutableQueryCacheEnabled": false
+}

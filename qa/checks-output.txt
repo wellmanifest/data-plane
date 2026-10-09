@@ -1,0 +1,70 @@
+python3 tools/generate_contracts.py --check
+Contract generation verified: 3 files
+python3 tools/validate.py
+PASS json-schema-metaschema
+PASS manifest-and-migration-example
+PASS operation-catalog
+PASS generated-transports-no-drift
+PASS openapi-internal-references
+PASS graphql-sdl-and-operation-mapping
+PASS postgresql-sql-and-plpgsql-syntax
+PASS request-response-examples
+PASS example-process-registry-second-stage-validation
+PASS domain-fixture-and-required-poa-cqrs-es-profiles
+No live infrastructure or production migration tested.
+python3 -m unittest discover -s tests -v
+test_base64_size_and_validity (test_contracts.Contracts.test_base64_size_and_validity) ... ok
+test_full_static_conformance (test_contracts.Contracts.test_full_static_conformance) ... ok
+test_legacy_and_noncanonical_urn_rejected (test_contracts.Contracts.test_legacy_and_noncanonical_urn_rejected) ... ok
+test_mutation_requires_idempotency (test_contracts.Contracts.test_mutation_requires_idempotency) ... ok
+test_query_limit_bounded (test_contracts.Contracts.test_query_limit_bounded) ... ok
+test_resource_hash_integrity (test_contracts.Contracts.test_resource_hash_integrity) ... ok
+test_revision_decimal_precision (test_contracts.Contracts.test_revision_decimal_precision) ... ok
+test_succeeded_requires_verification (test_contracts.Contracts.test_succeeded_requires_verification) ... ok
+test_unknown_fields_and_tenant_spoof_rejected (test_contracts.Contracts.test_unknown_fields_and_tenant_spoof_rejected) ... ok
+test_atomic_event_projection_receipt_outbox_rollback (test_event_store.EventStoreTests.test_atomic_event_projection_receipt_outbox_rollback) ... ok
+test_authority_mismatch_rejected (test_event_store.EventStoreTests.test_authority_mismatch_rejected) ... ok
+test_batch_limits_and_tenant_partition (test_event_store.EventStoreTests.test_batch_limits_and_tenant_partition) ... ok
+test_canonical_rejects_duplicate_keys_and_float (test_event_store.EventStoreTests.test_canonical_rejects_duplicate_keys_and_float) ... ok
+test_crash_after_destination_commit_then_retry (test_event_store.EventStoreTests.test_crash_after_destination_commit_then_retry) ... ok
+test_gap_and_tamper_are_rejected (test_event_store.EventStoreTests.test_gap_and_tamper_are_rejected) ... ok
+test_history_cannot_be_updated_or_deleted (test_event_store.EventStoreTests.test_history_cannot_be_updated_or_deleted) ... ok
+test_overflow_rolls_back_entire_command (test_event_store.EventStoreTests.test_overflow_rolls_back_entire_command) ... ok
+test_rebuild_is_deterministic_without_external_effects (test_event_store.EventStoreTests.test_rebuild_is_deterministic_without_external_effects) ... ok
+test_restart_preserves_deduplication (test_event_store.EventStoreTests.test_restart_preserves_deduplication) ... ok
+test_retry_and_conflicting_idempotency (test_event_store.EventStoreTests.test_retry_and_conflicting_idempotency) ... ok
+test_two_concurrent_writers_same_expected_version (test_event_store.EventStoreTests.test_two_concurrent_writers_same_expected_version) ... ok
+test_batched_join_has_one_query_per_source (test_federation.FederationTests.test_batched_join_has_one_query_per_source) ... ok
+test_key_budget_before_database (test_federation.FederationTests.test_key_budget_before_database) ... ok
+test_tenant_does_not_leak (test_federation.FederationTests.test_tenant_does_not_leak) ... ok
+test_unavailable_source_is_not_empty_success (test_federation.FederationTests.test_unavailable_source_is_not_empty_success) ... ok
+test_cli_refuses_overwriting_database (test_sqlite_audit.SQLiteAudit.test_cli_refuses_overwriting_database) ... ok
+test_foreign_key_orphan_reported_without_row_data (test_sqlite_audit.SQLiteAudit.test_foreign_key_orphan_reported_without_row_data) ... ok
+test_missing_source_not_created (test_sqlite_audit.SQLiteAudit.test_missing_source_not_created) ... ok
+test_timeout_is_not_silent_partial_success (test_sqlite_audit.SQLiteAudit.test_timeout_is_not_silent_partial_success) ... ok
+test_wal_snapshot_mixed_types_and_safe_identifiers (test_sqlite_audit.SQLiteAudit.test_wal_snapshot_mixed_types_and_safe_identifiers) ... ok
+
+----------------------------------------------------------------------
+Ran 30 tests in 0.601s
+
+OK
+python3 tools/demo_es.py
+{
+  "scope": "synthetic-sqlite-conformance-demo",
+  "eventsTransferred": 3,
+  "sourceValue": 6,
+  "projectionValue": 6,
+  "memorySnapshot": {
+    "pid": 12,
+    "at": "2026-10-09T09:38:53.127506+00:00",
+    "scope": "one-process-plus-optional-explicit-cgroup",
+    "process": {},
+    "cgroup": {},
+    "warnings": [
+      "Process smaps_rollup unavailable"
+    ]
+  },
+  "productionRamMeasured": false
+}
+mkdir -p build/proto
+python3 -m grpc_tools.protoc -I proto --python_out=build/proto proto/domain_event.proto

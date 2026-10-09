@@ -1,0 +1,47 @@
+{
+  "standard": "wellmanifest-data-plane",
+  "version": "0.2.0",
+  "status": "proposal",
+  "date": "2026-10-09",
+  "profile": "poa-cqrs-es-v1",
+  "normative": "STANDARD.md",
+  "instructionsForLLM": "LLM_REFACTORING.md",
+  "reference": {
+    "repository": "https://github.com/wellmanifest/nl-uri-dsl-llm",
+    "commit": "2de9cab701466f4928f93e20269057aed7d6a237",
+    "versionFile": "1.3.1",
+    "adoptedIdeas": [
+      "semantic-v1",
+      "uri-urn-exchange-v1"
+    ],
+    "officialAdoption": false
+  },
+  "sourceOfTruth": "per-stream-authoritative-event-store",
+  "cache": "optional-redis",
+  "transports": [
+    "cli",
+    "rest",
+    "graphql",
+    "mcp"
+  ],
+  "operationCatalog": "contracts/operations.json",
+  "optionalProfiles": [
+    "governed-exchange-v1"
+  ],
+  "implementationIncluded": false,
+  "auditToolIncluded": true,
+  "liveInfrastructureTested": false,
+  "architecture": [
+    "POA",
+    "CQRS",
+    "ES"
+  ],
+  "defaultResourceProfile": "low-ram-v1",
+  "storageProfiles": [
+    "sqlite-embedded-es-v1",
+    "hybrid-sqlite-postgres-es-v1",
+    "postgres-es-v1"
+  ],
+  "logsDependency": "upstream.lock.json",
+  "conformanceModelIncluded": true
+}

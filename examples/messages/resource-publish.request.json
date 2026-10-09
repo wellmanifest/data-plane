@@ -1,0 +1,8 @@
+{
+  "requestId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+  "idempotencyKey": "example-publish-1",
+  "arguments": {
+    "mediaType": "text/plain; charset=utf-8",
+    "contentBase64": "aGVsbG8K"
+  }
+}

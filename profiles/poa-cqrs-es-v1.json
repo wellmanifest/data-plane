@@ -1,0 +1,13 @@
+{
+  "profile": "poa-cqrs-es-v1",
+  "requiredArchitecture": [
+    "POA",
+    "CQRS",
+    "ES"
+  ],
+  "canonicalDomainProfile": "data-plane-canonical-json-v1",
+  "canonicalLogsProfile": "wellmanifest-canonical-json-v1",
+  "logsLock": "upstream.lock.json",
+  "queryWritesDomain": false,
+  "authorityFromPlan": false
+}

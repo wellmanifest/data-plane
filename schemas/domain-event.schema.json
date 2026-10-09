@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Closed counter domain fixture; adopter registers additional versioned event types",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "data-plane.domain-event/v1"
+    },
+    "eventUrn": {
+      "type": "string",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "x-graphql-scalar": "URN"
+    },
+    "tenantId": {
+      "type": "string",
+      "format": "uuid",
+      "x-graphql-scalar": "UUID"
+    },
+    "streamUrn": {
+      "type": "string",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "x-graphql-scalar": "URN"
+    },
+    "streamVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]{0,18})$",
+      "x-graphql-scalar": "Revision"
+    },
+    "eventType": {
+      "const": "counter.changed"
+    },
+    "schemaVersion": {
+      "const": 1,
+      "type": "integer"
+    },
+    "processUri": {
+      "const": "process://data-gateway/counter.change/v2"
+    },
+    "commandId": {
+      "type": "string",
+      "format": "uuid",
+      "x-graphql-scalar": "UUID"
+    },
+    "correlationId": {
+      "type": "string",
+      "format": "uuid",
+      "x-graphql-scalar": "UUID"
+    },
+    "causationUrn": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "x-graphql-scalar": "URN"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "authorityId": {
+      "type": "string",
+      "pattern": "^authority:[a-z0-9._-]{1,64}$"
+    },
+    "authorityEpoch": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]{0,18})$",
+      "x-graphql-scalar": "Revision"
+    },
+    "planHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "inputHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "previousHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "eventHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "delta": {
+          "type": "string",
+          "pattern": "^(0|-?[1-9][0-9]{0,18})$"
+        }
+      },
+      "required": [
+        "delta"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema",
+    "eventUrn",
+    "tenantId",
+    "streamUrn",
+    "streamVersion",
+    "eventType",
+    "schemaVersion",
+    "processUri",
+    "commandId",
+    "correlationId",
+    "causationUrn",
+    "occurredAt",
+    "authorityId",
+    "authorityEpoch",
+    "planHash",
+    "inputHash",
+    "previousHash",
+    "eventHash",
+    "data"
+  ],
+  "additionalProperties": false
+}

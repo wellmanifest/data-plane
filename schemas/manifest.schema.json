@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "standard": {
+      "const": "wellmanifest-data-plane"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "status": {
+      "enum": [
+        "proposal",
+        "adopted"
+      ]
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "profile": {
+      "const": "poa-cqrs-es-v1"
+    },
+    "normative": {
+      "type": "string"
+    },
+    "instructionsForLLM": {
+      "type": "string"
+    },
+    "reference": {
+      "type": "object",
+      "properties": {
+        "repository": {
+          "type": "string",
+          "format": "uri"
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "versionFile": {
+          "type": "string"
+        },
+        "adoptedIdeas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "officialAdoption": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "repository",
+        "commit",
+        "versionFile",
+        "adoptedIdeas",
+        "officialAdoption"
+      ],
+      "additionalProperties": false
+    },
+    "sourceOfTruth": {
+      "const": "per-stream-authoritative-event-store"
+    },
+    "cache": {
+      "const": "optional-redis"
+    },
+    "transports": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "cli",
+          "rest",
+          "graphql",
+          "mcp"
+        ]
+      },
+      "uniqueItems": true,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "operationCatalog": {
+      "type": "string"
+    },
+    "optionalProfiles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "implementationIncluded": {
+      "type": "boolean"
+    },
+    "auditToolIncluded": {
+      "type": "boolean"
+    },
+    "liveInfrastructureTested": {
+      "type": "boolean"
+    },
+    "architecture": {
+      "const": [
+        "POA",
+        "CQRS",
+        "ES"
+      ]
+    },
+    "defaultResourceProfile": {
+      "const": "low-ram-v1"
+    },
+    "storageProfiles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "logsDependency": {
+      "type": "string"
+    },
+    "conformanceModelIncluded": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "standard",
+    "version",
+    "status",
+    "date",
+    "profile",
+    "normative",
+    "instructionsForLLM",
+    "reference",
+    "sourceOfTruth",
+    "cache",
+    "transports",
+    "operationCatalog",
+    "optionalProfiles",
+    "implementationIncluded",
+    "auditToolIncluded",
+    "liveInfrastructureTested",
+    "architecture",
+    "defaultResourceProfile",
+    "storageProfiles",
+    "logsDependency",
+    "conformanceModelIncluded"
+  ],
+  "additionalProperties": false
+}

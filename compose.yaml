@@ -1,0 +1,11 @@
+services:
+  conformance:
+    build: .
+    network_mode: none
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    mem_limit: 384m
+    pids_limit: 64
+# Test harness only; no production PostgreSQL/Redis or gateway deployment.
+# Image build needs package registry access; test execution has no network.

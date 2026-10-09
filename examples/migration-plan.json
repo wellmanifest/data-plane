@@ -1,0 +1,64 @@
+{
+  "schema": "data-plane.migration-plan/v1",
+  "mode": "write-freeze-and-cutover",
+  "status": "planned",
+  "sourceSnapshotSha256": null,
+  "idMapping": "TODO: inventory legacy IDs and define persistent alias mapping",
+  "typeMapping": "TODO: audit actual SQLite values and define conversions",
+  "gates": [
+    {
+      "id": "inventory",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "integrity",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "type-mapping",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "restore-drill",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "data-equivalence",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "authorization",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "concurrency",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "performance",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "cutover",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "rollback-procedure",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "rollback": {
+    "beforePostgresWrites": "Return all clients to frozen SQLite snapshot after closing PostgreSQL writers.",
+    "afterPostgresWrites": "Freeze writes; reconcile via prepared reverse migration or repair forward. Changing DSN alone is forbidden."
+  }
+}

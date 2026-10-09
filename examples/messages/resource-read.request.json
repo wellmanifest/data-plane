@@ -1,0 +1,7 @@
+{
+  "requestId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+  "arguments": {
+    "urn": "urn:uuid:11111111-1111-4111-8111-111111111111",
+    "consistency": "strong"
+  }
+}

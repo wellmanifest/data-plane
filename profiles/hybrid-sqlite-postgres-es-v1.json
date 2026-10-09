@@ -1,0 +1,16 @@
+{
+  "profile": "hybrid-sqlite-postgres-es-v1",
+  "standardVersion": "0.2.0",
+  "requiredArchitecture": [
+    "POA",
+    "CQRS",
+    "ES"
+  ],
+  "authority": "per-stream",
+  "oneWriterPerStream": true,
+  "sourceOfTruth": "event-store",
+  "redisRequired": false,
+  "defaultResourceProfile": "low-ram-v1",
+  "logsContract": "0.5.0",
+  "replayExternalEffects": false
+}

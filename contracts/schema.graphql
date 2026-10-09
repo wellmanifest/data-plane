@@ -1,0 +1,337 @@
+# Generated from operations.json. Runtime MUST also validate JSON Schema constraints.
+# Scalar parsers, auth, limits and resolvers are not implemented by this file.
+scalar JSON
+scalar UUID
+scalar URN
+scalar Revision
+scalar Base64
+
+input ResourceReadInputArguments {
+  urn: URN!
+  consistency: String
+}
+
+input ResourceReadInput {
+  requestId: UUID!
+  arguments: ResourceReadInputArguments!
+}
+
+type ResourceReadOutputResultResource {
+  urn: URN!
+  sha256: String!
+  mediaType: String!
+  byteLength: Revision!
+}
+
+type ResourceReadOutputResult {
+  resource: ResourceReadOutputResultResource!
+  contentBase64: Base64
+}
+
+type ResourceReadOutput {
+  requestId: UUID!
+  result: ResourceReadOutputResult!
+  replayed: Boolean!
+}
+
+input ResourcePublishInputArguments {
+  mediaType: String!
+  contentBase64: Base64!
+}
+
+input ResourcePublishInput {
+  requestId: UUID!
+  arguments: ResourcePublishInputArguments!
+  idempotencyKey: String!
+}
+
+type ResourcePublishOutputResult {
+  urn: URN!
+  sha256: String!
+  mediaType: String!
+  byteLength: Revision!
+}
+
+type ResourcePublishOutput {
+  requestId: UUID!
+  result: ResourcePublishOutputResult!
+  replayed: Boolean!
+}
+
+input EntityResolveInputArguments {
+  entityId: UUID!
+}
+
+input EntityResolveInput {
+  requestId: UUID!
+  arguments: EntityResolveInputArguments!
+}
+
+type EntityResolveOutputResult {
+  entityId: UUID!
+  resourceUrn: URN!
+  revision: Revision!
+}
+
+type EntityResolveOutput {
+  requestId: UUID!
+  result: EntityResolveOutputResult!
+  replayed: Boolean!
+}
+
+input EntityAdvanceInputArguments {
+  entityId: UUID!
+  resourceUrn: URN!
+  expectedRevision: Revision!
+}
+
+input EntityAdvanceInput {
+  requestId: UUID!
+  arguments: EntityAdvanceInputArguments!
+  idempotencyKey: String!
+}
+
+type EntityAdvanceOutputResult {
+  entityId: UUID!
+  resourceUrn: URN!
+  revision: Revision!
+}
+
+type EntityAdvanceOutput {
+  requestId: UUID!
+  result: EntityAdvanceOutputResult!
+  replayed: Boolean!
+}
+
+input ProcessSubmitInputArguments {
+  operationUri: String!
+  parameters: JSON!
+}
+
+input ProcessSubmitInput {
+  requestId: UUID!
+  arguments: ProcessSubmitInputArguments!
+  idempotencyKey: String!
+}
+
+type ProcessSubmitOutputResultOutputsItem {
+  urn: URN!
+  sha256: String!
+  mediaType: String!
+  byteLength: Revision!
+}
+
+type ProcessSubmitOutputResultVerification {
+  urn: URN!
+  sha256: String!
+  mediaType: String!
+  byteLength: Revision!
+}
+
+type ProcessSubmitOutputResult {
+  processUrn: URN!
+  state: String!
+  cancelRequested: Boolean!
+  outputs: [ProcessSubmitOutputResultOutputsItem!]!
+  verification: ProcessSubmitOutputResultVerification
+}
+
+type ProcessSubmitOutput {
+  requestId: UUID!
+  result: ProcessSubmitOutputResult!
+  replayed: Boolean!
+}
+
+input ProcessStatusInputArguments {
+  processUrn: URN!
+}
+
+input ProcessStatusInput {
+  requestId: UUID!
+  arguments: ProcessStatusInputArguments!
+}
+
+type ProcessStatusOutputResultOutputsItem {
+  urn: URN!
+  sha256: String!
+  mediaType: String!
+  byteLength: Revision!
+}
+
+type ProcessStatusOutputResultVerification {
+  urn: URN!
+  sha256: String!
+  mediaType: String!
+  byteLength: Revision!
+}
+
+type ProcessStatusOutputResult {
+  processUrn: URN!
+  state: String!
+  cancelRequested: Boolean!
+  outputs: [ProcessStatusOutputResultOutputsItem!]!
+  verification: ProcessStatusOutputResultVerification
+}
+
+type ProcessStatusOutput {
+  requestId: UUID!
+  result: ProcessStatusOutputResult!
+  replayed: Boolean!
+}
+
+input ProcessCancelInputArguments {
+  processUrn: URN!
+}
+
+input ProcessCancelInput {
+  requestId: UUID!
+  arguments: ProcessCancelInputArguments!
+  idempotencyKey: String!
+}
+
+type ProcessCancelOutputResultOutputsItem {
+  urn: URN!
+  sha256: String!
+  mediaType: String!
+  byteLength: Revision!
+}
+
+type ProcessCancelOutputResultVerification {
+  urn: URN!
+  sha256: String!
+  mediaType: String!
+  byteLength: Revision!
+}
+
+type ProcessCancelOutputResult {
+  processUrn: URN!
+  state: String!
+  cancelRequested: Boolean!
+  outputs: [ProcessCancelOutputResultOutputsItem!]!
+  verification: ProcessCancelOutputResultVerification
+}
+
+type ProcessCancelOutput {
+  requestId: UUID!
+  result: ProcessCancelOutputResult!
+  replayed: Boolean!
+}
+
+input DatasetQueryInputArguments {
+  queryId: String!
+  parameters: JSON!
+  limit: Int
+  cursor: String
+}
+
+input DatasetQueryInput {
+  requestId: UUID!
+  arguments: DatasetQueryInputArguments!
+}
+
+type DatasetQueryOutputResult {
+  rows: [JSON!]!
+  nextCursor: String
+  snapshotUrn: URN
+}
+
+type DatasetQueryOutput {
+  requestId: UUID!
+  result: DatasetQueryOutputResult!
+  replayed: Boolean!
+}
+
+input EventReadInputArguments {
+  streamUrn: URN!
+  afterVersion: Revision!
+  limit: Int
+}
+
+input EventReadInput {
+  requestId: UUID!
+  arguments: EventReadInputArguments!
+}
+
+type EventReadOutputResultEventsItem {
+  eventUrn: URN!
+  version: Revision!
+  eventHash: String!
+}
+
+type EventReadOutputResult {
+  events: [EventReadOutputResultEventsItem!]!
+  headVersion: Revision!
+}
+
+type EventReadOutput {
+  requestId: UUID!
+  result: EventReadOutputResult!
+  replayed: Boolean!
+}
+
+input ProjectionStatusInputArguments {
+  projectionId: String!
+  streamUrn: URN!
+}
+
+input ProjectionStatusInput {
+  requestId: UUID!
+  arguments: ProjectionStatusInputArguments!
+}
+
+type ProjectionStatusOutputResult {
+  projectionId: String!
+  streamUrn: URN!
+  version: Revision!
+  eventHash: String!
+  status: String!
+}
+
+type ProjectionStatusOutput {
+  requestId: UUID!
+  result: ProjectionStatusOutputResult!
+  replayed: Boolean!
+}
+
+input CommandPlanInputArguments {
+  operationUri: String!
+  parameters: JSON!
+  streamUrn: URN!
+  expectedVersion: Revision!
+}
+
+input CommandPlanInput {
+  requestId: UUID!
+  arguments: CommandPlanInputArguments!
+}
+
+type CommandPlanOutputResult {
+  planHash: String!
+  operationUri: String!
+  streamUrn: URN!
+  expectedVersion: Revision!
+  authorityEpoch: Revision!
+}
+
+type CommandPlanOutput {
+  requestId: UUID!
+  result: CommandPlanOutputResult!
+  replayed: Boolean!
+}
+
+type Query {
+  resource_read(input: ResourceReadInput!): ResourceReadOutput
+  entity_resolve(input: EntityResolveInput!): EntityResolveOutput
+  process_status(input: ProcessStatusInput!): ProcessStatusOutput
+  dataset_query(input: DatasetQueryInput!): DatasetQueryOutput
+  event_read(input: EventReadInput!): EventReadOutput
+  projection_status(input: ProjectionStatusInput!): ProjectionStatusOutput
+  command_plan(input: CommandPlanInput!): CommandPlanOutput
+}
+
+type Mutation {
+  resource_publish(input: ResourcePublishInput!): ResourcePublishOutput
+  entity_advance(input: EntityAdvanceInput!): EntityAdvanceOutput
+  process_submit(input: ProcessSubmitInput!): ProcessSubmitOutput
+  process_cancel(input: ProcessCancelInput!): ProcessCancelOutput
+}

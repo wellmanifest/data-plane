@@ -1,0 +1,17 @@
+{
+  "standard": "wellmanifest/data-plane",
+  "version": "0.2.0",
+  "status": "planned",
+  "profile": "hybrid-sqlite-postgres-es-v1",
+  "resourceProfile": "low-ram-v1",
+  "requiredArchitecture": [
+    "POA",
+    "CQRS",
+    "ES"
+  ],
+  "authorities": [],
+  "uncoveredLegacyWriters": [],
+  "runtimeRepository": null,
+  "conformanceEvidence": [],
+  "upstreamLogsLock": "upstream.lock.json"
+}

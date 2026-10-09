@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "data-plane.migration-plan/v1"
+    },
+    "mode": {
+      "const": "write-freeze-and-cutover"
+    },
+    "status": {
+      "enum": [
+        "planned",
+        "rehearsed",
+        "cutover-ready",
+        "completed",
+        "blocked"
+      ]
+    },
+    "sourceSnapshotSha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "idMapping": {
+      "type": "string"
+    },
+    "typeMapping": {
+      "type": "string"
+    },
+    "gates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "passed",
+              "failed",
+              "not-applicable"
+            ]
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "evidence"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "rollback": {
+      "type": "object",
+      "properties": {
+        "beforePostgresWrites": {
+          "type": "string"
+        },
+        "afterPostgresWrites": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "beforePostgresWrites",
+        "afterPostgresWrites"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema",
+    "mode",
+    "status",
+    "sourceSnapshotSha256",
+    "idMapping",
+    "typeMapping",
+    "gates",
+    "rollback"
+  ],
+  "additionalProperties": false
+}

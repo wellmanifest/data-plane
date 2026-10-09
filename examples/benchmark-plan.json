@@ -1,0 +1,40 @@
+{
+  "status": "unmeasured",
+  "datasetRows": null,
+  "datasetBytes": null,
+  "hardware": null,
+  "concurrency": null,
+  "durationSeconds": null,
+  "targets": {
+    "p95Ms": null,
+    "p99Ms": null,
+    "throughputPerSecond": null,
+    "errorRate": null
+  },
+  "scenarios": [
+    "sqlite-baseline",
+    "postgres-no-cache",
+    "redis-cold",
+    "redis-warm",
+    "redis-down",
+    "acl-revoked",
+    "hot-key-burst"
+  ],
+  "metrics": [
+    "p50",
+    "p95",
+    "p99",
+    "throughput",
+    "errors",
+    "pool-wait",
+    "cpu",
+    "ram",
+    "io",
+    "wal",
+    "outbox-lag",
+    "cache-hit-ratio",
+    "evictions",
+    "response-bytes",
+    "llm-tokens-per-completed-task"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "profile": "postgres-redis-v1",
+  "version": "0.1.0",
+  "postgresqlMinimumMajor": 16,
+  "identity": {
+    "operationUri": "registered-exact-match-no-query-no-fragment",
+    "resourceUrn": "urn:uuid",
+    "resourceVersions": "immutable",
+    "revisionWireType": "decimal-string"
+  },
+  "cache": {
+    "default": "immutable-resource-bytes-only",
+    "authorizesAccess": false,
+    "sourceOfTruth": false,
+    "mutableQueriesEnabled": false,
+    "ttlSecondsInitial": 300,
+    "ttlJitterFraction": 0.2,
+    "timeoutMsInitial": 30,
+    "outageBehavior": "bounded-postgresql-fallback"
+  },
+  "limits": {
+    "defaultPageSize": 50,
+    "maxPageSize": 200,
+    "maxInlineResponseBytes": 65536,
+    "maxInlineDecodedBlobBytes": 32768
+  },
+  "mcpCompatibilityTarget": "2025-11-25",
+  "transactionsAcrossLLMTurns": false,
+  "durableQueue": "postgresql-outbox",
+  "delivery": "at-least-once",
+  "arbitrarySqlForLLM": false,
+  "arbitraryShellForLLM": false,
+  "migrationDefault": "write-freeze-and-cutover",
+  "zeroDowntimeClaimed": false,
+  "status": "superseded-by-postgres-es-v1-plus-optional-redis-cache-v1"
+}

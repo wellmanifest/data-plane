@@ -1,0 +1,21 @@
+# Changelog
+
+## 0.2.0 — 2026-10-09
+
+- POA/CQRS/ES required for every deployment profile.
+- Domain event store separated from canonical wellmanifest/logs 0.5.0 audit.
+- Pinned upstream contract, Protobuf and checker with exact SHA-256.
+- SQLite embedded and hybrid coexistence profiles; one writer per stream, relay and authority-transfer rules.
+- Low-RAM default; Redis optional and off initially.
+- Multi-source GraphQL query policy and executable two-source fixture.
+- New /v2 operation URIs; 11 contract operations including plan, event read and projection status.
+- PostgreSQL ES schema, typed domain Protobuf and bounded SQLite ES conformance model.
+- Added Makefile, Docker/Compose, CI, contributor instructions and RAM probe.
+
+### Upgrade from 0.1
+
+Do not silently reinterpret /v1 mutations. Introduce /v2, event capture and baseline import. Existing entity/process tables become projections. Keep SQLite until all writers and replay are verified. Changing sourceOfTruth to ES is an application migration, not merely updating manifest.json. The old postgres-redis-v1 profile is superseded; select a storage profile and optional redis-cache-v1 explicitly.
+
+## 0.1.0
+
+Initial PostgreSQL/Redis gateway proposal, eight operation contracts and SQLite audit tool. It did not require a full domain event store.

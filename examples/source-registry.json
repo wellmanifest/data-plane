@@ -1,0 +1,30 @@
+{
+  "schema": "data-plane.sources/v1",
+  "sources": [
+    {
+      "sourceId": "crm",
+      "adapter": "postgresql",
+      "connectionSecretRef": "secret:crm-dsn",
+      "tenantMapping": "verified-context",
+      "role": "projection",
+      "maxConnections": 2
+    },
+    {
+      "sourceId": "tickets",
+      "adapter": "sqlite",
+      "pathConfigRef": "config:tickets-path",
+      "tenantMapping": "verified-context",
+      "role": "projection",
+      "maxConnections": 1
+    }
+  ],
+  "join": {
+    "left": "crm.customer",
+    "right": "tickets.ticket",
+    "key": "tenant-scoped-customer-id",
+    "maxKeys": 25,
+    "maxRowsPerKey": 10,
+    "maxConcurrentSources": 2,
+    "consistency": "per-source-watermarks"
+  }
+}

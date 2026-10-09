@@ -1,0 +1,38 @@
+syntax = "proto3";
+package wellmanifest.dataplane.v1;
+
+// Typed conformance domain; production adds separately versioned registered types.
+message CounterChanged { string delta = 1; }
+message DomainEvent {
+  string schema = 1;
+  string event_urn = 2;
+  string tenant_id = 3;
+  string stream_urn = 4;
+  string stream_version = 5;
+  string event_type = 6;
+  uint32 schema_version = 7;
+  string process_uri = 8;
+  string command_id = 9;
+  string correlation_id = 10;
+  optional string causation_urn = 11;
+  string occurred_at = 12;
+  string authority_id = 13;
+  string authority_epoch = 14;
+  string plan_hash = 15;
+  string input_hash = 16;
+  string previous_hash = 17;
+  string event_hash = 18;
+  oneof data { CounterChanged counter_changed = 19; }
+  // Exact immutable JSON bytes. Hash is NOT over protobuf serialization.
+  bytes canonical_json = 20;
+}
+message StreamCheckpoint {
+  string tenant_id = 1;
+  string source_id = 2;
+  string stream_urn = 3;
+  string stream_version = 4;
+  string event_hash = 5;
+  string projector_version = 6;
+  string authority_id = 7;
+  string authority_epoch = 8;
+}

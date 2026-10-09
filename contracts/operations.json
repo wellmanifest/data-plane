@@ -1,0 +1,1712 @@
+{
+  "catalog": "data-plane.operations/v1",
+  "version": "0.2.0",
+  "operations": [
+    {
+      "name": "resource.read",
+      "uri": "process://data-gateway/resource.read/v2",
+      "version": 2,
+      "description": "Read an authorized immutable resource version; inline content is optional and limited to 32 KiB.",
+      "effects": [
+        "read"
+      ],
+      "scopes": [
+        "data:resource.read"
+      ],
+      "cache": "immutable-version",
+      "limits": {
+        "maxResponseBytes": 65536,
+        "maxPageSize": 200
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "urn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "consistency": {
+                "type": "string",
+                "enum": [
+                  "strong",
+                  "immutable-cache"
+                ],
+                "default": "strong"
+              }
+            },
+            "required": [
+              "urn"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "resource": {
+                "type": "object",
+                "properties": {
+                  "urn": {
+                    "type": "string",
+                    "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                    "x-graphql-scalar": "URN"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "mediaType": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                  },
+                  "byteLength": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,18})$",
+                    "x-graphql-scalar": "Revision"
+                  }
+                },
+                "required": [
+                  "urn",
+                  "sha256",
+                  "mediaType",
+                  "byteLength"
+                ],
+                "additionalProperties": false
+              },
+              "contentBase64": {
+                "type": "string",
+                "contentEncoding": "base64",
+                "maxLength": 43692,
+                "x-graphql-scalar": "Base64"
+              }
+            },
+            "required": [
+              "resource"
+            ],
+            "additionalProperties": false
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "transports": {
+        "cli": "resource.read",
+        "rest": {
+          "method": "POST",
+          "path": "/v2/operations/resource.read",
+          "successStatus": 200
+        },
+        "graphql": {
+          "root": "Query",
+          "field": "resource_read"
+        },
+        "mcp": "resource_read"
+      },
+      "cqrs": "query",
+      "poa": {
+        "required": true,
+        "authorityFromPlan": false,
+        "admission": "read-scope"
+      },
+      "eventSourcing": {
+        "required": false,
+        "directReadModelWrites": false,
+        "mappingOwner": "adopting-runtime"
+      }
+    },
+    {
+      "name": "resource.publish",
+      "uri": "process://data-gateway/resource.publish/v2",
+      "version": 2,
+      "description": "Publish exact bytes as a new immutable version; maximum decoded input is 32 KiB.",
+      "effects": [
+        "write"
+      ],
+      "scopes": [
+        "data:resource.publish"
+      ],
+      "cache": "none",
+      "limits": {
+        "maxResponseBytes": 65536,
+        "maxPageSize": 200
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "mediaType": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "contentBase64": {
+                "type": "string",
+                "contentEncoding": "base64",
+                "maxLength": 43692,
+                "x-graphql-scalar": "Base64"
+              }
+            },
+            "required": [
+              "mediaType",
+              "contentBase64"
+            ],
+            "additionalProperties": false
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "urn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "mediaType": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "byteLength": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              }
+            },
+            "required": [
+              "urn",
+              "sha256",
+              "mediaType",
+              "byteLength"
+            ],
+            "additionalProperties": false
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "transports": {
+        "cli": "resource.publish",
+        "rest": {
+          "method": "POST",
+          "path": "/v2/operations/resource.publish",
+          "successStatus": 200
+        },
+        "graphql": {
+          "root": "Mutation",
+          "field": "resource_publish"
+        },
+        "mcp": "resource_publish"
+      },
+      "cqrs": "command",
+      "poa": {
+        "required": true,
+        "authorityFromPlan": false,
+        "admission": "verified-controller"
+      },
+      "eventSourcing": {
+        "required": true,
+        "directReadModelWrites": false,
+        "mappingOwner": "adopting-runtime"
+      }
+    },
+    {
+      "name": "entity.resolve",
+      "uri": "process://data-gateway/entity.resolve/v2",
+      "version": 2,
+      "description": "Resolve an authorized current entity pointer from the primary database.",
+      "effects": [
+        "read"
+      ],
+      "scopes": [
+        "data:entity.resolve"
+      ],
+      "cache": "none",
+      "limits": {
+        "maxResponseBytes": 65536,
+        "maxPageSize": 200
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "entityId": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "UUID"
+              }
+            },
+            "required": [
+              "entityId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "entityId": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "UUID"
+              },
+              "resourceUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "revision": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              }
+            },
+            "required": [
+              "entityId",
+              "resourceUrn",
+              "revision"
+            ],
+            "additionalProperties": false
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "transports": {
+        "cli": "entity.resolve",
+        "rest": {
+          "method": "POST",
+          "path": "/v2/operations/entity.resolve",
+          "successStatus": 200
+        },
+        "graphql": {
+          "root": "Query",
+          "field": "entity_resolve"
+        },
+        "mcp": "entity_resolve"
+      },
+      "cqrs": "query",
+      "poa": {
+        "required": true,
+        "authorityFromPlan": false,
+        "admission": "read-scope"
+      },
+      "eventSourcing": {
+        "required": false,
+        "directReadModelWrites": false,
+        "mappingOwner": "adopting-runtime"
+      }
+    },
+    {
+      "name": "entity.advance",
+      "uri": "process://data-gateway/entity.advance/v2",
+      "version": 2,
+      "description": "Compare-and-set entity pointer; expectedRevision 0 creates the first pointer.",
+      "effects": [
+        "write"
+      ],
+      "scopes": [
+        "data:entity.advance"
+      ],
+      "cache": "none",
+      "limits": {
+        "maxResponseBytes": 65536,
+        "maxPageSize": 200
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "entityId": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "UUID"
+              },
+              "resourceUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "expectedRevision": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              }
+            },
+            "required": [
+              "entityId",
+              "resourceUrn",
+              "expectedRevision"
+            ],
+            "additionalProperties": false
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "entityId": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "UUID"
+              },
+              "resourceUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "revision": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              }
+            },
+            "required": [
+              "entityId",
+              "resourceUrn",
+              "revision"
+            ],
+            "additionalProperties": false
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "transports": {
+        "cli": "entity.advance",
+        "rest": {
+          "method": "POST",
+          "path": "/v2/operations/entity.advance",
+          "successStatus": 200
+        },
+        "graphql": {
+          "root": "Mutation",
+          "field": "entity_advance"
+        },
+        "mcp": "entity_advance"
+      },
+      "cqrs": "command",
+      "poa": {
+        "required": true,
+        "authorityFromPlan": false,
+        "admission": "verified-controller"
+      },
+      "eventSourcing": {
+        "required": true,
+        "directReadModelWrites": false,
+        "mappingOwner": "adopting-runtime"
+      }
+    },
+    {
+      "name": "process.submit",
+      "uri": "process://data-gateway/process.submit/v2",
+      "version": 2,
+      "description": "Persist a job for a separately registered allowed process; acceptance is not task completion.",
+      "effects": [
+        "execute"
+      ],
+      "scopes": [
+        "data:process.submit"
+      ],
+      "cache": "none",
+      "limits": {
+        "maxResponseBytes": 65536,
+        "maxPageSize": 200
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "operationUri": {
+                "type": "string",
+                "pattern": "^process://[a-z0-9-]+/[a-z0-9._/-]+/v[1-9][0-9]*$"
+              },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            },
+            "required": [
+              "operationUri",
+              "parameters"
+            ],
+            "additionalProperties": false
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "processUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "queued",
+                  "running",
+                  "succeeded",
+                  "failed",
+                  "cancelled"
+                ]
+              },
+              "cancelRequested": {
+                "type": "boolean"
+              },
+              "outputs": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "urn": {
+                      "type": "string",
+                      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "x-graphql-scalar": "URN"
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "mediaType": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 255
+                    },
+                    "byteLength": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]{0,18})$",
+                      "x-graphql-scalar": "Revision"
+                    }
+                  },
+                  "required": [
+                    "urn",
+                    "sha256",
+                    "mediaType",
+                    "byteLength"
+                  ],
+                  "additionalProperties": false
+                },
+                "maxItems": 200
+              },
+              "verification": {
+                "type": "object",
+                "properties": {
+                  "urn": {
+                    "type": "string",
+                    "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                    "x-graphql-scalar": "URN"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "mediaType": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                  },
+                  "byteLength": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,18})$",
+                    "x-graphql-scalar": "Revision"
+                  }
+                },
+                "required": [
+                  "urn",
+                  "sha256",
+                  "mediaType",
+                  "byteLength"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "processUrn",
+              "state",
+              "cancelRequested",
+              "outputs"
+            ],
+            "additionalProperties": false,
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "state": {
+                      "const": "succeeded"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "verification"
+                  ]
+                }
+              }
+            ]
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "transports": {
+        "cli": "process.submit",
+        "rest": {
+          "method": "POST",
+          "path": "/v2/operations/process.submit",
+          "successStatus": 202
+        },
+        "graphql": {
+          "root": "Mutation",
+          "field": "process_submit"
+        },
+        "mcp": "process_submit"
+      },
+      "cqrs": "command",
+      "poa": {
+        "required": true,
+        "authorityFromPlan": false,
+        "admission": "verified-controller"
+      },
+      "eventSourcing": {
+        "required": true,
+        "directReadModelWrites": false,
+        "mappingOwner": "adopting-runtime"
+      }
+    },
+    {
+      "name": "process.status",
+      "uri": "process://data-gateway/process.status/v2",
+      "version": 2,
+      "description": "Read an authorized process state from the primary database.",
+      "effects": [
+        "read"
+      ],
+      "scopes": [
+        "data:process.status"
+      ],
+      "cache": "none",
+      "limits": {
+        "maxResponseBytes": 65536,
+        "maxPageSize": 200
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "processUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              }
+            },
+            "required": [
+              "processUrn"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "processUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "queued",
+                  "running",
+                  "succeeded",
+                  "failed",
+                  "cancelled"
+                ]
+              },
+              "cancelRequested": {
+                "type": "boolean"
+              },
+              "outputs": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "urn": {
+                      "type": "string",
+                      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "x-graphql-scalar": "URN"
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "mediaType": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 255
+                    },
+                    "byteLength": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]{0,18})$",
+                      "x-graphql-scalar": "Revision"
+                    }
+                  },
+                  "required": [
+                    "urn",
+                    "sha256",
+                    "mediaType",
+                    "byteLength"
+                  ],
+                  "additionalProperties": false
+                },
+                "maxItems": 200
+              },
+              "verification": {
+                "type": "object",
+                "properties": {
+                  "urn": {
+                    "type": "string",
+                    "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                    "x-graphql-scalar": "URN"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "mediaType": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                  },
+                  "byteLength": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,18})$",
+                    "x-graphql-scalar": "Revision"
+                  }
+                },
+                "required": [
+                  "urn",
+                  "sha256",
+                  "mediaType",
+                  "byteLength"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "processUrn",
+              "state",
+              "cancelRequested",
+              "outputs"
+            ],
+            "additionalProperties": false,
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "state": {
+                      "const": "succeeded"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "verification"
+                  ]
+                }
+              }
+            ]
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "transports": {
+        "cli": "process.status",
+        "rest": {
+          "method": "POST",
+          "path": "/v2/operations/process.status",
+          "successStatus": 200
+        },
+        "graphql": {
+          "root": "Query",
+          "field": "process_status"
+        },
+        "mcp": "process_status"
+      },
+      "cqrs": "query",
+      "poa": {
+        "required": true,
+        "authorityFromPlan": false,
+        "admission": "read-scope"
+      },
+      "eventSourcing": {
+        "required": false,
+        "directReadModelWrites": false,
+        "mappingOwner": "adopting-runtime"
+      }
+    },
+    {
+      "name": "process.cancel",
+      "uri": "process://data-gateway/process.cancel/v2",
+      "version": 2,
+      "description": "Request cooperative cancellation; completed external effects are not rolled back.",
+      "effects": [
+        "write"
+      ],
+      "scopes": [
+        "data:process.cancel"
+      ],
+      "cache": "none",
+      "limits": {
+        "maxResponseBytes": 65536,
+        "maxPageSize": 200
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "processUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              }
+            },
+            "required": [
+              "processUrn"
+            ],
+            "additionalProperties": false
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "processUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "queued",
+                  "running",
+                  "succeeded",
+                  "failed",
+                  "cancelled"
+                ]
+              },
+              "cancelRequested": {
+                "type": "boolean"
+              },
+              "outputs": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "urn": {
+                      "type": "string",
+                      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "x-graphql-scalar": "URN"
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "mediaType": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 255
+                    },
+                    "byteLength": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]{0,18})$",
+                      "x-graphql-scalar": "Revision"
+                    }
+                  },
+                  "required": [
+                    "urn",
+                    "sha256",
+                    "mediaType",
+                    "byteLength"
+                  ],
+                  "additionalProperties": false
+                },
+                "maxItems": 200
+              },
+              "verification": {
+                "type": "object",
+                "properties": {
+                  "urn": {
+                    "type": "string",
+                    "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                    "x-graphql-scalar": "URN"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "mediaType": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                  },
+                  "byteLength": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,18})$",
+                    "x-graphql-scalar": "Revision"
+                  }
+                },
+                "required": [
+                  "urn",
+                  "sha256",
+                  "mediaType",
+                  "byteLength"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "processUrn",
+              "state",
+              "cancelRequested",
+              "outputs"
+            ],
+            "additionalProperties": false,
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "state": {
+                      "const": "succeeded"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "verification"
+                  ]
+                }
+              }
+            ]
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "transports": {
+        "cli": "process.cancel",
+        "rest": {
+          "method": "POST",
+          "path": "/v2/operations/process.cancel",
+          "successStatus": 200
+        },
+        "graphql": {
+          "root": "Mutation",
+          "field": "process_cancel"
+        },
+        "mcp": "process_cancel"
+      },
+      "cqrs": "command",
+      "poa": {
+        "required": true,
+        "authorityFromPlan": false,
+        "admission": "verified-controller"
+      },
+      "eventSourcing": {
+        "required": true,
+        "directReadModelWrites": false,
+        "mappingOwner": "adopting-runtime"
+      }
+    },
+    {
+      "name": "dataset.query",
+      "uri": "process://data-gateway/dataset.query/v2",
+      "version": 2,
+      "description": "Run a registered parameterized read query with bounded projection and keyset pagination.",
+      "effects": [
+        "read"
+      ],
+      "scopes": [
+        "data:dataset.query"
+      ],
+      "cache": "none",
+      "limits": {
+        "maxResponseBytes": 65536,
+        "maxPageSize": 200
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "queryId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_.-]{0,95}$"
+              },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 200,
+                "default": 50
+              },
+              "cursor": {
+                "type": "string",
+                "maxLength": 4096
+              }
+            },
+            "required": [
+              "queryId",
+              "parameters"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "rows": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": true
+                },
+                "maxItems": 200
+              },
+              "nextCursor": {
+                "type": "string",
+                "maxLength": 4096
+              },
+              "snapshotUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              }
+            },
+            "required": [
+              "rows"
+            ],
+            "additionalProperties": false
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "transports": {
+        "cli": "dataset.query",
+        "rest": {
+          "method": "POST",
+          "path": "/v2/operations/dataset.query",
+          "successStatus": 200
+        },
+        "graphql": {
+          "root": "Query",
+          "field": "dataset_query"
+        },
+        "mcp": "dataset_query"
+      },
+      "cqrs": "query",
+      "poa": {
+        "required": true,
+        "authorityFromPlan": false,
+        "admission": "read-scope"
+      },
+      "eventSourcing": {
+        "required": false,
+        "directReadModelWrites": false,
+        "mappingOwner": "adopting-runtime"
+      }
+    },
+    {
+      "name": "event.read",
+      "uri": "process://data-gateway/event.read/v2",
+      "version": 2,
+      "description": "Read an authorized bounded page of domain event references; no arbitrary SQL.",
+      "effects": [
+        "read"
+      ],
+      "cqrs": "query",
+      "scopes": [
+        "data:event.read"
+      ],
+      "cache": "none",
+      "limits": {
+        "maxResponseBytes": 65536,
+        "maxPageSize": 200
+      },
+      "poa": {
+        "required": true,
+        "authorityFromPlan": false,
+        "admission": "read-scope"
+      },
+      "eventSourcing": {
+        "required": false,
+        "directReadModelWrites": false,
+        "mappingOwner": "adopting-runtime"
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "streamUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "afterVersion": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100
+              }
+            },
+            "required": [
+              "streamUrn",
+              "afterVersion"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "events": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "eventUrn": {
+                      "type": "string",
+                      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "x-graphql-scalar": "URN"
+                    },
+                    "version": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]{0,18})$",
+                      "x-graphql-scalar": "Revision"
+                    },
+                    "eventHash": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "required": [
+                    "eventUrn",
+                    "version",
+                    "eventHash"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "headVersion": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              }
+            },
+            "required": [
+              "events",
+              "headVersion"
+            ],
+            "additionalProperties": false
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "transports": {
+        "cli": "event.read",
+        "rest": {
+          "method": "POST",
+          "path": "/v2/operations/event.read",
+          "successStatus": 200
+        },
+        "graphql": {
+          "root": "Query",
+          "field": "event_read"
+        },
+        "mcp": "event_read"
+      }
+    },
+    {
+      "name": "projection.status",
+      "uri": "process://data-gateway/projection.status/v2",
+      "version": 2,
+      "description": "Inspect projection freshness for one stream.",
+      "effects": [
+        "read"
+      ],
+      "cqrs": "query",
+      "scopes": [
+        "data:projection.status"
+      ],
+      "cache": "none",
+      "limits": {
+        "maxResponseBytes": 65536,
+        "maxPageSize": 200
+      },
+      "poa": {
+        "required": true,
+        "authorityFromPlan": false,
+        "admission": "read-scope"
+      },
+      "eventSourcing": {
+        "required": false,
+        "directReadModelWrites": false,
+        "mappingOwner": "adopting-runtime"
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "projectionId": {
+                "type": "string"
+              },
+              "streamUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              }
+            },
+            "required": [
+              "projectionId",
+              "streamUrn"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "projectionId": {
+                "type": "string"
+              },
+              "streamUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "version": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              },
+              "eventHash": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "current",
+                  "lagging",
+                  "unavailable"
+                ]
+              }
+            },
+            "required": [
+              "projectionId",
+              "streamUrn",
+              "version",
+              "eventHash",
+              "status"
+            ],
+            "additionalProperties": false
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "transports": {
+        "cli": "projection.status",
+        "rest": {
+          "method": "POST",
+          "path": "/v2/operations/projection.status",
+          "successStatus": 200
+        },
+        "graphql": {
+          "root": "Query",
+          "field": "projection_status"
+        },
+        "mcp": "projection_status"
+      }
+    },
+    {
+      "name": "command.plan",
+      "uri": "process://data-gateway/command.plan/v2",
+      "version": 2,
+      "description": "Propose a bounded command plan; does not grant authority or execute effects.",
+      "effects": [
+        "read"
+      ],
+      "cqrs": "query",
+      "scopes": [
+        "data:command.plan"
+      ],
+      "cache": "none",
+      "limits": {
+        "maxResponseBytes": 65536,
+        "maxPageSize": 200
+      },
+      "poa": {
+        "required": true,
+        "authorityFromPlan": false,
+        "admission": "read-scope"
+      },
+      "eventSourcing": {
+        "required": false,
+        "directReadModelWrites": false,
+        "mappingOwner": "adopting-runtime"
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "operationUri": {
+                "type": "string"
+              },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "streamUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              }
+            },
+            "required": [
+              "operationUri",
+              "parameters",
+              "streamUrn",
+              "expectedVersion"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "planHash": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "operationUri": {
+                "type": "string"
+              },
+              "streamUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              },
+              "authorityEpoch": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              }
+            },
+            "required": [
+              "planHash",
+              "operationUri",
+              "streamUrn",
+              "expectedVersion",
+              "authorityEpoch"
+            ],
+            "additionalProperties": false
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "transports": {
+        "cli": "command.plan",
+        "rest": {
+          "method": "POST",
+          "path": "/v2/operations/command.plan",
+          "successStatus": 200
+        },
+        "graphql": {
+          "root": "Query",
+          "field": "command_plan"
+        },
+        "mcp": "command_plan"
+      }
+    }
+  ]
+}

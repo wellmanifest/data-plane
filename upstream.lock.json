@@ -1,0 +1,11 @@
+{
+  "repository": "https://github.com/wellmanifest/logs",
+  "commit": "cd9d9558e09b9135ef92712096eb951fd524aa75",
+  "version": "0.5.0",
+  "files": {
+    "contracts/logs.contract.v0.5.json": "72e16ac823359879e01722e1e3e7017f50524c8cdf54e8eaec9d8802bc804e36",
+    "proto/v0.5/wellmanifest/logs/v1/logs.proto": "d31f11c2138f67e2a97b4a82992ec186fb9937ee9ff78494efc19453274dac1e",
+    "standard/logs_check.py": "aab380273416b72528079679fb9b5d0659ffe305f4c82bdc95025f41926e162e"
+  },
+  "vendored": false
+}

@@ -1,0 +1,123 @@
+{
+  "scope": "synthetic-python-sqlite-conformance-only",
+  "events": 10000,
+  "delivered": 10000,
+  "eventType": "counter.changed",
+  "sourceAndTargetFiles": 2,
+  "sampledMemory": [
+    {
+      "phase": "python-start",
+      "memory": {},
+      "warnings": [
+        "Process smaps_rollup unavailable"
+      ]
+    },
+    {
+      "phase": "two-stores-open",
+      "memory": {},
+      "warnings": [
+        "Process smaps_rollup unavailable"
+      ]
+    },
+    {
+      "phase": "append-1000",
+      "memory": {},
+      "warnings": [
+        "Process smaps_rollup unavailable"
+      ]
+    },
+    {
+      "phase": "append-2000",
+      "memory": {},
+      "warnings": [
+        "Process smaps_rollup unavailable"
+      ]
+    },
+    {
+      "phase": "append-3000",
+      "memory": {},
+      "warnings": [
+        "Process smaps_rollup unavailable"
+      ]
+    },
+    {
+      "phase": "append-4000",
+      "memory": {},
+      "warnings": [
+        "Process smaps_rollup unavailable"
+      ]
+    },
+    {
+      "phase": "append-5000",
+      "memory": {},
+      "warnings": [
+        "Process smaps_rollup unavailable"
+      ]
+    },
+    {
+      "phase": "append-6000",
+      "memory": {},
+      "warnings": [
+        "Process smaps_rollup unavailable"
+      ]
+    },
+    {
+      "phase": "append-7000",
+      "memory": {},
+      "warnings": [
+        "Process smaps_rollup unavailable"
+      ]
+    },
+    {
+      "phase": "append-8000",
+      "memory": {},
+      "warnings": [
+        "Process smaps_rollup unavailable"
+      ]
+    },
+    {
+      "phase": "append-9000",
+      "memory": {},
+      "warnings": [
+        "Process smaps_rollup unavailable"
+      ]
+    },
+    {
+      "phase": "append-10000",
+      "memory": {},
+      "warnings": [
+        "Process smaps_rollup unavailable"
+      ]
+    },
+    {
+      "phase": "relay-complete",
+      "memory": {},
+      "warnings": [
+        "Process smaps_rollup unavailable"
+      ]
+    },
+    {
+      "phase": "replay-complete",
+      "memory": {},
+      "warnings": [
+        "Process smaps_rollup unavailable"
+      ]
+    }
+  ],
+  "peakRssBytesLinux": 17432576,
+  "diskBytesBeforeCloseIncludingWal": 43560520,
+  "seconds": {
+    "append": 3.8826004450002074,
+    "relay": 5.2467038100003265,
+    "replay": 1.6108715890004532
+  },
+  "notMeasured": [
+    "postgresql",
+    "redis",
+    "production-gateway",
+    "LLM",
+    "noVNC",
+    "large-payload-domain"
+  ],
+  "constantMemoryProven": false
+}

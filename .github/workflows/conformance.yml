@@ -1,0 +1,16 @@
+name: standard-conformance
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements-qa.txt
+      - run: make check test demo proto
+      - run: make upstream-check
+      - run: docker compose run --rm conformance

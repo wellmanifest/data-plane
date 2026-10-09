@@ -1,0 +1,5 @@
+Wellmanifest Data Plane 0.2.0 is an independent proposed extension, not an official Wellmanifest release.
+Original specification, examples and tools in this package are offered under Apache-2.0.
+reference/process-exchange.schema.json is extracted without semantic changes from wellmanifest/nl-uri-dsl-llm profiles/semantic-v1.json, commit 2de9cab701466f4928f93e20269057aed7d6a237.
+Upstream license is preserved in reference/UPSTREAM-LICENSE.
+wellmanifest/logs is referenced as a pinned external conformance dependency; its source code is not redistributed in this package.

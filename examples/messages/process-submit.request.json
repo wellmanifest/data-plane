@@ -1,0 +1,10 @@
+{
+  "requestId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+  "idempotencyKey": "example-reindex-1",
+  "arguments": {
+    "operationUri": "process://worker/dataset.reindex/v1",
+    "parameters": {
+      "datasetId": "example"
+    }
+  }
+}

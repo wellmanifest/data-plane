@@ -1,0 +1,32 @@
+{
+  "status": "example-not-implemented",
+  "operations": [
+    {
+      "uri": "process://worker/dataset.reindex/v1",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "datasetId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "datasetId"
+        ],
+        "additionalProperties": false
+      },
+      "handler": "IMPLEMENT_IN_RUNTIME",
+      "effects": [
+        "write"
+      ],
+      "requiredScopes": [
+        "data:dataset.reindex"
+      ],
+      "timeoutSeconds": 300,
+      "maxAttempts": 3,
+      "externalEffects": "none-in-this-example"
+    }
+  ]
+}

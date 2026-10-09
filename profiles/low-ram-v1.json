@@ -1,0 +1,17 @@
+{
+  "profile": "low-ram-v1",
+  "measured": false,
+  "gatewayProcesses": 1,
+  "projectorConcurrency": 1,
+  "poolMaxGateway": 4,
+  "poolMaxProjector": 1,
+  "sqliteOpenSourcesMax": 2,
+  "defaultPageSize": 25,
+  "maxPageSize": 100,
+  "maxResponseBytes": 32768,
+  "maxEventBytes": 16384,
+  "replayBatchRows": 64,
+  "replayBatchBytes": 262144,
+  "maxConcurrentSources": 2,
+  "redisEnabled": false
+}

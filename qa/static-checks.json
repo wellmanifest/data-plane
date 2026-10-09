@@ -1,0 +1,64 @@
+{
+  "status": "passed",
+  "scope": "offline-artifacts-only",
+  "checks": [
+    {
+      "check": "json-schema-metaschema",
+      "status": "passed",
+      "files": 5
+    },
+    {
+      "check": "manifest-and-migration-example",
+      "status": "passed"
+    },
+    {
+      "check": "operation-catalog",
+      "status": "passed",
+      "operations": 11
+    },
+    {
+      "check": "generated-transports-no-drift",
+      "status": "passed",
+      "files": 3
+    },
+    {
+      "check": "openapi-internal-references",
+      "status": "passed",
+      "paths": 11,
+      "scope": "Internal structure only; no HTTP runtime"
+    },
+    {
+      "check": "graphql-sdl-and-operation-mapping",
+      "status": "passed"
+    },
+    {
+      "check": "postgresql-sql-and-plpgsql-syntax",
+      "status": "passed",
+      "files": 4,
+      "statements": 52,
+      "plpgsqlObjects": 4,
+      "scope": "Parser only; no PostgreSQL server execution"
+    },
+    {
+      "check": "request-response-examples",
+      "status": "passed",
+      "files": 5
+    },
+    {
+      "check": "example-process-registry-second-stage-validation",
+      "status": "passed"
+    },
+    {
+      "check": "domain-fixture-and-required-poa-cqrs-es-profiles",
+      "status": "passed"
+    }
+  ],
+  "notTested": [
+    "live-postgresql",
+    "live-redis",
+    "gateway-or-mcp-runtime",
+    "actual-user-sqlite-migration",
+    "performance",
+    "production-deployment"
+  ]
+}

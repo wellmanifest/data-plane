@@ -1,0 +1,1369 @@
+{
+  "tools": [
+    {
+      "name": "resource_read",
+      "description": "Read an authorized immutable resource version; inline content is optional and limited to 32 KiB.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "urn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "consistency": {
+                "type": "string",
+                "enum": [
+                  "strong",
+                  "immutable-cache"
+                ],
+                "default": "strong"
+              }
+            },
+            "required": [
+              "urn"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "resource": {
+                "type": "object",
+                "properties": {
+                  "urn": {
+                    "type": "string",
+                    "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                    "x-graphql-scalar": "URN"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "mediaType": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                  },
+                  "byteLength": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,18})$",
+                    "x-graphql-scalar": "Revision"
+                  }
+                },
+                "required": [
+                  "urn",
+                  "sha256",
+                  "mediaType",
+                  "byteLength"
+                ],
+                "additionalProperties": false
+              },
+              "contentBase64": {
+                "type": "string",
+                "contentEncoding": "base64",
+                "maxLength": 43692,
+                "x-graphql-scalar": "Base64"
+              }
+            },
+            "required": [
+              "resource"
+            ],
+            "additionalProperties": false
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "resource_publish",
+      "description": "Publish exact bytes as a new immutable version; maximum decoded input is 32 KiB.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "mediaType": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "contentBase64": {
+                "type": "string",
+                "contentEncoding": "base64",
+                "maxLength": 43692,
+                "x-graphql-scalar": "Base64"
+              }
+            },
+            "required": [
+              "mediaType",
+              "contentBase64"
+            ],
+            "additionalProperties": false
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "urn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "mediaType": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 255
+              },
+              "byteLength": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              }
+            },
+            "required": [
+              "urn",
+              "sha256",
+              "mediaType",
+              "byteLength"
+            ],
+            "additionalProperties": false
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "entity_resolve",
+      "description": "Resolve an authorized current entity pointer from the primary database.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "entityId": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "UUID"
+              }
+            },
+            "required": [
+              "entityId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "entityId": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "UUID"
+              },
+              "resourceUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "revision": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              }
+            },
+            "required": [
+              "entityId",
+              "resourceUrn",
+              "revision"
+            ],
+            "additionalProperties": false
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "entity_advance",
+      "description": "Compare-and-set entity pointer; expectedRevision 0 creates the first pointer.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "entityId": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "UUID"
+              },
+              "resourceUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "expectedRevision": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              }
+            },
+            "required": [
+              "entityId",
+              "resourceUrn",
+              "expectedRevision"
+            ],
+            "additionalProperties": false
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "entityId": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "UUID"
+              },
+              "resourceUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "revision": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              }
+            },
+            "required": [
+              "entityId",
+              "resourceUrn",
+              "revision"
+            ],
+            "additionalProperties": false
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "process_submit",
+      "description": "Persist a job for a separately registered allowed process; acceptance is not task completion.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "operationUri": {
+                "type": "string",
+                "pattern": "^process://[a-z0-9-]+/[a-z0-9._/-]+/v[1-9][0-9]*$"
+              },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            },
+            "required": [
+              "operationUri",
+              "parameters"
+            ],
+            "additionalProperties": false
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "processUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "queued",
+                  "running",
+                  "succeeded",
+                  "failed",
+                  "cancelled"
+                ]
+              },
+              "cancelRequested": {
+                "type": "boolean"
+              },
+              "outputs": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "urn": {
+                      "type": "string",
+                      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "x-graphql-scalar": "URN"
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "mediaType": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 255
+                    },
+                    "byteLength": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]{0,18})$",
+                      "x-graphql-scalar": "Revision"
+                    }
+                  },
+                  "required": [
+                    "urn",
+                    "sha256",
+                    "mediaType",
+                    "byteLength"
+                  ],
+                  "additionalProperties": false
+                },
+                "maxItems": 200
+              },
+              "verification": {
+                "type": "object",
+                "properties": {
+                  "urn": {
+                    "type": "string",
+                    "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                    "x-graphql-scalar": "URN"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "mediaType": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                  },
+                  "byteLength": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,18})$",
+                    "x-graphql-scalar": "Revision"
+                  }
+                },
+                "required": [
+                  "urn",
+                  "sha256",
+                  "mediaType",
+                  "byteLength"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "processUrn",
+              "state",
+              "cancelRequested",
+              "outputs"
+            ],
+            "additionalProperties": false,
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "state": {
+                      "const": "succeeded"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "verification"
+                  ]
+                }
+              }
+            ]
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "process_status",
+      "description": "Read an authorized process state from the primary database.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "processUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              }
+            },
+            "required": [
+              "processUrn"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "processUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "queued",
+                  "running",
+                  "succeeded",
+                  "failed",
+                  "cancelled"
+                ]
+              },
+              "cancelRequested": {
+                "type": "boolean"
+              },
+              "outputs": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "urn": {
+                      "type": "string",
+                      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "x-graphql-scalar": "URN"
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "mediaType": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 255
+                    },
+                    "byteLength": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]{0,18})$",
+                      "x-graphql-scalar": "Revision"
+                    }
+                  },
+                  "required": [
+                    "urn",
+                    "sha256",
+                    "mediaType",
+                    "byteLength"
+                  ],
+                  "additionalProperties": false
+                },
+                "maxItems": 200
+              },
+              "verification": {
+                "type": "object",
+                "properties": {
+                  "urn": {
+                    "type": "string",
+                    "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                    "x-graphql-scalar": "URN"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "mediaType": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                  },
+                  "byteLength": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,18})$",
+                    "x-graphql-scalar": "Revision"
+                  }
+                },
+                "required": [
+                  "urn",
+                  "sha256",
+                  "mediaType",
+                  "byteLength"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "processUrn",
+              "state",
+              "cancelRequested",
+              "outputs"
+            ],
+            "additionalProperties": false,
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "state": {
+                      "const": "succeeded"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "verification"
+                  ]
+                }
+              }
+            ]
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "process_cancel",
+      "description": "Request cooperative cancellation; completed external effects are not rolled back.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "processUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              }
+            },
+            "required": [
+              "processUrn"
+            ],
+            "additionalProperties": false
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments",
+          "idempotencyKey"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "processUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "queued",
+                  "running",
+                  "succeeded",
+                  "failed",
+                  "cancelled"
+                ]
+              },
+              "cancelRequested": {
+                "type": "boolean"
+              },
+              "outputs": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "urn": {
+                      "type": "string",
+                      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "x-graphql-scalar": "URN"
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    },
+                    "mediaType": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 255
+                    },
+                    "byteLength": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]{0,18})$",
+                      "x-graphql-scalar": "Revision"
+                    }
+                  },
+                  "required": [
+                    "urn",
+                    "sha256",
+                    "mediaType",
+                    "byteLength"
+                  ],
+                  "additionalProperties": false
+                },
+                "maxItems": 200
+              },
+              "verification": {
+                "type": "object",
+                "properties": {
+                  "urn": {
+                    "type": "string",
+                    "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                    "x-graphql-scalar": "URN"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "mediaType": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 255
+                  },
+                  "byteLength": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]{0,18})$",
+                    "x-graphql-scalar": "Revision"
+                  }
+                },
+                "required": [
+                  "urn",
+                  "sha256",
+                  "mediaType",
+                  "byteLength"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "processUrn",
+              "state",
+              "cancelRequested",
+              "outputs"
+            ],
+            "additionalProperties": false,
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "state": {
+                      "const": "succeeded"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "verification"
+                  ]
+                }
+              }
+            ]
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "dataset_query",
+      "description": "Run a registered parameterized read query with bounded projection and keyset pagination.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "queryId": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_.-]{0,95}$"
+              },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 200,
+                "default": 50
+              },
+              "cursor": {
+                "type": "string",
+                "maxLength": 4096
+              }
+            },
+            "required": [
+              "queryId",
+              "parameters"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "rows": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": true
+                },
+                "maxItems": 200
+              },
+              "nextCursor": {
+                "type": "string",
+                "maxLength": 4096
+              },
+              "snapshotUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              }
+            },
+            "required": [
+              "rows"
+            ],
+            "additionalProperties": false
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "event_read",
+      "description": "Read an authorized bounded page of domain event references; no arbitrary SQL.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "streamUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "afterVersion": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100
+              }
+            },
+            "required": [
+              "streamUrn",
+              "afterVersion"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "events": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "eventUrn": {
+                      "type": "string",
+                      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "x-graphql-scalar": "URN"
+                    },
+                    "version": {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]{0,18})$",
+                      "x-graphql-scalar": "Revision"
+                    },
+                    "eventHash": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "required": [
+                    "eventUrn",
+                    "version",
+                    "eventHash"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "headVersion": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              }
+            },
+            "required": [
+              "events",
+              "headVersion"
+            ],
+            "additionalProperties": false
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "projection_status",
+      "description": "Inspect projection freshness for one stream.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "projectionId": {
+                "type": "string"
+              },
+              "streamUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              }
+            },
+            "required": [
+              "projectionId",
+              "streamUrn"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "projectionId": {
+                "type": "string"
+              },
+              "streamUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "version": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              },
+              "eventHash": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "current",
+                  "lagging",
+                  "unavailable"
+                ]
+              }
+            },
+            "required": [
+              "projectionId",
+              "streamUrn",
+              "version",
+              "eventHash",
+              "status"
+            ],
+            "additionalProperties": false
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "command_plan",
+      "description": "Propose a bounded command plan; does not grant authority or execute effects.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "x-graphql-scalar": "UUID"
+          },
+          "arguments": {
+            "type": "object",
+            "properties": {
+              "operationUri": {
+                "type": "string"
+              },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "streamUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              }
+            },
+            "required": [
+              "operationUri",
+              "parameters",
+              "streamUrn",
+              "expectedVersion"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "requestId",
+          "arguments"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "x-graphql-scalar": "UUID"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "planHash": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "operationUri": {
+                "type": "string"
+              },
+              "streamUrn": {
+                "type": "string",
+                "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "x-graphql-scalar": "URN"
+              },
+              "expectedVersion": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              },
+              "authorityEpoch": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]{0,18})$",
+                "x-graphql-scalar": "Revision"
+              }
+            },
+            "required": [
+              "planHash",
+              "operationUri",
+              "streamUrn",
+              "expectedVersion",
+              "authorityEpoch"
+            ],
+            "additionalProperties": false
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "requestId",
+          "result",
+          "replayed"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    }
+  ]
+}

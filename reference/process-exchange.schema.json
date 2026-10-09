@@ -1,0 +1,369 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wellmanifest.com/schemas/process-exchange-v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "wellmanifest.process-exchange/v1"
+    },
+    "kind": {
+      "enum": [
+        "request",
+        "result"
+      ]
+    },
+    "messageUrn": {
+      "$ref": "#/$defs/urn"
+    },
+    "requestUrn": {
+      "$ref": "#/$defs/urn"
+    },
+    "operation": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9+.-]*://[^\\s?#]+$"
+    },
+    "contractDigest": {
+      "$ref": "#/$defs/sha256"
+    },
+    "effects": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "read",
+          "write",
+          "execute",
+          "network"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "context": {
+      "$ref": "#/$defs/context"
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/resource"
+      },
+      "maxItems": 64,
+      "uniqueItems": true
+    },
+    "arguments": {
+      "type": "object"
+    },
+    "admission": {
+      "$ref": "#/$defs/admission"
+    },
+    "outcome": {
+      "enum": [
+        "completed",
+        "blocked",
+        "failed",
+        "clarify",
+        "unsupported"
+      ]
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/resource"
+      },
+      "maxItems": 64,
+      "uniqueItems": true
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "verification": {
+      "$ref": "#/$defs/resource"
+    },
+    "completion": {
+      "$ref": "#/$defs/resource"
+    }
+  },
+  "required": [
+    "schema",
+    "kind",
+    "messageUrn",
+    "requestUrn",
+    "operation",
+    "contractDigest",
+    "effects",
+    "inputs"
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "urn": {
+      "type": "string",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "urn": {
+          "$ref": "#/$defs/urn"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "mediaType": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9.+-]*/[a-zA-Z0-9.+-]+$"
+        }
+      },
+      "required": [
+        "urn",
+        "sha256",
+        "mediaType"
+      ]
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repositoryRef": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+        },
+        "ticketId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "branchRef": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "worktreeId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "ownerSession": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "planHash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "scopeHash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "baseSha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      },
+      "required": [
+        "repositoryRef",
+        "ticketId",
+        "branchRef",
+        "worktreeId",
+        "ownerSession",
+        "planHash",
+        "scopeHash",
+        "baseSha"
+      ]
+    },
+    "admission": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "request": {
+          "$ref": "#/$defs/resource"
+        },
+        "receipt": {
+          "$ref": "#/$defs/resource"
+        },
+        "leaseId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "leaseRevision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fencingToken": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "request",
+        "receipt",
+        "leaseId",
+        "leaseRevision",
+        "fencingToken"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "request"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "arguments"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "outcome"
+              ]
+            },
+            {
+              "required": [
+                "outputs"
+              ]
+            },
+            {
+              "required": [
+                "reason"
+              ]
+            },
+            {
+              "required": [
+                "verification"
+              ]
+            },
+            {
+              "required": [
+                "completion"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "result"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "outcome",
+          "outputs"
+        ],
+        "not": {
+          "required": [
+            "arguments"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "effects": {
+            "contains": {
+              "enum": [
+                "write",
+                "execute"
+              ]
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "context"
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "const": "completed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "outputs": {
+            "minItems": 1
+          }
+        },
+        "not": {
+          "required": [
+            "reason"
+          ]
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "effects": {
+                  "contains": {
+                    "enum": [
+                      "write",
+                      "execute"
+                    ]
+                  }
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "admission",
+                "verification",
+                "completion"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "outcome"
+        ],
+        "properties": {
+          "outcome": {
+            "enum": [
+              "blocked",
+              "failed",
+              "clarify",
+              "unsupported"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "reason"
+        ],
+        "not": {
+          "required": [
+            "completion"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -3,8 +3,8 @@
 import argparse,json,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
-from conformance.line import (LineError,classify,event_to_line,format_line,line_hash,line_to_event,line_to_request,
-    line_to_response,load_contracts,parse,request_to_line,response_to_line)
+from conformance.line import (LineError,classify,error_to_line,event_to_line,format_line,line_hash,line_to_error,line_to_event,
+    line_to_request,line_to_response,load_contracts,parse,request_to_line,response_to_line)
 
 CONTRACT_VIOLATION=2
 
@@ -27,13 +27,17 @@ def convert(command,item,contracts,name=None):
         envelope=json.loads(item);validate_request(name,envelope,contracts[1]);return request_to_line(name,envelope,contracts)
     if command=='to-response':return json.dumps(line_to_response(item),ensure_ascii=False,sort_keys=True)
     if command=='from-response':return response_to_line(json.loads(item))
+    if command=='to-error':return json.dumps(line_to_error(item),ensure_ascii=False,sort_keys=True)
+    if command=='from-error':
+        error=json.loads(item)
+        return error_to_line(error['requestId'],error['code'],retryable=error.get('retryable'),message=error.get('message'))
     if command=='to-event':return json.dumps(line_to_event(item,contracts),ensure_ascii=False,sort_keys=True,separators=(',',':'))
     if command=='from-event':return event_to_line(json.loads(item),contracts)
     raise LineError('Unknown command')
 
 def main(argv=None):
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('command',choices=['parse','canonical','check','to-request','from-request','to-response','from-response','to-event','from-event'])
+    p.add_argument('command',choices=['parse','canonical','check','to-request','from-request','to-response','from-response','to-error','from-error','to-event','from-event'])
     p.add_argument('--operation',help='Operation name for from-request')
     p.add_argument('line',nargs='?',help='One line or JSON document; default: every stdin line')
     args=p.parse_args(argv)

@@ -147,6 +147,33 @@ def line_to_response(text):
     if kind!='result' or not target.startswith(UUID_URN): raise LineError('Expected `result: urn:uuid:<requestId>`')
     return {'requestId':target[len(UUID_URN):],**variables}
 
+ERROR_FIELDS={'code','retryable','message'}
+MAX_ERROR_MESSAGE=512
+
+def error_codes(root=ROOT):
+    return set(json.loads((root/'logs-error-catalog.v1.json').read_text())['diagnosticCodes'])
+
+def _check_error(variables,codes):
+    if set(variables)-ERROR_FIELDS or 'code' not in variables: raise LineError('Error variables are code, retryable and message only')
+    if variables['code'] not in codes: raise LineError('Error code is not in the adopter catalog')
+    if 'retryable' in variables and not isinstance(variables['retryable'],bool): raise LineError('retryable must be boolean')
+    message=variables.get('message','')
+    if not isinstance(message,str) or len(message)>MAX_ERROR_MESSAGE: raise LineError('message must be a short string')
+
+def error_to_line(request_id,code,*,retryable=None,message=None,codes=None):
+    """`error: urn:uuid:<requestId> {"code":...}`; closed fields, catalog code, never the request variables."""
+    variables={'code':code}
+    if retryable is not None: variables['retryable']=retryable
+    if message is not None: variables['message']=message
+    _check_error(variables,codes if codes is not None else error_codes())
+    return format_line('error',UUID_URN+request_id,variables)
+
+def line_to_error(text,codes=None):
+    kind,target,variables=parse(text)
+    if kind!='error' or not target.startswith(UUID_URN): raise LineError('Expected `error: urn:uuid:<requestId>`')
+    _check_error(variables,codes if codes is not None else error_codes())
+    return {'requestId':target[len(UUID_URN):],**variables}
+
 def event_to_line(event,contracts=None):
     """Lossless projection of a domain or audit event; the canonical event bytes stay authoritative."""
     bindings,_=contracts or load_contracts()

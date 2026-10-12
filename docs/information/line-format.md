@@ -3,7 +3,7 @@
   "schema": "wellmanifest.docs/document/v1",
   "id": "line-format",
   "kind": "information",
-  "version": 1,
+  "version": 2,
   "title": "Jednoliniowy format żądań, wyników i logów data-plane.line/v1",
   "status": "proposed",
   "owner": "wellmanifest/data-plane",
@@ -93,8 +93,10 @@ Konwersja jest bezstratna i daje dokładnie wejście `/v2`, walidowane jego
 `inputSchema`. Argument nie może zasłaniać pola sterującego.
 
 **LINE-005 — Odpowiedź.** `result: urn:uuid:<requestId> {"replayed":…,"result":…}`.
-Błąd: `error: urn:uuid:<requestId> {"code":"DP-…",…}` z kodem z katalogu adoptera
-`logs-error-catalog.v1.json`. Odpowiedź nie powtarza zmiennych żądania.
+Błąd: `error: urn:uuid:<requestId> {"code":"DP-…","message":"…","retryable":…}`.
+Pola są zamknięte: `code` z katalogu `logs-error-catalog.v1.json` (z runbookiem
+`errors/{CODE}.md`), opcjonalnie `retryable` (bool) i `message` (≤512 znaków).
+Odpowiedź nie powtarza zmiennych żądania; inne pola są odrzucane.
 
 **LINE-006 — Logi.** Zdarzenie domenowe (`data-plane.domain-event/v1`) i audyt
 (`wellmanifest.logs/event/v1`) mają bezstratną projekcję
@@ -122,7 +124,7 @@ dotychczasowy endpoint JSON. Błąd parsera nie powtarza odrzuconej treści.
 
 Repo standardu zawiera parser, konwersje i kontrakt gRPC, nie gateway: REST
 `/v2/line`, `LineGateway` i narzędzie MCP nie są uruchomione ani przetestowane na
-żywym serwerze. Konwersja `error:` jest opisana, lecz nie ma funkcji referencyjnej.
+żywym serwerze.
 Profil nie jest przyjęty przez `nl-uri-dsl-llm` ani logs; zgodność dotyczy tylko
 kierunku nl-uri → v1. Typ medium REST jest profilem `text/plain`, nie
 zarejestrowanym typem IANA.
@@ -131,6 +133,5 @@ zarejestrowanym typem IANA.
 ## Next actions
 
 Adopter gatewaya implementuje `/v2/line`, `LineGateway` i `line.execute` nad
-istniejącym kernelem z testem równoważności z endpointami JSON. Funkcja i testy dla
-`error:` w kolejnej wersji. Ewentualne przeniesienie gramatyki do `wellmanifest/jsonl`
+istniejącym kernelem z testem równoważności z endpointami JSON. Ewentualne przeniesienie gramatyki do `wellmanifest/jsonl`
 lub `nl-uri-dsl-llm` wymaga osobnej decyzji właścicieli i nowego pinu.

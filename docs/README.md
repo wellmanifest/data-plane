@@ -7,6 +7,7 @@ przypięcie jest w `.governance/docs.json`.
 ## Dokumenty zarządzane
 
 - [Zgodność ze standardami logs, docs i report](information/docs-report-logs-adoption.md) — gdzie trafiają dokumenty, raporty i dowody oraz jak pozostają rozdzielone od audytu logs.
+- [Jednoliniowy format data-plane.line/v1](information/line-format.md) — `typ: obiekt {zmienne}` dla shell, REST, gRPC, MCP i logów; przykłady w [examples/lines](../examples/lines/examples.line).
 - [Audyt zgodności ze standardami logs, docs i report](analysis/standards-alignment-audit.md) — wyniki lokalnych kontroli, [manifest report](analysis/standards-alignment-audit.report.json) i artefakty w [qa/standards-alignment](../qa/standards-alignment/).
 
 ## Dokumenty historyczne

@@ -41,6 +41,7 @@ SQLite może pozostać lokalną projekcją, archiwum lub właścicielem wyodręb
 - `spec/GRAPHQL_DATA_REUSE.md`: wiele baz, batching i wspólne projekcje.
 - `LLM_REFACTORING.md`: zadania dla agenta wdrażającego.
 - `docs/IMPLEMENTATION_STATUS.md`: granice implementacji i testów.
+- `docs/information/line-format.md`: jednoliniowy format `typ: obiekt {zmienne}` (`tools/dp_line.py`).
 - `docs/README.md`: indeks dokumentów zgodnych z wellmanifest/docs, report i logs.
 
 ## Conformance

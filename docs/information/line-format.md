@@ -3,7 +3,7 @@
   "schema": "wellmanifest.docs/document/v1",
   "id": "line-format",
   "kind": "information",
-  "version": 2,
+  "version": 3,
   "title": "Jednoliniowy format żądań, wyników i logów data-plane.line/v1",
   "status": "proposed",
   "owner": "wellmanifest/data-plane",
@@ -18,7 +18,8 @@
     "https://github.com/wellmanifest/nl-uri-dsl-llm/blob/2de9cab701466f4928f93e20269057aed7d6a237/README.md",
     "https://github.com/wellmanifest/logs/blob/cd9d9558e09b9135ef92712096eb951fd524aa75/docs/ARCHITECTURE.md",
     "https://www.rfc-editor.org/rfc/rfc3986",
-    "https://www.rfc-editor.org/rfc/rfc8141"
+    "https://www.rfc-editor.org/rfc/rfc8141",
+    "https://github.com/wellmanifest/data-gateway/blob/0c8ce855c187f44312262d1798da7eb6b7380070/docs/information/gateway.md"
   ]
 }
 ---
@@ -122,9 +123,11 @@ dotychczasowy endpoint JSON. Błąd parsera nie powtarza odrzuconej treści.
 <!-- docs:section limitations -->
 ## Limitations
 
-Repo standardu zawiera parser, konwersje i kontrakt gRPC, nie gateway: REST
-`/v2/line`, `LineGateway` i narzędzie MCP nie są uruchomione ani przetestowane na
-żywym serwerze.
+Repo standardu zawiera parser, konwersje i kontrakt gRPC, nie gateway.
+Referencyjny adopter [wellmanifest/data-gateway](https://github.com/wellmanifest/data-gateway/blob/0c8ce855c187f44312262d1798da7eb6b7380070/docs/information/gateway.md)
+obsługuje REST `/v2/line`, `LineGateway` i `line.execute` dla `resource.publish` i
+`resource.read`, z testem identycznych odpowiedzi czterech transportów na loopback;
+nie ma TLS, zewnętrznego IdP ani wdrożenia produkcyjnego.
 Profil nie jest przyjęty przez `nl-uri-dsl-llm` ani logs; zgodność dotyczy tylko
 kierunku nl-uri → v1. Typ medium REST jest profilem `text/plain`, nie
 zarejestrowanym typem IANA.
@@ -132,6 +135,6 @@ zarejestrowanym typem IANA.
 <!-- docs:section next_actions -->
 ## Next actions
 
-Adopter gatewaya implementuje `/v2/line`, `LineGateway` i `line.execute` nad
-istniejącym kernelem z testem równoważności z endpointami JSON. Ewentualne przeniesienie gramatyki do `wellmanifest/jsonl`
+Kolejne operacje katalogu w gatewayu, każda z testem równoważności transportów;
+endpointy JSON `/v2/operations/*` i linia muszą dawać ten sam wynik. Ewentualne przeniesienie gramatyki do `wellmanifest/jsonl`
 lub `nl-uri-dsl-llm` wymaga osobnej decyzji właścicieli i nowego pinu.

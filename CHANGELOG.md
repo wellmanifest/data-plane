@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Reference gateway for line/v1 published as wellmanifest/data-gateway — [opis](docs/information/line-format.md).
 - `error:` lines now have a closed reference mapping limited to adopter catalog codes — [opis](docs/information/line-format.md).
 - New `data-plane.line/v1`: one line `type: target {vars}` for requests, results and event logs across shell, REST, gRPC and MCP — [opis](docs/information/line-format.md).
 - `make docs-check` runs the pinned docs gate with negative canaries in the conformance workflow (advisory until required) — [opis](docs/information/docs-report-logs-adoption.md).

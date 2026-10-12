@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "upstreamCommit": "cd9d9558e09b9135ef92712096eb951fd524aa75",
+  "contractSha256": "72e16ac823359879e01722e1e3e7017f50524c8cdf54e8eaec9d8802bc804e36",
+  "upstreamValidation": {
+    "schema": "wellmanifest.logs/validation-report/v1",
+    "valid": true,
+    "contractSha256": "72e16ac823359879e01722e1e3e7017f50524c8cdf54e8eaec9d8802bc804e36",
+    "streamsChecked": 2,
+    "eventsChecked": 18,
+    "errorDefinitionsChecked": 1,
+    "findings": []
+  },
+  "ourErrorCatalogValidation": {
+    "schema": "wellmanifest.logs/error-adoption-report/v1",
+    "valid": true,
+    "contractSha256": "72e16ac823359879e01722e1e3e7017f50524c8cdf54e8eaec9d8802bc804e36",
+    "candidateCatalogSha256": "40b231992e3d7fdad5ce5e5d421e2b09ce2dac2192ce9a7b78aa02d13b97b36b",
+    "errorDefinitionsChecked": 4,
+    "findings": []
+  },
+  "ourAuditFixturesValidated": 1,
+  "scope": "pinned-upstream-and-synthetic-audit-fixture",
+  "runtimeAdoptionProven": false
+}

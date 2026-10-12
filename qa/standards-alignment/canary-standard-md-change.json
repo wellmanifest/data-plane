@@ -1,0 +1,14 @@
+{
+  "ok": false,
+  "repository": "wellmanifest/data-plane",
+  "documents_checked": 2,
+  "scope": "managed-declared-and-base-changed-documents",
+  "findings": [
+    {
+      "code": "DOCS_METADATA",
+      "path": "STANDARD.md",
+      "message": "ValueError"
+    }
+  ],
+  "warnings": []
+}

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- `make docs-check` runs the pinned docs gate with negative canaries in the conformance workflow (advisory until required) — [opis](docs/information/docs-report-logs-adoption.md).
 - Pinned wellmanifest/docs 0.1.1 and added a docs index; final reports now use docs placement plus a report manifest — [opis](docs/information/docs-report-logs-adoption.md).
 
 ## 0.2.0 — 2026-10-09

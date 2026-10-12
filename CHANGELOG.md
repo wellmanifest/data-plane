@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Pinned wellmanifest/docs 0.1.1 and added a docs index; final reports now use docs placement plus a report manifest — [opis](docs/information/docs-report-logs-adoption.md).
+
 ## 0.2.0 — 2026-10-09
 
 - POA/CQRS/ES required for every deployment profile.

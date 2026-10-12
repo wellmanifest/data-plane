@@ -1,0 +1,19 @@
+{
+  "ok": false,
+  "repository": "wellmanifest/data-plane",
+  "documents_checked": 0,
+  "scope": "managed-declared-and-base-changed-documents",
+  "findings": [
+    {
+      "code": "DOCS_ADOPTION",
+      "path": ".governance/docs.json",
+      "message": "Missing or divergent tracked adoption; pin the trusted revision and policy digest"
+    },
+    {
+      "code": "DOCS_INDEX",
+      "path": "docs/README.md",
+      "message": "Tracked documentation index required for every adopter"
+    }
+  ],
+  "warnings": []
+}

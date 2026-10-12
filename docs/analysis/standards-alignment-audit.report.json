@@ -1,0 +1,279 @@
+{
+  "schema": "wellmanifest.report/manifest/v1",
+  "id": "standards-alignment-audit",
+  "version": 1,
+  "title": "Audyt zgodności data-plane ze standardami logs, docs i report",
+  "owner": "wellmanifest/data-plane",
+  "kind": "analysis",
+  "created": "2026-10-12",
+  "updated": "2026-10-12",
+  "review_after": "2026-10-26",
+  "status": "draft",
+  "authority": "none",
+  "document": {
+    "path": "docs/analysis/standards-alignment-audit.md",
+    "index_path": "docs/README.md",
+    "sha256": "d0f1233e28938fae3a32b5b41c911426be1c875ab166a8664bb61653052574f4"
+  },
+  "scope": {
+    "repositories": [
+      "wellmanifest/data-plane"
+    ],
+    "subjects": [
+      {
+        "id": "baseline",
+        "repository": "wellmanifest/data-plane",
+        "revision": "52f9d4bcdf7c8e7ef4df615fcc16538e4c468282"
+      },
+      {
+        "id": "aligned",
+        "repository": "wellmanifest/data-plane",
+        "revision": "ac9bda259b3711f065f1082704810f3ac10ea092"
+      }
+    ],
+    "exclusions": [
+      "Runtime, PostgreSQL/Redis, Docker, protected CI and external publication are not evaluated."
+    ]
+  },
+  "coverage": {
+    "state": "partial",
+    "unit": "declared-check",
+    "expected": 5,
+    "observed": 4
+  },
+  "assessment": "incomplete",
+  "findings": [
+    {
+      "id": "f-baseline-docs-gap",
+      "kind": "fact",
+      "text": "At 52f9d4b the docs 0.1.1 checker returned ok=false with DOCS_ADOPTION and DOCS_INDEX and checked 0 documents.",
+      "evidence_ids": [
+        "t-baseline-docs"
+      ]
+    },
+    {
+      "id": "f-aligned-docs-pass",
+      "kind": "fact",
+      "text": "At ac9bda2 the docs 0.1.1 checker returned ok=true for 1 document with no findings; a wrong standard revision is rejected with DOCS_ADOPTION.",
+      "evidence_ids": [
+        "t-aligned-docs",
+        "t-canary-wrong-pin",
+        "e-adoption",
+        "e-index",
+        "e-info"
+      ]
+    },
+    {
+      "id": "f-standard-md-gated",
+      "kind": "fact",
+      "text": "Changing STANDARD.md fails the docs gate with DOCS_METADATA because it is neither excluded from discovery nor in the managed profile.",
+      "evidence_ids": [
+        "t-canary-standard-md"
+      ]
+    },
+    {
+      "id": "f-logs-pass",
+      "kind": "fact",
+      "text": "Pinned logs 0.5.0 upstream validation passed for 2 streams and 18 events, the DP error catalog passed with 4 definitions and 1 audit fixture was validated; runtime adoption is not proven.",
+      "evidence_ids": [
+        "t-aligned-logs",
+        "e-lock",
+        "e-logs-checker"
+      ]
+    },
+    {
+      "id": "f-make-tests-pass",
+      "kind": "fact",
+      "text": "make check exited 0 and 30 unit tests passed at ac9bda2 with Python 3.13.12.",
+      "evidence_ids": [
+        "t-aligned-make"
+      ]
+    },
+    {
+      "id": "f-legacy-report",
+      "kind": "fact",
+      "text": "qa/REPORT.md is a final report outside docs/analysis without the docs metadata header; it was retained unchanged.",
+      "evidence_ids": [
+        "e-legacy-report"
+      ]
+    },
+    {
+      "id": "h-other-normative-files",
+      "kind": "hypothesis",
+      "text": "Changing spec/*.md or errors/*.md would fail the docs gate like STANDARD.md because they are not in the 0.1.1 discovery exclusions; this was not tried.",
+      "evidence_ids": []
+    },
+    {
+      "id": "r-wire-ci",
+      "kind": "recommendation",
+      "text": "Wire the docs checker into protected CI/OneDev with negative canaries for missing adoption, divergent pin and missing index.",
+      "evidence_ids": []
+    },
+    {
+      "id": "r-migrate-legacy",
+      "kind": "recommendation",
+      "text": "Migrate STANDARD.md, spec/ and qa/REPORT.md to the docs profile on their next substantive change and increase their version.",
+      "evidence_ids": []
+    }
+  ],
+  "evidence": [
+    {
+      "id": "t-baseline-docs",
+      "kind": "test",
+      "subject_id": "baseline",
+      "reference": "artifact:sha256:66d809598709ef9e04f05ae2edd73832406563da523afa3afe318ba407197231",
+      "sha256": "66d809598709ef9e04f05ae2edd73832406563da523afa3afe318ba407197231"
+    },
+    {
+      "id": "t-aligned-docs",
+      "kind": "test",
+      "subject_id": "aligned",
+      "reference": "artifact:sha256:37b012775795e9ba09eca5d47b561313577b1b9032715e1620665feb76c3c468",
+      "sha256": "37b012775795e9ba09eca5d47b561313577b1b9032715e1620665feb76c3c468"
+    },
+    {
+      "id": "t-canary-wrong-pin",
+      "kind": "test",
+      "subject_id": "aligned",
+      "reference": "artifact:sha256:5b07b2aad385fa7698bc73d0ec4edf88e4591463f56a4d68201b8338ee7ec298",
+      "sha256": "5b07b2aad385fa7698bc73d0ec4edf88e4591463f56a4d68201b8338ee7ec298"
+    },
+    {
+      "id": "t-canary-standard-md",
+      "kind": "test",
+      "subject_id": "aligned",
+      "reference": "artifact:sha256:2434d9b90e3c89cc720e490cfdd967e7e4910385524e228050c2d9897899c877",
+      "sha256": "2434d9b90e3c89cc720e490cfdd967e7e4910385524e228050c2d9897899c877"
+    },
+    {
+      "id": "t-aligned-logs",
+      "kind": "test",
+      "subject_id": "aligned",
+      "reference": "artifact:sha256:129603ce9c67ce85e56a5ef0188065038ee93f1d9569a1c04afc376cd663ff0b",
+      "sha256": "129603ce9c67ce85e56a5ef0188065038ee93f1d9569a1c04afc376cd663ff0b"
+    },
+    {
+      "id": "t-aligned-make",
+      "kind": "test",
+      "subject_id": "aligned",
+      "reference": "artifact:sha256:b5a474db573d05093df23b42cf22604e36348beffd4faa7b590b679fc482700a",
+      "sha256": "b5a474db573d05093df23b42cf22604e36348beffd4faa7b590b679fc482700a"
+    },
+    {
+      "id": "e-adoption",
+      "kind": "source",
+      "subject_id": "aligned",
+      "reference": "repo://wellmanifest/data-plane@ac9bda259b3711f065f1082704810f3ac10ea092/.governance/docs.json",
+      "sha256": "51533c58de888cfe5f228ea54db76ba18fad7b88694a4d2715433b1a74a99b18"
+    },
+    {
+      "id": "e-index",
+      "kind": "source",
+      "subject_id": "aligned",
+      "reference": "repo://wellmanifest/data-plane@ac9bda259b3711f065f1082704810f3ac10ea092/docs/README.md",
+      "sha256": "b89cf2534b02c405d7e5f8661b23864944bf866883aa468b8ac81fa5c2f650af"
+    },
+    {
+      "id": "e-info",
+      "kind": "source",
+      "subject_id": "aligned",
+      "reference": "repo://wellmanifest/data-plane@ac9bda259b3711f065f1082704810f3ac10ea092/docs/information/docs-report-logs-adoption.md",
+      "sha256": "19827d7a4c9ffcb63099d8e961c085a85f119849bf3c52e5232ee1a15b557107"
+    },
+    {
+      "id": "e-lock",
+      "kind": "source",
+      "subject_id": "aligned",
+      "reference": "repo://wellmanifest/data-plane@ac9bda259b3711f065f1082704810f3ac10ea092/upstream.lock.json",
+      "sha256": "5266aee09abad3779be272eb3536bbf5673397bec5b60649293aa4ab5250abd6"
+    },
+    {
+      "id": "e-logs-checker",
+      "kind": "source",
+      "subject_id": "aligned",
+      "reference": "repo://wellmanifest/data-plane@ac9bda259b3711f065f1082704810f3ac10ea092/tools/check_logs.py",
+      "sha256": "3aec5c88c90286125573578e464901c359292d4251dbec41ebbaf01c5fd99838"
+    },
+    {
+      "id": "e-legacy-report",
+      "kind": "source",
+      "subject_id": "baseline",
+      "reference": "repo://wellmanifest/data-plane@52f9d4bcdf7c8e7ef4df615fcc16538e4c468282/qa/REPORT.md",
+      "sha256": "b1095f5f6cf5005a00b52d280a069ec6c0402645e3f470b56a72c7deb62a3299"
+    }
+  ],
+  "checks": [
+    {
+      "name": "docs-0.1.1-gate-with-base",
+      "subject_id": "aligned",
+      "result": "PASS",
+      "reason": "ok=true, 1 document checked, no findings.",
+      "evidence_ids": [
+        "t-aligned-docs"
+      ]
+    },
+    {
+      "name": "docs-gate-negative-canary-wrong-pin",
+      "subject_id": "aligned",
+      "result": "PASS",
+      "reason": "The wrong standard revision was rejected with DOCS_ADOPTION as required.",
+      "evidence_ids": [
+        "t-canary-wrong-pin"
+      ]
+    },
+    {
+      "name": "logs-0.5.0-upstream-and-error-catalog",
+      "subject_id": "aligned",
+      "result": "PASS",
+      "reason": "Pinned upstream validation, DP catalog and audit fixture passed; runtimeAdoptionProven=false.",
+      "evidence_ids": [
+        "t-aligned-logs"
+      ]
+    },
+    {
+      "name": "make-check-and-unit-tests",
+      "subject_id": "aligned",
+      "result": "PASS",
+      "reason": "make check exit 0 and 30 tests OK.",
+      "evidence_ids": [
+        "t-aligned-make"
+      ]
+    },
+    {
+      "name": "docs-gate-enforced-in-protected-ci",
+      "subject_id": "aligned",
+      "result": "NOT_RUN",
+      "reason": "The checker is not wired into .github/workflows/conformance.yml or a protected OneDev profile.",
+      "evidence_ids": []
+    }
+  ],
+  "limitations": [
+    "Results are local observations by the preparing agent, not protected exact-head CI.",
+    "The docs gate is not wired into protected CI; the manifest itself is checked by conformance.py after it is written and is not self-attesting.",
+    "Report 0.1.0 is a proposed candidate without release or consumer adoption.",
+    "Revision ac9bda2 exists on a working branch and changes if the branch is squash-merged.",
+    "Redaction was not scanned."
+  ],
+  "next_actions": [
+    {
+      "description": "Wire the docs checker into protected CI/OneDev with negative canaries.",
+      "owner": "wellmanifest/data-plane",
+      "resume_when": "The repository owner authorizes the protected CI change."
+    },
+    {
+      "description": "Migrate STANDARD.md, spec/ and qa/REPORT.md to the docs profile.",
+      "owner": "wellmanifest/data-plane",
+      "resume_when": "One of these documents next changes substantively."
+    }
+  ],
+  "redaction": {
+    "state": "not_checked",
+    "evidence_ids": []
+  },
+  "publication": {
+    "state": "local",
+    "revision": null,
+    "pull_request": null,
+    "evidence_ids": []
+  }
+}

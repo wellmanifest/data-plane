@@ -62,3 +62,30 @@ Demo zapisuje ES w SQLite, replikuje idempotentnie do drugiej bazy i odtwarza pr
 `upstream.lock.json` przypina logs do `cd9d9558e09b9135ef92712096eb951fd524aa75`, VERSION 0.5.0, wraz z hashami. README upstream opisuje starszy etap; podstawą adopcji są aktualne kontrakty i architektura.
 
 Wersja 0.2 zmienia semantykę zapisu: ES jest źródłem stanu, tabele bieżące są projekcjami. Nowe URI `/v2` nie zmieniają znaczenia historycznych `/v1`. Zobacz `CHANGELOG.md`, `SOURCES.md` i `qa/REPORT.md`.
+
+## Zasady dla współtwórców i agentów LLM
+
+Te zasady są specyficzne dla tego repozytorium standardu. `AGENTS.md` może zostać zastąpiony zarządzaną kopią kontraktu floty Wellmanifest; niniejsza sekcja pozostaje źródłem zasad repozytorium.
+
+This is a proposed Wellmanifest standard repository. It does not grant runtime authority and has not been published to the Wellmanifest organization by preparing this package.
+
+- Read STANDARD.md, upstream.lock.json and docs/IMPLEMENTATION_STATUS.md before changes.
+- Preserve POA, CQRS and ES in every storage profile, including SQLite.
+- Do not change published event/contract bytes or upstream hash profiles. New incompatible contracts get a new version.
+- Keep domain events, canonical audit and private diagnostics distinct.
+- Prefer bounded memory, one authoritative writer per stream and explicit freshness over speculative throughput optimizations.
+- Do not copy upstream runtime code into this repository. Use the pinned conformance dependency.
+- Run make check and make test after changing contracts/code. Run make upstream-check for audit mapping changes; make proto for protobuf changes.
+- Record which checks actually ran. Never mark Docker, PG/Redis integration, RAM budget or deployment as passed from static checks.
+- Runtime adapters, secrets, deployment and application migration belong to adopting repositories.
+- Follow user authorization and the destination repository's existing governance for publication. These instructions do not fabricate a ticket, admission receipt or official adoption.
+
+### Zmiany
+
+1. Describe the invariant or compatibility problem, not only the proposed implementation.
+2. Update normative rules, schemas, examples and conformance cases together.
+3. Keep data/URI identity stable; use new versions for incompatible wire contracts.
+4. Run `make check test`, and the affected optional checks.
+5. Document measured evidence and untested boundaries in a docs/analysis/<id>.md report with its .report.json manifest (see [docs/information/docs-report-logs-adoption.md](docs/information/docs-report-logs-adoption.md)); raw outputs stay under qa/. The 0.2.0 qa/REPORT.md is retained as a historical record.
+
+Do not publish private logs, user databases, tokens or arbitrary execution receipts. New storage adapters must prove atomic append, retry deduplication, bounded replay, authority fencing and projection checkpoint recovery using their real database engine before declaring runtime conformance.

@@ -3,14 +3,14 @@
   "schema": "wellmanifest.docs/document/v1",
   "id": "docs-report-logs-adoption",
   "kind": "information",
-  "version": 1,
+  "version": 2,
   "title": "Zgodność data-plane ze standardami logs, docs i report",
   "status": "proposed",
   "owner": "wellmanifest/data-plane",
   "created": "2026-10-12",
   "updated": "2026-10-12",
   "review_after": "2026-10-26",
-  "source_revision": "52f9d4bcdf7c8e7ef4df615fcc16538e4c468282",
+  "source_revision": "50601a20f9f1e80510ffcfeee226a8eb52d02a44",
   "affected_repositories": [
     "wellmanifest/data-plane"
   ],
@@ -61,6 +61,12 @@ dowody. Zmiana ustaleń zwiększa `version`. Rewizję i digest polityki wskazuje
 standardu. Końcowy wynik nie może istnieć wyłącznie w `/tmp`, stanie sesji,
 czacie ani `project/ticket-*`.
 
+`make docs-check` (`tools/check_docs.py`) pobiera checker z rewizji
+`DOCS_STANDARD_REVISION`, sprawdza HEAD i digest polityki względem adopcji,
+uruchamia bramę z `DOCS_BASE_SHA` oraz cztery negatywne canary na kopiach drzewa:
+brak adopcji, rozbieżny digest polityki, brak indeksu i błędna rewizja standardu.
+Brak rewizji lub canary przyjęty przez checker zatrzymuje kontrolę.
+
 **Report.** Końcowa analiza ma obok dokumentu sidecar
 `docs/analysis/<id>.report.json` (`wellmanifest.report/manifest/v1`).
 `document.sha256` wiąże dokładne bajty dokumentu. Fakty, hipotezy i
@@ -83,8 +89,10 @@ Migracja do profilu następuje przy ich następnej merytorycznej zmianie.
 <!-- docs:section limitations -->
 ## Limitations
 
-Checker docs nie jest podłączony do `.github/workflows/conformance.yml` ani do
-chronionego CI/OneDev; przypięcie i lokalna kontrola nie dowodzą egzekwowania.
+Krok `make docs-check` w `.github/workflows/conformance.yml` jest kontrolą
+doradczą: PR może zmienić ten workflow, a reguła gałęzi nie wymaga jego wyniku.
+Bez chronionego CI/OneDev lub wymaganego checku nie ma dowodu egzekwowania.
+Push nowej gałęzi nie ma bazy i wykonuje tylko audyt.
 Standard report jest kandydatem bez wydania i adopcji przez konsumentów.
 Profil docs 0.1.1 nie obejmuje kompaktowego formatu v2 z nowszych wydań docs.
 Checker docs nie ocenia prawdziwości treści; przegląd merytoryczny pozostaje wymagany.
@@ -92,7 +100,7 @@ Checker docs nie ocenia prawdziwości treści; przegląd merytoryczny pozostaje 
 <!-- docs:section next_actions -->
 ## Next actions
 
-Właściciel standardu podłącza checker docs do chronionego CI/OneDev i dodaje
-negatywne canary (brak adopcji, rozbieżny pin, brak indeksu). Przy zmianie
+Właściciel repozytorium ustawia zmienną `DOCS_STANDARD_REVISION` i wymaga
+checku `conformance` w regule gałęzi `main` albo w chronionym profilu OneDev. Przy zmianie
 `STANDARD.md` lub `qa/REPORT.md` należy je przenieść do profilu i podnieść wersję.
 Decyzja o przejściu na nowszy profil docs wymaga osobnej adopcji i nowego pinu.

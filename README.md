@@ -52,6 +52,7 @@ make check PYTHON=.venv/bin/python
 make test PYTHON=.venv/bin/python
 make demo PYTHON=.venv/bin/python
 make upstream-check PYTHON=.venv/bin/python
+DOCS_STANDARD_REVISION=ebe7501063ef4f3e63ded610c2d3183010ca636e make docs-check PYTHON=.venv/bin/python
 docker compose run --rm conformance
 ```
 

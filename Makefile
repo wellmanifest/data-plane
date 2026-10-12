@@ -13,7 +13,7 @@ docs-check:
 	$(PYTHON) tools/check_docs.py
 proto:
 	mkdir -p build/proto
-	$(PYTHON) -m grpc_tools.protoc -I proto --python_out=build/proto proto/domain_event.proto
+	$(PYTHON) -m grpc_tools.protoc -I proto --python_out=build/proto proto/domain_event.proto proto/line.proto
 docker:
 	docker compose run --rm conformance
 clean:

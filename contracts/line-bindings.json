@@ -1,0 +1,22 @@
+{
+  "schema": "data-plane.line-bindings/v1",
+  "line": "data-plane.line/v1",
+  "catalog": "contracts/operations.json",
+  "bindings": {
+    "command.plan": {"target": "argument", "argument": "streamUrn"},
+    "dataset.query": {"target": "operation"},
+    "entity.advance": {"target": "argument", "argument": "entityId", "form": "urn:uuid"},
+    "entity.resolve": {"target": "argument", "argument": "entityId", "form": "urn:uuid"},
+    "event.read": {"target": "argument", "argument": "streamUrn"},
+    "process.cancel": {"target": "argument", "argument": "processUrn"},
+    "process.status": {"target": "argument", "argument": "processUrn"},
+    "process.submit": {"target": "argument", "argument": "operationUri"},
+    "projection.status": {"target": "argument", "argument": "streamUrn"},
+    "resource.publish": {"target": "operation"},
+    "resource.read": {"target": "argument", "argument": "urn"}
+  },
+  "events": {
+    "data-plane.domain-event/v1": {"type": "eventType", "target": "streamUrn"},
+    "wellmanifest.logs/event/v1": {"type": "eventType", "target": "subjectRef"}
+  }
+}

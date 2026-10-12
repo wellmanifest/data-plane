@@ -1,0 +1,13 @@
+syntax = "proto3";
+package wellmanifest.dataplane.line.v1;
+
+// data-plane.line/v1 over gRPC: `text` carries exactly one canonical line without LF.
+// The gateway maps it to the same operation kernel as CLI and REST; the message grants no authority.
+message Line { string text = 1; }
+
+service LineGateway {
+  // One request line in, one `result:` or `error:` line out.
+  rpc Execute(Line) returns (Line);
+  // Ordered lines; each response is correlated by its urn:uuid:<requestId> target.
+  rpc Stream(stream Line) returns (stream Line);
+}

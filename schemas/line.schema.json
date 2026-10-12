@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/wellmanifest/data-plane/schemas/line.schema.json",
+  "title": "data-plane.line/v1 parsed form",
+  "description": "Structured form of one `type: target {vars}` line. The text line is canonical; this object is what parsers hand to adapters.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "target", "vars"],
+  "properties": {
+    "type": {"type": "string", "maxLength": 128, "pattern": "^[a-z][a-z0-9_-]*(\\.[a-z][a-z0-9_-]*)*$"},
+    "target": {"type": "string", "maxLength": 2048, "pattern": "^[A-Za-z][A-Za-z0-9+.-]*:[A-Za-z0-9\\-._~:/?#\\[\\]@!$&'()*+,;=%]+$"},
+    "vars": {"type": "object"}
+  }
+}

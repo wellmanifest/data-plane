@@ -5,8 +5,8 @@ import sys
 import unittest
 
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
-from conformance.line import (LineError,classify,event_to_line,format_line,line_hash,line_to_event,line_to_request,
-    line_to_response,load_contracts,parse,request_to_line,response_to_line)
+from conformance.line import (LineError,classify,error_codes,error_to_line,event_to_line,format_line,line_hash,line_to_error,
+    line_to_event,line_to_request,line_to_response,load_contracts,parse,request_to_line,response_to_line)
 from jsonschema import Draft202012Validator,FormatChecker
 
 CONTRACTS=load_contracts()
@@ -98,6 +98,33 @@ class OperationBindings(unittest.TestCase):
                 line=response_to_line(output)
                 self.assertTrue(line.startswith('result: urn:uuid:'+output['requestId']))
                 self.assertEqual(line_to_response(line),output)
+
+class ErrorLines(unittest.TestCase):
+    REQUEST='aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'
+
+    def test_catalog_error_round_trips(self):
+        line=error_to_line(self.REQUEST,'DP-CONCURRENCY-001',retryable=True,message='Expected version is stale.')
+        self.assertEqual(line,'error: urn:uuid:'+self.REQUEST+' {"code":"DP-CONCURRENCY-001","message":"Expected version is stale.","retryable":true}')
+        self.assertEqual(line_to_error(line),{'requestId':self.REQUEST,'code':'DP-CONCURRENCY-001','message':'Expected version is stale.','retryable':True})
+        self.assertEqual(classify(line,CONTRACTS),'error')
+
+    def test_every_catalog_code_has_a_runbook_and_is_accepted(self):
+        for code in error_codes():
+            with self.subTest(code):
+                self.assertTrue((ROOT/'errors'/f'{code}.md').exists())
+                line_to_error(error_to_line(self.REQUEST,code))
+
+    def test_error_lines_are_closed(self):
+        cases={
+            'unknown code':'error: urn:uuid:'+self.REQUEST+' {"code":"LOGS-VALIDATION-001"}',
+            'missing code':'error: urn:uuid:'+self.REQUEST+' {"message":"x"}',
+            'echoed request variables':'error: urn:uuid:'+self.REQUEST+' {"code":"DP-SOURCE-001","request":{"token":"x"}}',
+            'non-boolean retryable':'error: urn:uuid:'+self.REQUEST+' {"code":"DP-SOURCE-001","retryable":"yes"}',
+            'long message':'error: urn:uuid:'+self.REQUEST+' {"code":"DP-SOURCE-001","message":"'+'x'*513+'"}',
+            'not a request target':'error: process://data-gateway/resource.read/v2 {"code":"DP-SOURCE-001"}',
+        }
+        for name,line in cases.items():
+            with self.subTest(name),self.assertRaises(LineError):line_to_error(line)
 
 class EventProjections(unittest.TestCase):
     def test_audit_and_domain_events_project_losslessly(self):

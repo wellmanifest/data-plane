@@ -1,5 +1,5 @@
 PYTHON ?= python3
-.PHONY: check test demo upstream-check proto docker clean
+.PHONY: check test demo upstream-check docs-check proto docker clean
 check:
 	$(PYTHON) tools/generate_contracts.py --check
 	$(PYTHON) tools/validate.py
@@ -9,6 +9,8 @@ demo:
 	$(PYTHON) tools/demo_es.py
 upstream-check:
 	$(PYTHON) tools/check_logs.py
+docs-check:
+	$(PYTHON) tools/check_docs.py
 proto:
 	mkdir -p build/proto
 	$(PYTHON) -m grpc_tools.protoc -I proto --python_out=build/proto proto/domain_event.proto

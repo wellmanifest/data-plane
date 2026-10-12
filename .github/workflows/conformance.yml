@@ -7,10 +7,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - run: pip install -r requirements-qa.txt
       - run: make check test demo proto
       - run: make upstream-check
+      - run: make docs-check
+        env:
+          # Prefer the repository variable set by an administrator; the literal is the reviewed pin.
+          DOCS_STANDARD_REVISION: ${{ vars.DOCS_STANDARD_REVISION || 'ebe7501063ef4f3e63ded610c2d3183010ca636e' }}
+          DOCS_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
       - run: docker compose run --rm conformance

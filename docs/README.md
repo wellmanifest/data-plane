@@ -1,7 +1,7 @@
 # Dokumentacja data-plane
 
 Indeks dokumentów repozytorium `wellmanifest/data-plane`. Miejsce, metadane i
-indeks określa [wellmanifest/docs 0.1.1](https://github.com/wellmanifest/docs/blob/ebe7501063ef4f3e63ded610c2d3183010ca636e/docs/standard/POLICY.md);
+indeks określa [wellmanifest/docs 0.6.0](https://github.com/wellmanifest/docs/blob/19efafbeb18923cfd51cc69bd519330488500137/docs/standard/POLICY.md);
 przypięcie jest w `.governance/docs.json`.
 
 ## Dokumenty zarządzane

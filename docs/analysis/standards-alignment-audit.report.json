@@ -1,19 +1,19 @@
 {
   "schema": "wellmanifest.report/manifest/v1",
   "id": "standards-alignment-audit",
-  "version": 1,
+  "version": 2,
   "title": "Audyt zgodności data-plane ze standardami logs, docs i report",
   "owner": "wellmanifest/data-plane",
   "kind": "analysis",
   "created": "2026-10-12",
-  "updated": "2026-10-12",
+  "updated": "2026-10-13",
   "review_after": "2026-10-26",
   "status": "draft",
   "authority": "none",
   "document": {
     "path": "docs/analysis/standards-alignment-audit.md",
     "index_path": "docs/README.md",
-    "sha256": "d0f1233e28938fae3a32b5b41c911426be1c875ab166a8664bb61653052574f4"
+    "sha256": "c1639adc1ad6a7b7e517c3bb83cf5e15033bee4a98a0fee9064a79afa247b3cc"
   },
   "scope": {
     "repositories": [

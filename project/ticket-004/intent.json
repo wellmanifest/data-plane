@@ -1,0 +1,91 @@
+{
+  "schema": "new-project.intent/v3",
+  "ticket": "ticket-004",
+  "summary": "Live PostgreSQL QA target and storage engine report",
+  "workstream": "integration",
+  "classification": {
+    "kind": "SERVICE",
+    "priority": "P2",
+    "origin": "requested"
+  },
+  "allowedPaths": [
+    "project/ticket-004/**",
+    "TODO.md",
+    "project/TICKETS.md",
+    "Makefile",
+    "docs/**",
+    "requirements-qa.txt"
+  ],
+  "forbiddenPaths": [
+    "project/ticket-*/user-*.md"
+  ],
+  "stacks": [],
+  "dependsOn": [],
+  "conflictsWith": [],
+  "integrationTicket": null,
+  "delivery": {
+    "acceptedBaseSha": "ba461cb6d49610a69c416f4ed8f818a866ff0f8a",
+    "targetBranch": "main",
+    "outcome": "QA environments can run the live PostgreSQL schema test with make pg-live, and docs/analysis/storage-engines.md records the SQLite, group commit, PostgreSQL and PGlite measurements with profile recommendations.",
+    "nonGoals": [
+      "Change the default make test or make check behaviour",
+      "Add a runtime dependency",
+      "Change contracts, schemas or the reference ES schema"
+    ],
+    "complexity": "S",
+    "estimatedMinutes": 20,
+    "budgets": {
+      "maxImplementationFiles": 4,
+      "maxAffectedComponents": 2,
+      "maxPublicInterfaceChanges": 0,
+      "maxRuntimeDependencies": 0
+    },
+    "architecture": {
+      "status": "accepted",
+      "decision": "Pin psycopg[binary] 3.3.6 only in requirements-qa.txt, add an opt-in make pg-live target that refuses to run without DATA_PLANE_PG_DSN, and publish the engine measurements as a docs 0.6.0 analysis document indexed in docs/README.md. The test module and benchmark script come from ticket-003.",
+      "components": [
+        {
+          "name": "qa-tooling",
+          "paths": [
+            "requirements-qa.txt",
+            "Makefile"
+          ]
+        },
+        {
+          "name": "docs",
+          "paths": [
+            "docs/analysis/storage-engines.md",
+            "docs/README.md"
+          ]
+        }
+      ],
+      "responsibilityChanges": false,
+      "interfaceChanges": [],
+      "dataChanges": [],
+      "ui": {
+        "impact": "none",
+        "states": [],
+        "evidence": []
+      },
+      "rollback": "Close the PR; after publication revert the merge commit."
+    },
+    "runtimeDependencies": [],
+    "validation": [
+      {
+        "criterion": "AC-02",
+        "commands": [
+          "make test",
+          "make check"
+        ],
+        "evidence": "project/ticket-004/README.md"
+      },
+      {
+        "criterion": "AC-03",
+        "commands": [
+          "./project/governance-check.sh"
+        ],
+        "evidence": "docs/analysis/storage-engines.md"
+      }
+    ]
+  }
+}

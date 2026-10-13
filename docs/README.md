@@ -19,3 +19,4 @@ migracja następuje przy ich następnej merytorycznej zmianie.
 - [Zadania LLM 0.2](LLM_TASKS_V02.md)
 - [Repozytorium i publikacja](REPOSITORY.md)
 - [Raport weryfikacji 0.2.0](../qa/REPORT.md) — pomiary i surowe wyniki w `qa/`.
+- [SQLite, grupowe zatwierdzanie, PostgreSQL i PGlite](analysis/storage-engines.md) — pomiar silników dla wzorca data-plane, test schematu ES na żywym PostgreSQL 16 i rekomendacje profili.

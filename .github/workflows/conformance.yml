@@ -18,6 +18,6 @@ jobs:
       - run: make docs-check
         env:
           # Prefer the repository variable set by an administrator; the literal is the reviewed pin.
-          DOCS_STANDARD_REVISION: ${{ vars.DOCS_STANDARD_REVISION || 'ebe7501063ef4f3e63ded610c2d3183010ca636e' }}
+          DOCS_STANDARD_REVISION: ${{ vars.DOCS_STANDARD_REVISION || '19efafbeb18923cfd51cc69bd519330488500137' }}
           DOCS_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
       - run: docker compose run --rm conformance

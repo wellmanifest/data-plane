@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- wellmanifest/docs pin moved from 0.1.1 to 0.6.0 (`19efafb`) so managed new-project copies in `.governance/docs/` are verified by digest instead of rejected — [opis](docs/information/docs-report-logs-adoption.md).
 - Contributor and agent rules moved from CONTRIBUTING.md and AGENTS.md into README.md, ahead of managed fleet governance.
 - Conformance image pinned to the python:3.12-slim index digest so builds are reproducible.
 - Reference gateway for line/v1 published as wellmanifest/data-gateway — [opis](docs/information/line-format.md).

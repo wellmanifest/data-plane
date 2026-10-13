@@ -3,19 +3,20 @@
   "schema": "wellmanifest.docs/document/v1",
   "id": "docs-report-logs-adoption",
   "kind": "information",
-  "version": 2,
+  "version": 3,
   "title": "Zgodność data-plane ze standardami logs, docs i report",
   "status": "proposed",
   "owner": "wellmanifest/data-plane",
+  "scope": "repository",
   "created": "2026-10-12",
-  "updated": "2026-10-12",
-  "review_after": "2026-10-26",
-  "source_revision": "50601a20f9f1e80510ffcfeee226a8eb52d02a44",
+  "updated": "2026-10-13",
+  "review_after": "2026-10-27",
+  "source_revision": "8eeafd4e7871295c56429e6360a135926838ff20",
   "affected_repositories": [
     "wellmanifest/data-plane"
   ],
   "evidence": [
-    "https://github.com/wellmanifest/docs/blob/ebe7501063ef4f3e63ded610c2d3183010ca636e/docs/standard/POLICY.md",
+    "https://github.com/wellmanifest/docs/blob/19efafbeb18923cfd51cc69bd519330488500137/docs/standard/POLICY.md",
     "https://github.com/wellmanifest/report/blob/340244d0d150c1467c134ce072378fbed26d5c4f/docs/information/report-standard.md",
     "https://github.com/wellmanifest/logs/blob/cd9d9558e09b9135ef92712096eb951fd524aa75/docs/ARCHITECTURE.md",
     "https://github.com/wellmanifest/data-plane/blob/52f9d4bcdf7c8e7ef4df615fcc16538e4c468282/spec/LOGS_ADOPTION.md"
@@ -44,7 +45,7 @@ zgodą na wdrożenie, merge, odczyt sekretów ani usunięcie danych.
 <!-- docs:section evidence -->
 ## Evidence
 
-Reguły pochodzą z przypiętych rewizji: docs 0.1.1 (`ebe7501`), report 0.1.0
+Reguły pochodzą z przypiętych rewizji: docs 0.6.0 (`19efafb`; wcześniej 0.1.1 `ebe7501`), report 0.1.0
 (`340244d`, kandydat lokalny, status proposed) i logs 0.5.0 (`cd9d955`, ten sam
 pin co `upstream.lock.json`). Stan wyjściowy to `52f9d4b`; jego pomiar opisuje
 analiza [Audyt zgodności ze standardami](../analysis/standards-alignment-audit.md).
@@ -94,7 +95,7 @@ doradczą: PR może zmienić ten workflow, a reguła gałęzi nie wymaga jego wy
 Bez chronionego CI/OneDev lub wymaganego checku nie ma dowodu egzekwowania.
 Push nowej gałęzi nie ma bazy i wykonuje tylko audyt.
 Standard report jest kandydatem bez wydania i adopcji przez konsumentów.
-Profil docs 0.1.1 nie obejmuje kompaktowego formatu v2 z nowszych wydań docs.
+Pin 0.6.0 to commit na `main` wellmanifest/docs, nie oznaczone wydanie; ostatnie wydanie to v0.1.0.
 Checker docs nie ocenia prawdziwości treści; przegląd merytoryczny pozostaje wymagany.
 
 <!-- docs:section next_actions -->
@@ -103,4 +104,4 @@ Checker docs nie ocenia prawdziwości treści; przegląd merytoryczny pozostaje 
 Właściciel repozytorium ustawia zmienną `DOCS_STANDARD_REVISION` i wymaga
 checku `conformance` w regule gałęzi `main` albo w chronionym profilu OneDev. Przy zmianie
 `STANDARD.md` lub `qa/REPORT.md` należy je przenieść do profilu i podnieść wersję.
-Decyzja o przejściu na nowszy profil docs wymaga osobnej adopcji i nowego pinu.
+Pin docs zmieniono z 0.1.1 na 0.6.0, bo checker 0.1.1 odrzuca zarządzane kopie dokumentów pakietu wellmanifest/new-project w `.governance/docs/`. Od 0.6.0 checker pomija pliki wymienione w `.governance/managed-copies.json` po weryfikacji ich SHA-256. Kolejna zmiana pinu wymaga osobnej adopcji.

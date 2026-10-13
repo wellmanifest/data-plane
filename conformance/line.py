@@ -117,10 +117,11 @@ def request_to_line(name,envelope,contracts=None):
     variables.update(arguments)
     return format_line(name,target,variables)
 
-def line_to_request(text,contracts=None):
-    """Return (operationName, envelope) in the existing /v2 input shape; schema validation stays with the caller."""
+def line_to_request(text,contracts=None,*,parsed=None):
+    """Return (operationName, envelope) in the existing /v2 input shape; schema validation stays with the caller.
+    `parsed` is this text's own parse() result, so a caller that already parsed the line does not parse it again."""
     bindings,operations=contracts or load_contracts()
-    name,target,variables=parse(text)
+    name,target,variables=parsed if parsed is not None else parse(text)
     if name not in operations: raise LineError('Line type is not a catalog operation')
     operation,binding=operations[name],bindings['bindings'][name]
     control=_control_fields(operation)

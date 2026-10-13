@@ -1,0 +1,107 @@
+{
+  "schema": "new-project.intent/v3",
+  "ticket": "ticket-003",
+  "summary": "Faster canonical event hashing, single line parse and storage engine benchmark",
+  "workstream": "application",
+  "classification": {
+    "kind": "SERVICE",
+    "priority": "P2",
+    "origin": "requested"
+  },
+  "allowedPaths": [
+    "project/ticket-003/**",
+    "TODO.md",
+    "project/TICKETS.md",
+    "benchmarks/**",
+    "conformance/**",
+    "tests/**"
+  ],
+  "forbiddenPaths": [
+    "project/ticket-*/user-*.md"
+  ],
+  "stacks": [],
+  "dependsOn": [],
+  "conflictsWith": [],
+  "integrationTicket": null,
+  "delivery": {
+    "acceptedBaseSha": "ba461cb6d49610a69c416f4ed8f818a866ff0f8a",
+    "targetBranch": "main",
+    "outcome": "canonical() hashes events about 17% faster with identical output and errors, line_to_request can reuse an already parsed line, the reference ES schema is checked on live PostgreSQL when DATA_PLANE_PG_DSN is set, and benchmarks/engines.py measures SQLite, SQLite with group commit, PostgreSQL and PGlite on the same workload.",
+    "nonGoals": [
+      "Change hashes, canonical form, contracts, schemas or error codes",
+      "Make a live database or psycopg a requirement of the default test suite",
+      "Add the QA dependency, Makefile target or analysis report (separate integration ticket)"
+    ],
+    "complexity": "S",
+    "estimatedMinutes": 30,
+    "budgets": {
+      "maxImplementationFiles": 5,
+      "maxAffectedComponents": 2,
+      "maxPublicInterfaceChanges": 1,
+      "maxRuntimeDependencies": 0
+    },
+    "architecture": {
+      "status": "accepted",
+      "decision": "Replace the recursive canonical() with an explicit-stack walk that keeps the same key order, number rules and errors; add an optional keyword-only parsed= argument to line_to_request so callers that already parsed the line skip a second parse. The live PostgreSQL test and the engine benchmark are additive and skip without a DSN or driver.",
+      "components": [
+        {
+          "name": "conformance",
+          "paths": [
+            "conformance/event_store.py",
+            "conformance/line.py",
+            "tests/test_canonical_equivalence.py",
+            "tests/test_postgres_live.py"
+          ]
+        },
+        {
+          "name": "benchmarks",
+          "paths": [
+            "benchmarks/engines.py"
+          ]
+        }
+      ],
+      "responsibilityChanges": false,
+      "interfaceChanges": [
+        "conformance.line.line_to_request gains optional keyword-only parsed= (backward compatible)"
+      ],
+      "dataChanges": [],
+      "ui": {
+        "impact": "none",
+        "states": [],
+        "evidence": []
+      },
+      "rollback": "Close the PR; after publication revert the merge commit."
+    },
+    "runtimeDependencies": [],
+    "validation": [
+      {
+        "criterion": "AC-02",
+        "commands": [
+          "python3 -m unittest tests.test_canonical_equivalence"
+        ],
+        "evidence": "tests/test_canonical_equivalence.py"
+      },
+      {
+        "criterion": "AC-03",
+        "commands": [
+          "make test"
+        ],
+        "evidence": "project/ticket-003/README.md"
+      },
+      {
+        "criterion": "AC-04",
+        "commands": [
+          "DATA_PLANE_PG_DSN=postgresql://... python3 -m unittest tests.test_postgres_live"
+        ],
+        "evidence": "tests/test_postgres_live.py"
+      },
+      {
+        "criterion": "AC-05",
+        "commands": [
+          "./project/governance-check.sh"
+        ],
+        "evidence": "project/ticket-003/README.md"
+      }
+    ]
+  }
+}

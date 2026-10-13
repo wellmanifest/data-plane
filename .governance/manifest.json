@@ -48,7 +48,10 @@
           "lib/**",
           "packages/**",
           "test/**",
-          "tests/**"
+          "tests/**",
+          "conformance/**",
+          "benchmarks/**",
+          "reference/**"
         ]
       },
       "governance": {
@@ -89,7 +92,9 @@
           "Dockerfile*",
           "compose*.yml",
           "compose*.yaml",
-          "infra/**"
+          "infra/**",
+          ".dockerignore",
+          ".github/workflows/conformance.yml"
         ]
       },
       "integration": {
@@ -115,7 +120,24 @@
           "events/**",
           "error/**",
           "models/**",
-          "proto/**"
+          "proto/**",
+          "STANDARD.md",
+          "spec/**",
+          "contracts/**",
+          "schemas/**",
+          "profiles/**",
+          "examples/**",
+          "errors/**",
+          "logs-error-catalog.v1.json",
+          "manifest.json",
+          "upstream.lock.json",
+          "requirements-qa.txt",
+          "Makefile",
+          "tools/**",
+          "qa/**",
+          "SOURCES.md",
+          "NOTICE",
+          "LLM_REFACTORING.md"
         ]
       },
       "interfaces": {

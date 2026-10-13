@@ -22,16 +22,19 @@ class Conflict(ValueError): pass
 class IntegrityError(ValueError): pass
 
 def canonical(value):
-    def check(item):
+    # Iterative pre-order walk, same order and errors as the recursive form; strings, the common leaf, skip all checks.
+    stack=[value]
+    while stack:
+        item=stack.pop()
+        if type(item) is str: continue
         if isinstance(item,float): raise ValueError('Float is outside canonical profile')
         if isinstance(item,int) and not isinstance(item,bool) and abs(item)>2**53-1:
             raise ValueError('Large integers must use decimal strings')
         if isinstance(item,dict):
             if any(not isinstance(k,str) for k in item): raise ValueError('Non-string key')
-            for val in item.values(): check(val)
+            stack.extend(reversed(list(item.values())))
         elif isinstance(item,list):
-            for val in item: check(val)
-    check(value)
+            stack.extend(reversed(item))
     return json.dumps(value,ensure_ascii=False,sort_keys=True,separators=(',',':'),allow_nan=False).encode('utf-8')
 
 def digest(value): return hashlib.sha256(canonical(value)).hexdigest()

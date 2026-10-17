@@ -107,14 +107,22 @@ CREATE TRIGGER IF NOT EXISTS immutable_event_delete BEFORE DELETE ON events
  BEGIN SELECT RAISE(ABORT,'immutable event'); END;
 '''
 
+def _apply_pragma(db, sql):
+    db.execute(sql)
+
 class Store:
     def __init__(self,path,authority='authority:local',epoch=1):
         self.path=Path(path); self.authority=authority; self.epoch=epoch
         self.db=sqlite3.connect(self.path,timeout=5,isolation_level=None)
         self.db.row_factory=sqlite3.Row
-        for sql in ['PRAGMA foreign_keys=ON','PRAGMA journal_mode=WAL','PRAGMA synchronous=FULL','PRAGMA cache_size=-2048','PRAGMA mmap_size=0','PRAGMA temp_store=FILE']:
-            self.db.execute(sql)
-        self.db.executescript(DDL)
+        try:
+            for sql in ['PRAGMA foreign_keys=ON','PRAGMA journal_mode=WAL','PRAGMA synchronous=FULL','PRAGMA cache_size=-2048','PRAGMA mmap_size=0','PRAGMA temp_store=FILE']:
+                _apply_pragma(self.db, sql)
+            self.db.executescript(DDL)
+        finally:
+            if not self.db.in_transaction:
+                _apply_pragma(self.db, 'PRAGMA synchronous=NORMAL')
+                _apply_pragma(self.db, 'PRAGMA synchronous=FULL')
 
     def close(self): self.db.close()
     def _head(self,tenant,stream):
@@ -213,7 +221,8 @@ class Store:
         self.db.execute('BEGIN IMMEDIATE')
         try:
             self.db.execute('DELETE FROM counters')
-            for row in self.db.execute('SELECT canonical FROM events ORDER BY tenant,stream,version'):
+            rows=self.db.execute('SELECT canonical FROM events ORDER BY tenant,stream,version').fetchall()
+            for row in rows:
                 self._project(decode_event(row[0]))
             self.db.execute('COMMIT')
         except BaseException:

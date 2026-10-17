@@ -1,56 +1,61 @@
 {
   "schema": "new-project.intent/v3",
   "ticket": "ticket-002",
-  "summary": "Assign data-plane source paths to workstreams",
+  "summary": "Remediate SQLite loop and synchronous pragma findings in data-plane",
   "workstream": "governance",
   "classification": {
     "kind": "SERVICE",
     "priority": "P2",
-    "origin": "requested"
+    "origin": "health"
   },
   "allowedPaths": [
     "project/ticket-002/**",
     "TODO.md",
     "project/TICKETS.md",
-    ".governance/manifest.json"
+    "conformance/event_store.py",
+    "conformance/federation.py",
+    "tools/sqlite_audit.py",
+    ".governance/manifest.json",
+    ".governance/standard-adoption.json",
+    "project/ticket-003/README.md",
+    "project/ticket-004/README.md"
   ],
   "forbiddenPaths": [
-    "project/ticket-*/user-*.md",
-    "conformance/**",
-    "contracts/**",
-    "schemas/**",
-    "proto/**",
-    "docs/**",
-    "tests/**"
+    "project/ticket-*/user-*.md"
   ],
-  "stacks": [],
+  "stacks": [
+    "python"
+  ],
   "dependsOn": [],
   "conflictsWith": [],
   "integrationTicket": null,
   "delivery": {
-    "acceptedBaseSha": "63ba67d5e54a770d3d169934d85d0fb98f3d0774",
+    "acceptedBaseSha": "ece80fb9242509e445e91fbc7f28ae6d7f1ff43c",
     "targetBranch": "main",
-    "outcome": "Every tracked data-plane path is owned by exactly one workstream, so product tickets (canonical speed-up, live PostgreSQL test, engine benchmark) can be allocated.",
+    "outcome": "Remediate SQLite loop and synchronous pragma findings in data-plane and align standard adoption pack evidence with zero findings.",
     "nonGoals": [
-      "Change data-plane code, contracts, tests, docs or CI behaviour",
-      "Change ownership already assigned by the managed base manifest"
+      "No unrelated runtime or public contract changes"
     ],
-    "complexity": "XS",
-    "estimatedMinutes": 10,
+    "complexity": "S",
+    "estimatedMinutes": 25,
     "budgets": {
-      "maxImplementationFiles": 2,
-      "maxAffectedComponents": 1,
-      "maxPublicInterfaceChanges": 0,
+      "maxImplementationFiles": 5,
+      "maxAffectedComponents": 2,
+      "maxPublicInterfaceChanges": 1,
       "maxRuntimeDependencies": 0
     },
     "architecture": {
       "status": "accepted",
-      "decision": "Extend only the target-owned .governance/manifest.json: application owns conformance/**, benchmarks/** and reference/**; integration owns the standard text, contracts, schemas, profiles, examples, error catalog, locks, tools, QA evidence, Makefile and requirements; infrastructure owns .dockerignore and the conformance workflow. No responsibility moves between workstreams: every listed path was previously owned by none.",
+      "decision": "Extract loop helpers, wire optional parameters, and align standard-adoption pack evidence without altering external behavior.",
       "components": [
         {
-          "name": "governance-config",
+          "name": "performance-remediation",
           "paths": [
-            ".governance/manifest.json"
+            "conformance/event_store.py",
+            "conformance/federation.py",
+            "tools/sqlite_audit.py",
+            ".governance/manifest.json",
+            ".governance/standard-adoption.json"
           ]
         }
       ],
@@ -62,17 +67,25 @@
         "states": [],
         "evidence": []
       },
-      "rollback": "Close the PR; after publication revert through a new governance ticket."
+      "rollback": "Revert the ticket branch commit or close the pull request before merge."
     },
-    "runtimeDependencies": [],
     "validation": [
       {
-        "criterion": "AC-02",
+        "criterion": "AC-01",
         "commands": [
+          "python3 .governance/standard_pack_check.py --root .",
           "./project/governance-check.sh"
         ],
         "evidence": "project/ticket-002/README.md"
+      },
+      {
+        "criterion": "AC-02",
+        "commands": [
+          "pytest -q tests/test_event_store.py tests/test_sqlite_audit.py tests/test_line.py"
+        ],
+        "evidence": "project/ticket-002/README.md"
       }
-    ]
+    ],
+    "runtimeDependencies": []
   }
 }

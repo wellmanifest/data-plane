@@ -21,6 +21,31 @@ def file_hash(path):
             digest.update(block)
     return digest.hexdigest()
 
+def _inspect_column_storage_types(con, q, col_name):
+    qc=quote_identifier(col_name)
+    rows=con.execute(f'SELECT typeof({qc}) AS storage_type, COUNT(*) AS n FROM {q} GROUP BY typeof({qc})').fetchall()
+    return {r['storage_type']:r['n'] for r in rows}
+
+def _inspect_table(con, name, ddl, check_deadline):
+    table={'name':name,'ddl':ddl}
+    try:
+        q=quote_identifier(name)
+        cols=con.execute(f'PRAGMA table_xinfo({q})').fetchall()
+        fks=con.execute(f'PRAGMA foreign_key_list({q})').fetchall()
+        idxs=con.execute(f'PRAGMA index_list({q})').fetchall()
+        table['columns']=[dict(r) for r in cols]
+        table['foreignKeys']=[dict(r) for r in fks]
+        table['indexes']=[dict(r) for r in idxs]
+        table['rowCount']=con.execute(f'SELECT COUNT(*) FROM {q}').fetchone()[0]
+        table['storageTypes']={}
+        for col in table['columns']:
+            table['storageTypes'][col['name']]=_inspect_column_storage_types(con, q, col['name'])
+    except sqlite3.DatabaseError:
+        check_deadline()
+        table['scanError']='SQLite scan failed; required extension, view dependency or schema may be unavailable'
+        return table, False
+    return table, True
+
 def audit(path, timeout=300):
     path=Path(path).resolve(strict=True)
     if not path.is_file(): raise ValueError('Source is not a regular file')
@@ -47,11 +72,13 @@ def audit(path, timeout=300):
             con.row_factory=sqlite3.Row
             con.execute('PRAGMA query_only=ON')
             con.set_progress_handler(lambda: int(time.monotonic()>deadline),10000)
-            integrity=[row[0] for row in con.execute('PRAGMA integrity_check')]
+            integrity_rows=con.execute('PRAGMA integrity_check').fetchall()
+            integrity=[row[0] for row in integrity_rows]
             # Integrity diagnostics can mention values. Report counts, not row content.
             report['integrity']={'ok':integrity==['ok'],'diagnosticCount':0 if integrity==['ok'] else len(integrity)}
             try:
-                report['foreignKeyViolationCount']=sum(1 for _ in con.execute('PRAGMA foreign_key_check'))
+                fk_rows=con.execute('PRAGMA foreign_key_check').fetchall()
+                report['foreignKeyViolationCount']=len(fk_rows)
             except sqlite3.DatabaseError:
                 report['foreignKeyViolationCount']=None
                 report['complete']=False
@@ -64,21 +91,8 @@ def audit(path, timeout=300):
                 if typ=='view': report['views'].append(dict(entry)); continue
                 if typ=='trigger': report['triggers'].append(dict(entry)); continue
                 if typ!='table': continue
-                table={'name':name,'ddl':entry['sql']}
-                try:
-                    q=quote_identifier(name)
-                    table['columns']=[dict(r) for r in con.execute(f'PRAGMA table_xinfo({q})')]
-                    table['foreignKeys']=[dict(r) for r in con.execute(f'PRAGMA foreign_key_list({q})')]
-                    table['indexes']=[dict(r) for r in con.execute(f'PRAGMA index_list({q})')]
-                    table['rowCount']=con.execute(f'SELECT COUNT(*) FROM {q}').fetchone()[0]
-                    table['storageTypes']={}
-                    for col in table['columns']:
-                        qc=quote_identifier(col['name'])
-                        rows=con.execute(f'SELECT typeof({qc}) AS storage_type, COUNT(*) AS n FROM {q} GROUP BY typeof({qc})')
-                        table['storageTypes'][col['name']]={r['storage_type']:r['n'] for r in rows}
-                except sqlite3.DatabaseError:
-                    check_deadline()
-                    table['scanError']='SQLite scan failed; required extension, view dependency or schema may be unavailable'
+                table, ok=_inspect_table(con, name, entry['sql'], check_deadline)
+                if not ok:
                     report['complete']=False
                 report['tables'].append(table)
         finally:

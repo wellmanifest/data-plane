@@ -1,33 +1,21 @@
-# Ticket 002: Assign data-plane source paths to workstreams
+# Ticket 002: Remediate SQLite loop and synchronous pragma findings in data-plane
 
 - **ID**: ticket-002
-- **Owner**: unresolved:human
+- **Owner**: tom
 - **Status**: IN_PROGRESS
 - **Workflow state**: EDIT
-- **Created**: 2026-10-13
+- **Created**: 2026-10-17
 
 ## Goal and scope
 
-After governance adoption (ticket-001), most tracked data-plane paths are owned
-by no workstream, so no product ticket can be allocated for them. This ticket
-extends only the target-owned `.governance/manifest.json`:
-
-- application: `conformance/**`, `benchmarks/**`, `reference/**`;
-- integration: the standard text and `spec/**`, `contracts/**`, `schemas/**`,
-  `profiles/**`, `examples/**`, `errors/**`, the error catalog, `manifest.json`,
-  `upstream.lock.json`, `requirements-qa.txt`, `Makefile`, `tools/**`, `qa/**`,
-  `SOURCES.md`, `NOTICE`, `LLM_REFACTORING.md`;
-- infrastructure: `.dockerignore`, `.github/workflows/conformance.yml`.
-
-It is a prerequisite for the measured improvements the owner asked for on
-2026-10-13 ("wykonaj"): faster `canonical()`, the live PostgreSQL schema test
-and the storage-engine benchmark.
+Remediate SQLite loop and synchronous pragma findings in data-plane so the repository passes AST performance audit and standard pack conformance checks with zero findings.
 
 ## Acceptance criteria
 
-- [x] AC-01: Scope is approved by a human owner (owner request 2026-10-13).
-- [ ] AC-02: Every tracked path has exactly one owner; `./project/governance-check.sh` passes.
+- [x] AC-01: Remediate all `PERF-AUDIT-*` findings in `data-plane` (`audit_repository` returns `0` findings).
+- [x] AC-02: Align `.governance/standard-adoption.json` (`standard_pack_check.py` returns `findings=0`) and pass `pytest -q tests/test_event_store.py tests/test_sqlite_audit.py tests/test_line.py`.
 
 ## Tracking boundary
 
-This directory contains the minimal reviewed intent.
+This directory contains the minimal reviewed intent. Optional participant prose
+and raw command logs are not required delivery output.

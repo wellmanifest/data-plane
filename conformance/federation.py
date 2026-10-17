@@ -11,13 +11,16 @@ type CustomerOverview { id: ID!, displayName: String!, tickets: [Ticket!], sourc
 type Query { customerOverview(id: ID!): CustomerOverview, customerOverviews(ids: [ID!]!): [CustomerOverview!]! }
 '''
 
+def _configure_readonly_connection(con):
+    con.row_factory=sqlite3.Row
+    con.execute('PRAGMA query_only=ON');con.execute('PRAGMA cache_size=-2048');con.execute('PRAGMA mmap_size=0')
+
 class Gateway:
     def __init__(self,crm_path,tickets_path,tenant):
         self.tenant=tenant;self.counts={'crm':0,'tickets':0}
         self.crm=sqlite3.connect(crm_path);self.tickets=sqlite3.connect(tickets_path)
         for con in [self.crm,self.tickets]:
-            con.row_factory=sqlite3.Row
-            con.execute('PRAGMA query_only=ON');con.execute('PRAGMA cache_size=-2048');con.execute('PRAGMA mmap_size=0')
+            _configure_readonly_connection(con)
         self.schema=build_schema(SDL)
         self.schema.get_type('Query').fields['customerOverviews'].resolve=lambda _root,_info,ids:self.overviews(ids)
         self.schema.get_type('Query').fields['customerOverview'].resolve=lambda _root,_info,id:next(iter(self.overviews([id])),None)

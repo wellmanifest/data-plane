@@ -5,4 +5,6 @@
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **ticket-001** | [`README.md`](./ticket-001/README.md) | - | - |  [`ai-claude.md`](./ticket-001/ai-claude.md) | - | - |
 | **ticket-002** | [`README.md`](./ticket-002/README.md) | - | - | - | - | - |
+| **ticket-003** | [`README.md`](./ticket-003/README.md) | - | - | - | - | - |
+| **ticket-004** | [`README.md`](./ticket-004/README.md) | - | - | - | - | - |
 <!-- AUTO:TICKET_INDEX:END -->

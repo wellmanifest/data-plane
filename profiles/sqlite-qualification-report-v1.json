@@ -1,0 +1,1123 @@
+{
+  "profile": "sqlite-qualification-v1",
+  "standardVersion": "0.2.0",
+  "reportId": null,
+  "status": "template",
+  "qualification": "not-evaluated",
+  "workload": {
+    "id": null,
+    "scenario": null,
+    "datasetRef": null,
+    "datasetSha256": null,
+    "datasetRecords": null,
+    "datasetLogicalBytes": null,
+    "recordShapeAndSizeDistribution": null,
+    "readOperation": null,
+    "writeOperation": null,
+    "readFraction": null,
+    "writeFraction": null,
+    "arrivalModel": null,
+    "offeredOpsPerSecond": null,
+    "cacheState": null,
+    "retentionAndIndexes": null,
+    "clients": null,
+    "processes": null,
+    "hosts": null,
+    "requiredWriteHosts": null,
+    "writerProcesses": null,
+    "streams": null,
+    "backgroundTasks": null
+  },
+  "environment": {
+    "os": null,
+    "kernel": null,
+    "architecture": null,
+    "cpuModel": null,
+    "logicalCpuCount": null,
+    "effectiveCpuCores": null,
+    "ramBytes": null,
+    "memoryLimitBytes": null,
+    "reservedHostMemoryBytes": null,
+    "backgroundWorkloads": null,
+    "powerAndCpuGovernor": null,
+    "storage": {
+      "class": null,
+      "deviceAndTopology": null,
+      "filesystem": null,
+      "mountOptions": null,
+      "filesystemLocality": null,
+      "capacityBytes": null,
+      "freeBytesBefore": null,
+      "freeBytesAfter": null,
+      "encryptionCompressionAndCachePolicy": null
+    }
+  },
+  "software": {
+    "repository": null,
+    "sourceSha": null,
+    "baseSha": null,
+    "applicationVersion": null,
+    "runtimeVersion": null,
+    "sqliteVersion": null,
+    "sqliteCompileOptions": null,
+    "driverVersion": null,
+    "harnessVersion": null,
+    "harnessSha256": null
+  },
+  "sqlite": {
+    "journalMode": null,
+    "synchronous": null,
+    "foreignKeys": null,
+    "writeHosts": null,
+    "oneWriterPerStream": true,
+    "authorityAndFencingRef": null,
+    "pageSizeBytes": null,
+    "cacheSizeKiBPerConnection": null,
+    "mmapSizeBytes": null,
+    "tempStore": null,
+    "busyTimeoutMs": null,
+    "maxRetryAttempts": null,
+    "retryDeadlineMs": null,
+    "retryBackoff": null,
+    "walAutoCheckpointPages": null,
+    "checkpointPolicy": null,
+    "maxWriterQueueDepth": null,
+    "maxBatchRows": null,
+    "maxBatchBytes": null,
+    "maxOpenHandles": null,
+    "maxActiveSources": null,
+    "maxActiveQueries": null,
+    "gatewayProcesses": null,
+    "projectorConcurrency": null,
+    "memoryBudgetBytes": null,
+    "memoryMeasurementMethod": null,
+    "resourceBudgetRef": null
+  },
+  "reproduction": {
+    "setupInvocation": null,
+    "workloadInvocation": null,
+    "collectionInvocation": null,
+    "seed": null,
+    "datasetSetupAndReset": null,
+    "instrumentationAndOverhead": null,
+    "percentileMethod": null,
+    "coordinatedOmissionAndTimeouts": null,
+    "clockAndSpanBoundaries": null
+  },
+  "measurement": {
+    "startedAt": null,
+    "endedAt": null,
+    "durationSeconds": null,
+    "samplingIntervalMs": null,
+    "warmupSeconds": null,
+    "warmupOperations": null,
+    "warmupExcluded": true,
+    "repetitionIndex": null,
+    "repetitionCount": null,
+    "windowIndex": null,
+    "readOperations": null,
+    "writeOperations": null,
+    "successfulReadOperations": null,
+    "successfulWriteOperations": null,
+    "failedReadOperations": null,
+    "failedWriteOperations": null,
+    "readTransactionAttempts": null,
+    "writeTransactionAttempts": null,
+    "sqliteTransactionAttempts": null,
+    "inFlightAtEnd": null,
+    "samplingGaps": null
+  },
+  "metrics": {
+    "readThroughputOpsPerSecond": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "readTransactionP50Ms": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "readTransactionP95Ms": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "readTransactionP99Ms": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "readLockWaitP50Ms": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "readLockWaitP95Ms": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "readLockWaitP99Ms": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "writeThroughputOpsPerSecond": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "writeTransactionP50Ms": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "writeTransactionP95Ms": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "writeTransactionP99Ms": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "writeLockWaitP50Ms": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "writeLockWaitP95Ms": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "writeLockWaitP99Ms": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "busyCount": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "busyRate": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "retryCount": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "retryRate": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "exhaustedRetryCount": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "exhaustedRetryRate": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "writerQueueDepthP50": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "writerQueueDepthP95": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "writerQueueDepthP99": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "writerQueueDepthMax": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "writerQueueRejectedCount": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "writerQueueOldestAgeMsMax": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "walBytesMax": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "walOldestUncheckpointedAgeSecondsMax": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "checkpointAgeSecondsMax": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "checkpointBacklogFramesMax": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "checkpointDurationP95Ms": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "applicationCpuMsPerOp": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "sqliteCpuMsPerOp": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "totalCpuMsPerOp": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "logicalBytesPerRecord": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "physicalBytesPerRecord": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "hostCpuUtilizationPctMax": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "hostIoWaitPctMax": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "hostLoad1PerCpuMax": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "hostMemoryPeakBytes": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "hostSwapOutBytes": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "storageUtilizationPctMax": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "storageQueueDepthMax": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "storageIoP95Ms": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "writeCommitP95Ms": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "fsyncP95Ms": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "externalProviderCallCount": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    },
+    "externalProviderP95Ms": {
+      "availability": "unmeasured",
+      "value": null,
+      "sampleCount": null,
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no workload measurement has been collected."
+    }
+  },
+  "slos": {
+    "configurationId": null,
+    "owner": null,
+    "configurationEvidenceRef": null,
+    "evaluationWindowSeconds": null,
+    "minimumReadOperations": null,
+    "minimumWriteOperations": null,
+    "minimumSamplesPerMetric": null,
+    "requiredRepetitions": null,
+    "consecutiveViolationWindows": null,
+    "retestPolicy": null,
+    "limits": {
+      "readThroughputOpsPerSecond": {
+        "applicability": "required",
+        "operator": ">=",
+        "target": null,
+        "rationale": null
+      },
+      "readTransactionP50Ms": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "readTransactionP95Ms": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "readTransactionP99Ms": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "readLockWaitP50Ms": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "readLockWaitP95Ms": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "readLockWaitP99Ms": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "writeThroughputOpsPerSecond": {
+        "applicability": "required",
+        "operator": ">=",
+        "target": null,
+        "rationale": null
+      },
+      "writeTransactionP50Ms": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "writeTransactionP95Ms": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "writeTransactionP99Ms": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "writeLockWaitP50Ms": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "writeLockWaitP95Ms": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "writeLockWaitP99Ms": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "busyCount": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "busyRate": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "retryCount": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "retryRate": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "exhaustedRetryCount": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "exhaustedRetryRate": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "writerQueueDepthP50": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "writerQueueDepthP95": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "writerQueueDepthP99": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "writerQueueDepthMax": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "writerQueueRejectedCount": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "writerQueueOldestAgeMsMax": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "walBytesMax": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "walOldestUncheckpointedAgeSecondsMax": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "checkpointAgeSecondsMax": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "checkpointBacklogFramesMax": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "checkpointDurationP95Ms": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "applicationCpuMsPerOp": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "sqliteCpuMsPerOp": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "totalCpuMsPerOp": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "logicalBytesPerRecord": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "physicalBytesPerRecord": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "hostCpuUtilizationPctMax": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "hostIoWaitPctMax": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "hostLoad1PerCpuMax": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "hostMemoryPeakBytes": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "hostSwapOutBytes": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "storageUtilizationPctMax": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "storageQueueDepthMax": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "storageIoP95Ms": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "writeCommitP95Ms": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "fsyncP95Ms": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "externalProviderCallCount": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      },
+      "externalProviderP95Ms": {
+        "applicability": "required",
+        "operator": "<=",
+        "target": null,
+        "rationale": null
+      }
+    }
+  },
+  "attribution": {
+    "applicationCpu": {
+      "availability": "unmeasured",
+      "finding": "unknown",
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no bottleneck attribution has been collected."
+    },
+    "sqliteLocks": {
+      "availability": "unmeasured",
+      "finding": "unknown",
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no bottleneck attribution has been collected."
+    },
+    "commitFsync": {
+      "availability": "unmeasured",
+      "finding": "unknown",
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no bottleneck attribution has been collected."
+    },
+    "storageIo": {
+      "availability": "unmeasured",
+      "finding": "unknown",
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no bottleneck attribution has been collected."
+    },
+    "externalProvider": {
+      "availability": "unmeasured",
+      "finding": "unknown",
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no bottleneck attribution has been collected."
+    },
+    "hostSaturation": {
+      "availability": "unmeasured",
+      "finding": "unknown",
+      "method": null,
+      "evidenceRefs": [],
+      "reason": "Template only; no bottleneck attribution has been collected."
+    }
+  },
+  "evaluation": {
+    "semanticReviewComplete": false,
+    "reviewer": null,
+    "reviewedAt": null,
+    "reviewEvidenceRefs": [],
+    "windowEvidenceRefs": [],
+    "observedConsecutiveViolationWindows": null,
+    "metricResults": {
+      "readThroughputOpsPerSecond": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "readTransactionP50Ms": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "readTransactionP95Ms": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "readTransactionP99Ms": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "readLockWaitP50Ms": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "readLockWaitP95Ms": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "readLockWaitP99Ms": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "writeThroughputOpsPerSecond": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "writeTransactionP50Ms": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "writeTransactionP95Ms": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "writeTransactionP99Ms": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "writeLockWaitP50Ms": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "writeLockWaitP95Ms": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "writeLockWaitP99Ms": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "busyCount": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "busyRate": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "retryCount": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "retryRate": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "exhaustedRetryCount": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "exhaustedRetryRate": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "writerQueueDepthP50": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "writerQueueDepthP95": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "writerQueueDepthP99": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "writerQueueDepthMax": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "writerQueueRejectedCount": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "writerQueueOldestAgeMsMax": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "walBytesMax": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "walOldestUncheckpointedAgeSecondsMax": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "checkpointAgeSecondsMax": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "checkpointBacklogFramesMax": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "checkpointDurationP95Ms": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "applicationCpuMsPerOp": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "sqliteCpuMsPerOp": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "totalCpuMsPerOp": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "logicalBytesPerRecord": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "physicalBytesPerRecord": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "hostCpuUtilizationPctMax": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "hostIoWaitPctMax": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "hostLoad1PerCpuMax": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "hostMemoryPeakBytes": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "hostSwapOutBytes": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "storageUtilizationPctMax": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "storageQueueDepthMax": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "storageIoP95Ms": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "writeCommitP95Ms": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "fsyncP95Ms": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "externalProviderCallCount": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      },
+      "externalProviderP95Ms": {
+        "outcome": "not-evaluated",
+        "evidenceRefs": [],
+        "reason": "Template only; configure adopter SLOs and collect representative evidence."
+      }
+    }
+  },
+  "decision": {
+    "action": "not-evaluated",
+    "bottlenecks": [
+      "unknown"
+    ],
+    "evidenceRefs": [],
+    "rationale": "Unmeasured report template. This artifact makes no performance, bottleneck or authority claim.",
+    "mitigationAndRetestEvidenceRefs": [],
+    "contractNeedEvidenceRefs": []
+  },
+  "rawEvidence": []
+}

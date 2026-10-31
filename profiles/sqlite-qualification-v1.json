@@ -1,0 +1,3645 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:wellmanifest:data-plane:sqlite-qualification:v1",
+  "title": "Portable SQLite qualification evidence and adopter SLOs v1",
+  "description": "Opt-in, self-contained report contract supplementing data-plane 0.2.0. Copy profiles/sqlite-qualification-report-v1.json for each workload/concurrency/repetition/window. No collectors, benchmark results, universal capacity threshold, runtime evaluator or grant of authority are supplied.",
+  "$comment": "x-decisionRules, x-invariants, x-measurementProcedure and x-semanticChecks are normative adopter obligations. JSON Schema validators treat these as annotations. A schema-valid document alone is not live qualification; all semantic comparisons must be independently checked and recorded. All $ref links are local; offline validation requires no network.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "profile",
+    "standardVersion",
+    "reportId",
+    "status",
+    "qualification",
+    "workload",
+    "environment",
+    "software",
+    "sqlite",
+    "reproduction",
+    "measurement",
+    "metrics",
+    "slos",
+    "attribution",
+    "evaluation",
+    "decision",
+    "rawEvidence"
+  ],
+  "properties": {
+    "profile": {
+      "const": "sqlite-qualification-v1"
+    },
+    "standardVersion": {
+      "const": "0.2.0"
+    },
+    "reportId": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "template",
+        "measured"
+      ]
+    },
+    "qualification": {
+      "enum": [
+        "not-evaluated",
+        "inconclusive",
+        "pass",
+        "fail"
+      ]
+    },
+    "workload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "scenario",
+        "datasetRef",
+        "datasetSha256",
+        "datasetRecords",
+        "datasetLogicalBytes",
+        "recordShapeAndSizeDistribution",
+        "readOperation",
+        "writeOperation",
+        "readFraction",
+        "writeFraction",
+        "arrivalModel",
+        "offeredOpsPerSecond",
+        "cacheState",
+        "retentionAndIndexes",
+        "clients",
+        "processes",
+        "hosts",
+        "requiredWriteHosts",
+        "writerProcesses",
+        "streams",
+        "backgroundTasks"
+      ],
+      "properties": {
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "scenario": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "datasetRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "datasetSha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "datasetRecords": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "datasetLogicalBytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "recordShapeAndSizeDistribution": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "readOperation": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "writeOperation": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "readFraction": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "writeFraction": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "arrivalModel": {
+          "enum": [
+            null,
+            "open-loop",
+            "closed-loop"
+          ]
+        },
+        "offeredOpsPerSecond": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "cacheState": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "retentionAndIndexes": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "clients": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "processes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "hosts": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "requiredWriteHosts": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "writerProcesses": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "streams": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "backgroundTasks": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "description": "One report per representative workload, cache state, concurrency point, repetition and measurement window. Include production read/write mix, record sizes, bursts, replay and slow-provider cases. clients is observed metadata, never a universal capacity threshold. offeredOpsPerSecond=0 means no rate cap in closed-loop mode; describe coordinated-omission handling in reproduction."
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "os",
+        "kernel",
+        "architecture",
+        "cpuModel",
+        "logicalCpuCount",
+        "effectiveCpuCores",
+        "ramBytes",
+        "memoryLimitBytes",
+        "reservedHostMemoryBytes",
+        "backgroundWorkloads",
+        "powerAndCpuGovernor",
+        "storage"
+      ],
+      "properties": {
+        "os": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "kernel": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "architecture": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "cpuModel": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "logicalCpuCount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "effectiveCpuCores": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "ramBytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "memoryLimitBytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "reservedHostMemoryBytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "backgroundWorkloads": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "powerAndCpuGovernor": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "storage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "class",
+            "deviceAndTopology",
+            "filesystem",
+            "mountOptions",
+            "filesystemLocality",
+            "capacityBytes",
+            "freeBytesBefore",
+            "freeBytesAfter",
+            "encryptionCompressionAndCachePolicy"
+          ],
+          "properties": {
+            "class": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            },
+            "deviceAndTopology": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            },
+            "filesystem": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            },
+            "mountOptions": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            },
+            "filesystemLocality": {
+              "enum": [
+                null,
+                "same-host-local"
+              ]
+            },
+            "capacityBytes": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1
+            },
+            "freeBytesBefore": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "freeBytesAfter": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "encryptionCompressionAndCachePolicy": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            }
+          }
+        }
+      },
+      "description": "Identify host/container CPU and RAM limits, competing loads and storage class (for example HDD, SATA SSD, NVMe, provisioned virtual block). WAL files must be local to one host; a shared network filesystem is not a multi-host write topology."
+    },
+    "software": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "sourceSha",
+        "baseSha",
+        "applicationVersion",
+        "runtimeVersion",
+        "sqliteVersion",
+        "sqliteCompileOptions",
+        "driverVersion",
+        "harnessVersion",
+        "harnessSha256"
+      ],
+      "properties": {
+        "repository": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "sourceSha": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "baseSha": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "applicationVersion": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "runtimeVersion": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "sqliteVersion": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "sqliteCompileOptions": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "driverVersion": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "harnessVersion": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "harnessSha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "description": "Pin the application source/base and harness, dependencies/runtime, SQLite library/driver and compile options actually loaded. The portable template does not claim this repository base is a workload measurement."
+    },
+    "sqlite": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "journalMode",
+        "synchronous",
+        "foreignKeys",
+        "writeHosts",
+        "oneWriterPerStream",
+        "authorityAndFencingRef",
+        "pageSizeBytes",
+        "cacheSizeKiBPerConnection",
+        "mmapSizeBytes",
+        "tempStore",
+        "busyTimeoutMs",
+        "maxRetryAttempts",
+        "retryDeadlineMs",
+        "retryBackoff",
+        "walAutoCheckpointPages",
+        "checkpointPolicy",
+        "maxWriterQueueDepth",
+        "maxBatchRows",
+        "maxBatchBytes",
+        "maxOpenHandles",
+        "maxActiveSources",
+        "maxActiveQueries",
+        "gatewayProcesses",
+        "projectorConcurrency",
+        "memoryBudgetBytes",
+        "memoryMeasurementMethod",
+        "resourceBudgetRef"
+      ],
+      "properties": {
+        "journalMode": {
+          "enum": [
+            null,
+            "WAL"
+          ]
+        },
+        "synchronous": {
+          "enum": [
+            null,
+            "FULL"
+          ]
+        },
+        "foreignKeys": {
+          "enum": [
+            null,
+            true
+          ]
+        },
+        "writeHosts": {
+          "enum": [
+            null,
+            1
+          ]
+        },
+        "oneWriterPerStream": {
+          "const": true
+        },
+        "authorityAndFencingRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "pageSizeBytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "cacheSizeKiBPerConnection": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "mmapSizeBytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "tempStore": {
+          "enum": [
+            null,
+            "FILE"
+          ]
+        },
+        "busyTimeoutMs": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "maxRetryAttempts": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "retryDeadlineMs": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "retryBackoff": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "walAutoCheckpointPages": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "checkpointPolicy": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "maxWriterQueueDepth": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "maxBatchRows": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "maxBatchBytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "maxOpenHandles": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "maxActiveSources": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "maxActiveQueries": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "gatewayProcesses": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "projectorConcurrency": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "memoryBudgetBytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "memoryMeasurementMethod": {
+          "enum": [
+            null,
+            "PSS",
+            "cgroup-memory.current-and-memory.peak"
+          ]
+        },
+        "resourceBudgetRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "description": "Record effective settings for every connection/source or reference a complete per-connection manifest. FULL applies to durable acknowledged writes. Queues/batches/handles/cache remain bounded by the adopted low-ram-v1 budget; record an independently accepted new budget for any extension. oneWriterPerStream states a required invariant, not proof of authority."
+    },
+    "reproduction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "setupInvocation",
+        "workloadInvocation",
+        "collectionInvocation",
+        "seed",
+        "datasetSetupAndReset",
+        "instrumentationAndOverhead",
+        "percentileMethod",
+        "coordinatedOmissionAndTimeouts",
+        "clockAndSpanBoundaries"
+      ],
+      "properties": {
+        "setupInvocation": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "workloadInvocation": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "collectionInvocation": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "seed": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "datasetSetupAndReset": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "instrumentationAndOverhead": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "percentileMethod": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "coordinatedOmissionAndTimeouts": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "clockAndSpanBoundaries": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "description": "Commands are reproducibility data, never commands a schema validator executes. Use placeholders only in template status (null); measured commands must identify the real harness and sanitized inputs. Describe bounded histogram precision, failure/timeout inclusion, sampling gaps and instrumentation overhead."
+    },
+    "measurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "startedAt",
+        "endedAt",
+        "durationSeconds",
+        "samplingIntervalMs",
+        "warmupSeconds",
+        "warmupOperations",
+        "warmupExcluded",
+        "repetitionIndex",
+        "repetitionCount",
+        "windowIndex",
+        "readOperations",
+        "writeOperations",
+        "successfulReadOperations",
+        "successfulWriteOperations",
+        "failedReadOperations",
+        "failedWriteOperations",
+        "readTransactionAttempts",
+        "writeTransactionAttempts",
+        "sqliteTransactionAttempts",
+        "inFlightAtEnd",
+        "samplingGaps"
+      ],
+      "properties": {
+        "startedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "endedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "durationSeconds": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "samplingIntervalMs": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "warmupSeconds": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "warmupOperations": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "warmupExcluded": {
+          "const": true
+        },
+        "repetitionIndex": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "repetitionCount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "windowIndex": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "readOperations": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "writeOperations": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "successfulReadOperations": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "successfulWriteOperations": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "failedReadOperations": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "failedWriteOperations": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "readTransactionAttempts": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "writeTransactionAttempts": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "sqliteTransactionAttempts": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "inFlightAtEnd": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "samplingGaps": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "description": "UTC wall-clock [startedAt, endedAt) after excluded warmup, with a monotonic elapsed duration. Counters, queue/host samples and histograms must cover this exact window; retain operations crossing the boundary and censoring policy in raw evidence. readOperations/writeOperations count terminal logical operations including failures; successful+failed must match. At least one full evaluation window and configured per-population samples are needed; do not drop failures, queues, retry timeouts or idle time to improve results."
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "readThroughputOpsPerSecond",
+        "readTransactionP50Ms",
+        "readTransactionP95Ms",
+        "readTransactionP99Ms",
+        "readLockWaitP50Ms",
+        "readLockWaitP95Ms",
+        "readLockWaitP99Ms",
+        "writeThroughputOpsPerSecond",
+        "writeTransactionP50Ms",
+        "writeTransactionP95Ms",
+        "writeTransactionP99Ms",
+        "writeLockWaitP50Ms",
+        "writeLockWaitP95Ms",
+        "writeLockWaitP99Ms",
+        "busyCount",
+        "busyRate",
+        "retryCount",
+        "retryRate",
+        "exhaustedRetryCount",
+        "exhaustedRetryRate",
+        "writerQueueDepthP50",
+        "writerQueueDepthP95",
+        "writerQueueDepthP99",
+        "writerQueueDepthMax",
+        "writerQueueRejectedCount",
+        "writerQueueOldestAgeMsMax",
+        "walBytesMax",
+        "walOldestUncheckpointedAgeSecondsMax",
+        "checkpointAgeSecondsMax",
+        "checkpointBacklogFramesMax",
+        "checkpointDurationP95Ms",
+        "applicationCpuMsPerOp",
+        "sqliteCpuMsPerOp",
+        "totalCpuMsPerOp",
+        "logicalBytesPerRecord",
+        "physicalBytesPerRecord",
+        "hostCpuUtilizationPctMax",
+        "hostIoWaitPctMax",
+        "hostLoad1PerCpuMax",
+        "hostMemoryPeakBytes",
+        "hostSwapOutBytes",
+        "storageUtilizationPctMax",
+        "storageQueueDepthMax",
+        "storageIoP95Ms",
+        "writeCommitP95Ms",
+        "fsyncP95Ms",
+        "externalProviderCallCount",
+        "externalProviderP95Ms"
+      ],
+      "properties": {
+        "readThroughputOpsPerSecond": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "operations/second",
+          "x-population": "Successfully completed logical read operations in the window; retries are not new logical operations.",
+          "x-aggregation": "successfulReadOperations / durationSeconds",
+          "x-collectionMethod": "Count durable acknowledged writes or completed reads at the workload boundary; divide by the full measured wall-clock window."
+        },
+        "readTransactionP50Ms": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "milliseconds",
+          "x-population": "All completed read SQLite transaction attempts, including rollbacks and failed attempts. Time immediately before BEGIN through COMMIT/ROLLBACK return; excludes writer-queue wait, retry backoff and provider calls outside the transaction.",
+          "x-aggregation": "p50 using the declared percentile method, per window and repetition; do not average percentiles.",
+          "x-collectionMethod": "Monotonic transaction spans and instrumented lock/busy-handler spans, including built-in busy-timeout waits. SQL statement or BEGIN elapsed time alone cannot isolate lock wait."
+        },
+        "readTransactionP95Ms": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "milliseconds",
+          "x-population": "All completed read SQLite transaction attempts, including rollbacks and failed attempts. Time immediately before BEGIN through COMMIT/ROLLBACK return; excludes writer-queue wait, retry backoff and provider calls outside the transaction.",
+          "x-aggregation": "p95 using the declared percentile method, per window and repetition; do not average percentiles.",
+          "x-collectionMethod": "Monotonic transaction spans and instrumented lock/busy-handler spans, including built-in busy-timeout waits. SQL statement or BEGIN elapsed time alone cannot isolate lock wait."
+        },
+        "readTransactionP99Ms": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "milliseconds",
+          "x-population": "All completed read SQLite transaction attempts, including rollbacks and failed attempts. Time immediately before BEGIN through COMMIT/ROLLBACK return; excludes writer-queue wait, retry backoff and provider calls outside the transaction.",
+          "x-aggregation": "p99 using the declared percentile method, per window and repetition; do not average percentiles.",
+          "x-collectionMethod": "Monotonic transaction spans and instrumented lock/busy-handler spans, including built-in busy-timeout waits. SQL statement or BEGIN elapsed time alone cannot isolate lock wait."
+        },
+        "readLockWaitP50Ms": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "milliseconds",
+          "x-population": "All read SQLite transaction attempts, including zero waits, BUSY failures and retries. Cumulative SQLite lock-acquisition wait per attempt; excludes application writer-queue time and retry backoff.",
+          "x-aggregation": "p50 using the declared percentile method, per window and repetition; do not average percentiles.",
+          "x-collectionMethod": "Monotonic transaction spans and instrumented lock/busy-handler spans, including built-in busy-timeout waits. SQL statement or BEGIN elapsed time alone cannot isolate lock wait."
+        },
+        "readLockWaitP95Ms": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "milliseconds",
+          "x-population": "All read SQLite transaction attempts, including zero waits, BUSY failures and retries. Cumulative SQLite lock-acquisition wait per attempt; excludes application writer-queue time and retry backoff.",
+          "x-aggregation": "p95 using the declared percentile method, per window and repetition; do not average percentiles.",
+          "x-collectionMethod": "Monotonic transaction spans and instrumented lock/busy-handler spans, including built-in busy-timeout waits. SQL statement or BEGIN elapsed time alone cannot isolate lock wait."
+        },
+        "readLockWaitP99Ms": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "milliseconds",
+          "x-population": "All read SQLite transaction attempts, including zero waits, BUSY failures and retries. Cumulative SQLite lock-acquisition wait per attempt; excludes application writer-queue time and retry backoff.",
+          "x-aggregation": "p99 using the declared percentile method, per window and repetition; do not average percentiles.",
+          "x-collectionMethod": "Monotonic transaction spans and instrumented lock/busy-handler spans, including built-in busy-timeout waits. SQL statement or BEGIN elapsed time alone cannot isolate lock wait."
+        },
+        "writeThroughputOpsPerSecond": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "operations/second",
+          "x-population": "Successfully completed logical write operations in the window; retries are not new logical operations.",
+          "x-aggregation": "successfulWriteOperations / durationSeconds",
+          "x-collectionMethod": "Count durable acknowledged writes or completed reads at the workload boundary; divide by the full measured wall-clock window."
+        },
+        "writeTransactionP50Ms": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "milliseconds",
+          "x-population": "All completed write SQLite transaction attempts, including rollbacks and failed attempts. Time immediately before BEGIN through COMMIT/ROLLBACK return; excludes writer-queue wait, retry backoff and provider calls outside the transaction.",
+          "x-aggregation": "p50 using the declared percentile method, per window and repetition; do not average percentiles.",
+          "x-collectionMethod": "Monotonic transaction spans and instrumented lock/busy-handler spans, including built-in busy-timeout waits. SQL statement or BEGIN elapsed time alone cannot isolate lock wait."
+        },
+        "writeTransactionP95Ms": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "milliseconds",
+          "x-population": "All completed write SQLite transaction attempts, including rollbacks and failed attempts. Time immediately before BEGIN through COMMIT/ROLLBACK return; excludes writer-queue wait, retry backoff and provider calls outside the transaction.",
+          "x-aggregation": "p95 using the declared percentile method, per window and repetition; do not average percentiles.",
+          "x-collectionMethod": "Monotonic transaction spans and instrumented lock/busy-handler spans, including built-in busy-timeout waits. SQL statement or BEGIN elapsed time alone cannot isolate lock wait."
+        },
+        "writeTransactionP99Ms": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "milliseconds",
+          "x-population": "All completed write SQLite transaction attempts, including rollbacks and failed attempts. Time immediately before BEGIN through COMMIT/ROLLBACK return; excludes writer-queue wait, retry backoff and provider calls outside the transaction.",
+          "x-aggregation": "p99 using the declared percentile method, per window and repetition; do not average percentiles.",
+          "x-collectionMethod": "Monotonic transaction spans and instrumented lock/busy-handler spans, including built-in busy-timeout waits. SQL statement or BEGIN elapsed time alone cannot isolate lock wait."
+        },
+        "writeLockWaitP50Ms": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "milliseconds",
+          "x-population": "All write SQLite transaction attempts, including zero waits, BUSY failures and retries. Cumulative SQLite lock-acquisition wait per attempt; excludes application writer-queue time and retry backoff.",
+          "x-aggregation": "p50 using the declared percentile method, per window and repetition; do not average percentiles.",
+          "x-collectionMethod": "Monotonic transaction spans and instrumented lock/busy-handler spans, including built-in busy-timeout waits. SQL statement or BEGIN elapsed time alone cannot isolate lock wait."
+        },
+        "writeLockWaitP95Ms": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "milliseconds",
+          "x-population": "All write SQLite transaction attempts, including zero waits, BUSY failures and retries. Cumulative SQLite lock-acquisition wait per attempt; excludes application writer-queue time and retry backoff.",
+          "x-aggregation": "p95 using the declared percentile method, per window and repetition; do not average percentiles.",
+          "x-collectionMethod": "Monotonic transaction spans and instrumented lock/busy-handler spans, including built-in busy-timeout waits. SQL statement or BEGIN elapsed time alone cannot isolate lock wait."
+        },
+        "writeLockWaitP99Ms": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "milliseconds",
+          "x-population": "All write SQLite transaction attempts, including zero waits, BUSY failures and retries. Cumulative SQLite lock-acquisition wait per attempt; excludes application writer-queue time and retry backoff.",
+          "x-aggregation": "p99 using the declared percentile method, per window and repetition; do not average percentiles.",
+          "x-collectionMethod": "Monotonic transaction spans and instrumented lock/busy-handler spans, including built-in busy-timeout waits. SQL statement or BEGIN elapsed time alone cannot isolate lock wait."
+        },
+        "busyCount": {
+          "$ref": "#/$defs/countMetric",
+          "x-unit": "occurrences",
+          "x-population": "All SQLite transaction attempts; primary SQLITE_BUSY plus extended BUSY codes, each returned failure counted once. Report SQLITE_LOCKED separately in raw counters.",
+          "x-aggregation": "Count in window.",
+          "x-collectionMethod": "Capture primary/extended SQLite result codes before retry handling."
+        },
+        "busyRate": {
+          "$ref": "#/$defs/ratioMetric",
+          "x-unit": "fraction",
+          "x-population": "Same population as busyCount; denominator sqliteTransactionAttempts.",
+          "x-aggregation": "busyCount / sqliteTransactionAttempts; a zero denominator is unavailable, never zero.",
+          "x-collectionMethod": "Use the same attempt counters and window."
+        },
+        "retryCount": {
+          "$ref": "#/$defs/countMetric",
+          "x-unit": "attempts",
+          "x-population": "All read/write transaction retry attempts beyond the first attempt of each logical operation.",
+          "x-aggregation": "Count in window.",
+          "x-collectionMethod": "Retry-loop counters; retain reason/code and read/write breakdown."
+        },
+        "retryRate": {
+          "$ref": "#/$defs/ratioMetric",
+          "x-unit": "fraction",
+          "x-population": "All SQLite transaction attempts, including initial attempts and retries.",
+          "x-aggregation": "retryCount / sqliteTransactionAttempts.",
+          "x-collectionMethod": "Correlate retry and attempt counters."
+        },
+        "exhaustedRetryCount": {
+          "$ref": "#/$defs/countMetric",
+          "x-unit": "operations",
+          "x-population": "Logical read/write operations that terminate after the configured retry budget/deadline is exhausted.",
+          "x-aggregation": "Count in window.",
+          "x-collectionMethod": "Terminal operation outcomes, not every BUSY return."
+        },
+        "exhaustedRetryRate": {
+          "$ref": "#/$defs/ratioMetric",
+          "x-unit": "fraction",
+          "x-population": "All completed logical operations, successful or failed; denominator readOperations + writeOperations.",
+          "x-aggregation": "exhaustedRetryCount / (readOperations + writeOperations).",
+          "x-collectionMethod": "Correlate final outcomes with logical operation IDs."
+        },
+        "writerQueueDepthP50": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "operations",
+          "x-population": "Pending writes across all instrumented writer queues; sum queues at the same sample time, excluding the active transaction.",
+          "x-aggregation": "Time-sampled p50 at samplingIntervalMs, including zeros.",
+          "x-collectionMethod": "Instrument queue enqueue/dequeue and fixed-interval gauges; report gaps."
+        },
+        "writerQueueDepthP95": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "operations",
+          "x-population": "Pending writes across all instrumented writer queues; sum queues at the same sample time, excluding the active transaction.",
+          "x-aggregation": "Time-sampled p95 at samplingIntervalMs, including zeros.",
+          "x-collectionMethod": "Instrument queue enqueue/dequeue and fixed-interval gauges; report gaps."
+        },
+        "writerQueueDepthP99": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "operations",
+          "x-population": "Pending writes across all instrumented writer queues; sum queues at the same sample time, excluding the active transaction.",
+          "x-aggregation": "Time-sampled p99 at samplingIntervalMs, including zeros.",
+          "x-collectionMethod": "Instrument queue enqueue/dequeue and fixed-interval gauges; report gaps."
+        },
+        "writerQueueDepthMax": {
+          "$ref": "#/$defs/countMetric",
+          "x-unit": "operations",
+          "x-population": "Same queues as writerQueueDepthP50.",
+          "x-aggregation": "Maximum from queue transition high-water marks, not only sampled maxima.",
+          "x-collectionMethod": "Queue instrumentation including short spikes."
+        },
+        "writerQueueRejectedCount": {
+          "$ref": "#/$defs/countMetric",
+          "x-unit": "operations",
+          "x-population": "Writes rejected or shed by queue capacity/deadline backpressure.",
+          "x-aggregation": "Count in window.",
+          "x-collectionMethod": "Count rejection before SQLite admission; retain end-to-end failures."
+        },
+        "writerQueueOldestAgeMsMax": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "milliseconds",
+          "x-population": "Age of oldest pending write; zero for an empty queue.",
+          "x-aggregation": "Maximum over window.",
+          "x-collectionMethod": "Monotonic enqueue timestamps and queue transitions."
+        },
+        "walBytesMax": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "bytes",
+          "x-population": "WAL files for all scoped SQLite sources; sum at each observation.",
+          "x-aggregation": "Maximum allocated WAL bytes over window.",
+          "x-collectionMethod": "Local file allocation observations; record sparse allocation and filesystem semantics."
+        },
+        "walOldestUncheckpointedAgeSecondsMax": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "seconds",
+          "x-population": "Oldest WAL frame not yet covered by a successful checkpoint; zero when no frame is pending.",
+          "x-aggregation": "Maximum over window.",
+          "x-collectionMethod": "Correlate frame progress and first-pending timestamps; WAL file mtime alone is not frame age."
+        },
+        "checkpointAgeSecondsMax": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "seconds",
+          "x-population": "Elapsed time since the last successful checkpoint making progress; include pre-window age.",
+          "x-aggregation": "Maximum over window; define no-checkpoint-since-database-creation case in method.",
+          "x-collectionMethod": "Checkpoint completion/progress timestamps; do not reset age at the measurement-window boundary."
+        },
+        "checkpointBacklogFramesMax": {
+          "$ref": "#/$defs/countMetric",
+          "x-unit": "frames",
+          "x-population": "Uncheckpointed WAL frames; aggregate across scoped sources.",
+          "x-aggregation": "Maximum over window.",
+          "x-collectionMethod": "Checkpoint log/checkpointed frame counters or equivalent non-mutating instrumentation. Do not run extra forced checkpoints just to sample."
+        },
+        "checkpointDurationP95Ms": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "milliseconds",
+          "x-population": "Completed checkpoint attempts, including busy/partial outcomes.",
+          "x-aggregation": "p95 per window.",
+          "x-collectionMethod": "Instrument the configured checkpoint policy. No attempts means unavailable, requiring a representative longer window."
+        },
+        "applicationCpuMsPerOp": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "CPU milliseconds/operation",
+          "x-population": "Application CPU excluding separately attributed SQLite native CPU. Denominator successfulReadOperations + successfulWriteOperations.",
+          "x-aggregation": "Scoped CPU delta / successful logical operations.",
+          "x-collectionMethod": "Process/cgroup CPU counters plus sampled stack profiling with symbols for attribution; sum scoped processes once, retain user/system breakdown."
+        },
+        "sqliteCpuMsPerOp": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "CPU milliseconds/operation",
+          "x-population": "SQLite native CPU excluding lock sleep, I/O wait and provider wait. Denominator successfulReadOperations + successfulWriteOperations.",
+          "x-aggregation": "Scoped CPU delta / successful logical operations.",
+          "x-collectionMethod": "Process/cgroup CPU counters plus sampled stack profiling with symbols for attribution; sum scoped processes once, retain user/system breakdown."
+        },
+        "totalCpuMsPerOp": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "CPU milliseconds/operation",
+          "x-population": "User + system CPU for the entire scoped application, SQLite and checkpoint workers. Denominator successfulReadOperations + successfulWriteOperations.",
+          "x-aggregation": "Scoped CPU delta / successful logical operations.",
+          "x-collectionMethod": "Process/cgroup CPU counters plus sampled stack profiling with symbols for attribution; sum scoped processes once, retain user/system breakdown."
+        },
+        "logicalBytesPerRecord": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "bytes/record",
+          "x-population": "Logical dataset records; define record shape and include event/projection/idempotency overhead explicitly.",
+          "x-aggregation": "Logical encoded dataset bytes / datasetRecords.",
+          "x-collectionMethod": "Count encoded logical bytes and records from the reproducible dataset manifest."
+        },
+        "physicalBytesPerRecord": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "bytes/record",
+          "x-population": "Same dataset, all database/index/WAL/SHM allocated bytes at window end, including retained history.",
+          "x-aggregation": "Allocated storage bytes / datasetRecords.",
+          "x-collectionMethod": "Filesystem allocation counters; report before/after/checkpoint state and temporary peak separately in raw evidence. Do not compare unlike retention/dataset sizes."
+        },
+        "hostCpuUtilizationPctMax": {
+          "$ref": "#/$defs/percentMetric",
+          "x-unit": "percent",
+          "x-population": "All host CPUs, normalized to total host logical CPU capacity (0..100%); retain per-core/process detail and record the application CPU quota separately.",
+          "x-aggregation": "Maximum fixed-interval utilization, including background activity.",
+          "x-collectionMethod": "Host CPU counters at the same interval and clock coverage as workload."
+        },
+        "hostIoWaitPctMax": {
+          "$ref": "#/$defs/percentMetric",
+          "x-unit": "percent",
+          "x-population": "Host CPU iowait where exposed by the OS; iowait alone does not identify a device.",
+          "x-aggregation": "Maximum fixed-interval percentage.",
+          "x-collectionMethod": "OS counters; unsupported instrumentation is unavailable with reason."
+        },
+        "hostLoad1PerCpuMax": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "load/CPU",
+          "x-population": "One-minute host runnable/uninterruptible load normalized by effective CPUs; record platform semantics.",
+          "x-aggregation": "Maximum across sampled window.",
+          "x-collectionMethod": "OS load counters; unsupported platforms mark unavailable, not a fabricated zero."
+        },
+        "hostMemoryPeakBytes": {
+          "$ref": "#/$defs/countMetric",
+          "x-unit": "bytes",
+          "x-population": "Full declared host/cgroup scope, including native allocations and file cache as applicable.",
+          "x-aggregation": "Peak over window.",
+          "x-collectionMethod": "cgroup memory.current/peak or documented PSS process coverage; never sum shared RSS blindly."
+        },
+        "hostSwapOutBytes": {
+          "$ref": "#/$defs/countMetric",
+          "x-unit": "bytes",
+          "x-population": "Host/cgroup swap-outs during window.",
+          "x-aggregation": "Counter delta.",
+          "x-collectionMethod": "OS/cgroup swap counters; distinguish pre-existing swap occupancy."
+        },
+        "storageUtilizationPctMax": {
+          "$ref": "#/$defs/percentMetric",
+          "x-unit": "percent",
+          "x-population": "Devices serving database, WAL and temporary files, including other workloads.",
+          "x-aggregation": "Maximum fixed-interval device utilization.",
+          "x-collectionMethod": "Device counters with topology and sampling scope."
+        },
+        "storageQueueDepthMax": {
+          "$ref": "#/$defs/countMetric",
+          "x-unit": "requests",
+          "x-population": "Device outstanding I/O, including unrelated host work.",
+          "x-aggregation": "Maximum observed queue depth.",
+          "x-collectionMethod": "Device I/O telemetry; retain its sampling resolution."
+        },
+        "storageIoP95Ms": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "milliseconds",
+          "x-population": "Device I/O serving database/WAL/temp storage; retain read/write and device breakdown.",
+          "x-aggregation": "p95 service/queue latency; declare the boundary.",
+          "x-collectionMethod": "OS/block-layer traces or provider device telemetry; do not infer from SQLite statement elapsed time."
+        },
+        "writeCommitP95Ms": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "milliseconds",
+          "x-population": "Every attempted SQLite COMMIT, successful or failed.",
+          "x-aggregation": "p95 elapsed commit span.",
+          "x-collectionMethod": "Monotonic COMMIT spans correlated with fsync, checkpoint and device traces; commit time is not identical to fsync time."
+        },
+        "fsyncP95Ms": {
+          "$ref": "#/$defs/requiredMetric",
+          "x-unit": "milliseconds",
+          "x-population": "Durability sync calls for SQLite database/WAL/checkpoints; retain fd/device and success/failure attribution.",
+          "x-aggregation": "p95 sync-call wall time.",
+          "x-collectionMethod": "VFS/OS fsync/fdatasync-equivalent tracing. Missing direct sync instrumentation is unavailable; commit wall time is not a substitute."
+        },
+        "externalProviderCallCount": {
+          "$ref": "#/$defs/countMetric",
+          "x-unit": "calls",
+          "x-population": "All external-provider calls made by measured logical operations, including provider retries.",
+          "x-aggregation": "Count in window.",
+          "x-collectionMethod": "Correlated network/provider spans with coverage evidence; zero requires observed absence, not missing instrumentation."
+        },
+        "externalProviderP95Ms": {
+          "$ref": "#/$defs/metric",
+          "x-unit": "milliseconds",
+          "x-population": "All completed external-provider calls, successes and failures; excludes local SQLite time.",
+          "x-aggregation": "p95 call wall time; not-applicable only when externalProviderCallCount=0 with trace coverage.",
+          "x-collectionMethod": "Correlated provider spans; retain timeouts and in-flight calls at window end."
+        }
+      }
+    },
+    "slos": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "configurationId",
+        "owner",
+        "configurationEvidenceRef",
+        "evaluationWindowSeconds",
+        "minimumReadOperations",
+        "minimumWriteOperations",
+        "minimumSamplesPerMetric",
+        "requiredRepetitions",
+        "consecutiveViolationWindows",
+        "retestPolicy",
+        "limits"
+      ],
+      "properties": {
+        "configurationId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "owner": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "configurationEvidenceRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "evaluationWindowSeconds": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "minimumReadOperations": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "minimumWriteOperations": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "minimumSamplesPerMetric": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "requiredRepetitions": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "consecutiveViolationWindows": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "retestPolicy": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "readThroughputOpsPerSecond",
+            "readTransactionP50Ms",
+            "readTransactionP95Ms",
+            "readTransactionP99Ms",
+            "readLockWaitP50Ms",
+            "readLockWaitP95Ms",
+            "readLockWaitP99Ms",
+            "writeThroughputOpsPerSecond",
+            "writeTransactionP50Ms",
+            "writeTransactionP95Ms",
+            "writeTransactionP99Ms",
+            "writeLockWaitP50Ms",
+            "writeLockWaitP95Ms",
+            "writeLockWaitP99Ms",
+            "busyCount",
+            "busyRate",
+            "retryCount",
+            "retryRate",
+            "exhaustedRetryCount",
+            "exhaustedRetryRate",
+            "writerQueueDepthP50",
+            "writerQueueDepthP95",
+            "writerQueueDepthP99",
+            "writerQueueDepthMax",
+            "writerQueueRejectedCount",
+            "writerQueueOldestAgeMsMax",
+            "walBytesMax",
+            "walOldestUncheckpointedAgeSecondsMax",
+            "checkpointAgeSecondsMax",
+            "checkpointBacklogFramesMax",
+            "checkpointDurationP95Ms",
+            "applicationCpuMsPerOp",
+            "sqliteCpuMsPerOp",
+            "totalCpuMsPerOp",
+            "logicalBytesPerRecord",
+            "physicalBytesPerRecord",
+            "hostCpuUtilizationPctMax",
+            "hostIoWaitPctMax",
+            "hostLoad1PerCpuMax",
+            "hostMemoryPeakBytes",
+            "hostSwapOutBytes",
+            "storageUtilizationPctMax",
+            "storageQueueDepthMax",
+            "storageIoP95Ms",
+            "writeCommitP95Ms",
+            "fsyncP95Ms",
+            "externalProviderCallCount",
+            "externalProviderP95Ms"
+          ],
+          "properties": {
+            "readThroughputOpsPerSecond": {
+              "$ref": "#/$defs/minimumSlo"
+            },
+            "readTransactionP50Ms": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "readTransactionP95Ms": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "readTransactionP99Ms": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "readLockWaitP50Ms": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "readLockWaitP95Ms": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "readLockWaitP99Ms": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "writeThroughputOpsPerSecond": {
+              "$ref": "#/$defs/minimumSlo"
+            },
+            "writeTransactionP50Ms": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "writeTransactionP95Ms": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "writeTransactionP99Ms": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "writeLockWaitP50Ms": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "writeLockWaitP95Ms": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "writeLockWaitP99Ms": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "busyCount": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "busyRate": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "retryCount": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "retryRate": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "exhaustedRetryCount": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "exhaustedRetryRate": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "writerQueueDepthP50": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "writerQueueDepthP95": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "writerQueueDepthP99": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "writerQueueDepthMax": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "writerQueueRejectedCount": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "writerQueueOldestAgeMsMax": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "walBytesMax": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "walOldestUncheckpointedAgeSecondsMax": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "checkpointAgeSecondsMax": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "checkpointBacklogFramesMax": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "checkpointDurationP95Ms": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "applicationCpuMsPerOp": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "sqliteCpuMsPerOp": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "totalCpuMsPerOp": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "logicalBytesPerRecord": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "physicalBytesPerRecord": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "hostCpuUtilizationPctMax": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "hostIoWaitPctMax": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "hostLoad1PerCpuMax": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "hostMemoryPeakBytes": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "hostSwapOutBytes": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "storageUtilizationPctMax": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "storageQueueDepthMax": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "storageIoP95Ms": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "writeCommitP95Ms": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "fsyncP95Ms": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "externalProviderCallCount": {
+              "$ref": "#/$defs/maximumSlo"
+            },
+            "externalProviderP95Ms": {
+              "$ref": "#/$defs/providerSlo"
+            }
+          }
+        }
+      },
+      "description": "Adopter configures every applicable limit before measurement, inclusive >= throughput minima and <= other maxima in the metric units. No baked-in workload, client count, latency or hardware target. Configure minimum samples, equal evaluation windows, repetition coverage, consecutive violating windows and bounded retest policy. Different metric populations may require stricter sample minima documented by the adopter. Missing configuration means not-evaluated; inadequate coverage means inconclusive."
+    },
+    "attribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "applicationCpu",
+        "sqliteLocks",
+        "commitFsync",
+        "storageIo",
+        "externalProvider",
+        "hostSaturation"
+      ],
+      "properties": {
+        "applicationCpu": {
+          "$ref": "#/$defs/attribution"
+        },
+        "sqliteLocks": {
+          "$ref": "#/$defs/attribution"
+        },
+        "commitFsync": {
+          "$ref": "#/$defs/attribution"
+        },
+        "storageIo": {
+          "$ref": "#/$defs/attribution"
+        },
+        "externalProvider": {
+          "$ref": "#/$defs/attribution"
+        },
+        "hostSaturation": {
+          "$ref": "#/$defs/attribution"
+        }
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semanticReviewComplete",
+        "reviewer",
+        "reviewedAt",
+        "reviewEvidenceRefs",
+        "windowEvidenceRefs",
+        "observedConsecutiveViolationWindows",
+        "metricResults"
+      ],
+      "properties": {
+        "semanticReviewComplete": {
+          "type": "boolean"
+        },
+        "reviewer": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "reviewedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "reviewEvidenceRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "windowEvidenceRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "observedConsecutiveViolationWindows": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "metricResults": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "readThroughputOpsPerSecond",
+            "readTransactionP50Ms",
+            "readTransactionP95Ms",
+            "readTransactionP99Ms",
+            "readLockWaitP50Ms",
+            "readLockWaitP95Ms",
+            "readLockWaitP99Ms",
+            "writeThroughputOpsPerSecond",
+            "writeTransactionP50Ms",
+            "writeTransactionP95Ms",
+            "writeTransactionP99Ms",
+            "writeLockWaitP50Ms",
+            "writeLockWaitP95Ms",
+            "writeLockWaitP99Ms",
+            "busyCount",
+            "busyRate",
+            "retryCount",
+            "retryRate",
+            "exhaustedRetryCount",
+            "exhaustedRetryRate",
+            "writerQueueDepthP50",
+            "writerQueueDepthP95",
+            "writerQueueDepthP99",
+            "writerQueueDepthMax",
+            "writerQueueRejectedCount",
+            "writerQueueOldestAgeMsMax",
+            "walBytesMax",
+            "walOldestUncheckpointedAgeSecondsMax",
+            "checkpointAgeSecondsMax",
+            "checkpointBacklogFramesMax",
+            "checkpointDurationP95Ms",
+            "applicationCpuMsPerOp",
+            "sqliteCpuMsPerOp",
+            "totalCpuMsPerOp",
+            "logicalBytesPerRecord",
+            "physicalBytesPerRecord",
+            "hostCpuUtilizationPctMax",
+            "hostIoWaitPctMax",
+            "hostLoad1PerCpuMax",
+            "hostMemoryPeakBytes",
+            "hostSwapOutBytes",
+            "storageUtilizationPctMax",
+            "storageQueueDepthMax",
+            "storageIoP95Ms",
+            "writeCommitP95Ms",
+            "fsyncP95Ms",
+            "externalProviderCallCount",
+            "externalProviderP95Ms"
+          ],
+          "properties": {
+            "readThroughputOpsPerSecond": {
+              "$ref": "#/$defs/result"
+            },
+            "readTransactionP50Ms": {
+              "$ref": "#/$defs/result"
+            },
+            "readTransactionP95Ms": {
+              "$ref": "#/$defs/result"
+            },
+            "readTransactionP99Ms": {
+              "$ref": "#/$defs/result"
+            },
+            "readLockWaitP50Ms": {
+              "$ref": "#/$defs/result"
+            },
+            "readLockWaitP95Ms": {
+              "$ref": "#/$defs/result"
+            },
+            "readLockWaitP99Ms": {
+              "$ref": "#/$defs/result"
+            },
+            "writeThroughputOpsPerSecond": {
+              "$ref": "#/$defs/result"
+            },
+            "writeTransactionP50Ms": {
+              "$ref": "#/$defs/result"
+            },
+            "writeTransactionP95Ms": {
+              "$ref": "#/$defs/result"
+            },
+            "writeTransactionP99Ms": {
+              "$ref": "#/$defs/result"
+            },
+            "writeLockWaitP50Ms": {
+              "$ref": "#/$defs/result"
+            },
+            "writeLockWaitP95Ms": {
+              "$ref": "#/$defs/result"
+            },
+            "writeLockWaitP99Ms": {
+              "$ref": "#/$defs/result"
+            },
+            "busyCount": {
+              "$ref": "#/$defs/result"
+            },
+            "busyRate": {
+              "$ref": "#/$defs/result"
+            },
+            "retryCount": {
+              "$ref": "#/$defs/result"
+            },
+            "retryRate": {
+              "$ref": "#/$defs/result"
+            },
+            "exhaustedRetryCount": {
+              "$ref": "#/$defs/result"
+            },
+            "exhaustedRetryRate": {
+              "$ref": "#/$defs/result"
+            },
+            "writerQueueDepthP50": {
+              "$ref": "#/$defs/result"
+            },
+            "writerQueueDepthP95": {
+              "$ref": "#/$defs/result"
+            },
+            "writerQueueDepthP99": {
+              "$ref": "#/$defs/result"
+            },
+            "writerQueueDepthMax": {
+              "$ref": "#/$defs/result"
+            },
+            "writerQueueRejectedCount": {
+              "$ref": "#/$defs/result"
+            },
+            "writerQueueOldestAgeMsMax": {
+              "$ref": "#/$defs/result"
+            },
+            "walBytesMax": {
+              "$ref": "#/$defs/result"
+            },
+            "walOldestUncheckpointedAgeSecondsMax": {
+              "$ref": "#/$defs/result"
+            },
+            "checkpointAgeSecondsMax": {
+              "$ref": "#/$defs/result"
+            },
+            "checkpointBacklogFramesMax": {
+              "$ref": "#/$defs/result"
+            },
+            "checkpointDurationP95Ms": {
+              "$ref": "#/$defs/result"
+            },
+            "applicationCpuMsPerOp": {
+              "$ref": "#/$defs/result"
+            },
+            "sqliteCpuMsPerOp": {
+              "$ref": "#/$defs/result"
+            },
+            "totalCpuMsPerOp": {
+              "$ref": "#/$defs/result"
+            },
+            "logicalBytesPerRecord": {
+              "$ref": "#/$defs/result"
+            },
+            "physicalBytesPerRecord": {
+              "$ref": "#/$defs/result"
+            },
+            "hostCpuUtilizationPctMax": {
+              "$ref": "#/$defs/result"
+            },
+            "hostIoWaitPctMax": {
+              "$ref": "#/$defs/result"
+            },
+            "hostLoad1PerCpuMax": {
+              "$ref": "#/$defs/result"
+            },
+            "hostMemoryPeakBytes": {
+              "$ref": "#/$defs/result"
+            },
+            "hostSwapOutBytes": {
+              "$ref": "#/$defs/result"
+            },
+            "storageUtilizationPctMax": {
+              "$ref": "#/$defs/result"
+            },
+            "storageQueueDepthMax": {
+              "$ref": "#/$defs/result"
+            },
+            "storageIoP95Ms": {
+              "$ref": "#/$defs/result"
+            },
+            "writeCommitP95Ms": {
+              "$ref": "#/$defs/result"
+            },
+            "fsyncP95Ms": {
+              "$ref": "#/$defs/result"
+            },
+            "externalProviderCallCount": {
+              "$ref": "#/$defs/result"
+            },
+            "externalProviderP95Ms": {
+              "$ref": "#/$defs/result"
+            }
+          }
+        }
+      },
+      "description": "Draft 2020-12 enforces structure, not arithmetic or cross-report comparisons. pass/fail additionally require the normative semantic checks and evidence-bound review. windowEvidenceRefs must cover the configured independent repetitions and consecutive same-configuration windows; one report is one window, not proof of persistence."
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action",
+        "bottlenecks",
+        "evidenceRefs",
+        "rationale",
+        "mitigationAndRetestEvidenceRefs",
+        "contractNeedEvidenceRefs"
+      ],
+      "properties": {
+        "action": {
+          "enum": [
+            "not-evaluated",
+            "keep-sqlite",
+            "investigate",
+            "mitigate-and-retest",
+            "consider-data-gateway",
+            "consider-postgresql",
+            "consider-rust"
+          ]
+        },
+        "bottlenecks": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "applicationCpu",
+              "sqliteLocks",
+              "commitFsync",
+              "storageIo",
+              "externalProvider",
+              "hostSaturation",
+              "unknown"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "rationale": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "mitigationAndRetestEvidenceRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "contractNeedEvidenceRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "description": "Consideration is not a migration, implementation authorization or a change to authority. Apply x-decisionRules in order; correlate decision evidence to rawEvidence and reviewed windows."
+    },
+    "rawEvidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidence"
+      },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "availability",
+        "value",
+        "sampleCount",
+        "method",
+        "evidenceRefs",
+        "reason"
+      ],
+      "properties": {
+        "availability": {
+          "enum": [
+            "unmeasured",
+            "measured",
+            "unavailable",
+            "not-applicable"
+          ]
+        },
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "sampleCount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "method": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "description": "Every value uses its metric definition below. null is unmeasured/unavailable, never a measured zero. Evidence references resolve to sanitized content-addressed rawEvidence entries.",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "const": "measured"
+              }
+            },
+            "required": [
+              "availability"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "number"
+              },
+              "sampleCount": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "method": {
+                "type": "string"
+              },
+              "evidenceRefs": {
+                "minItems": 1
+              },
+              "reason": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "enum": [
+                  "unmeasured",
+                  "unavailable"
+                ]
+              }
+            },
+            "required": [
+              "availability"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              },
+              "sampleCount": {
+                "type": "null"
+              },
+              "reason": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "const": "not-applicable"
+              }
+            },
+            "required": [
+              "availability"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              },
+              "sampleCount": {
+                "const": 0
+              },
+              "method": {
+                "type": "string"
+              },
+              "evidenceRefs": {
+                "minItems": 1
+              },
+              "reason": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "slo": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "applicability",
+        "operator",
+        "target",
+        "rationale"
+      ],
+      "properties": {
+        "applicability": {
+          "enum": [
+            "required",
+            "not-applicable"
+          ]
+        },
+        "operator": {
+          "enum": [
+            ">=",
+            "<="
+          ]
+        },
+        "target": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "rationale": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "description": "Adopter-owned threshold in the metric unit, inclusive operator. There are no universal numeric targets. null target means unconfigured. Only externalProviderP95Ms can be not-applicable, with observed zero calls.",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "applicability": {
+                "const": "not-applicable"
+              }
+            },
+            "required": [
+              "applicability"
+            ]
+          },
+          "then": {
+            "properties": {
+              "target": {
+                "type": "null"
+              },
+              "rationale": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "outcome",
+        "evidenceRefs",
+        "reason"
+      ],
+      "properties": {
+        "outcome": {
+          "enum": [
+            "not-evaluated",
+            "pass",
+            "fail",
+            "not-applicable"
+          ]
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "outcome": {
+                "enum": [
+                  "pass",
+                  "fail",
+                  "not-applicable"
+                ]
+              }
+            },
+            "required": [
+              "outcome"
+            ]
+          },
+          "then": {
+            "properties": {
+              "evidenceRefs": {
+                "minItems": 1
+              },
+              "reason": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "attribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "availability",
+        "finding",
+        "method",
+        "evidenceRefs",
+        "reason"
+      ],
+      "properties": {
+        "availability": {
+          "enum": [
+            "unmeasured",
+            "observed",
+            "unavailable"
+          ]
+        },
+        "finding": {
+          "enum": [
+            "unknown",
+            "dominant",
+            "contributing",
+            "not-observed"
+          ]
+        },
+        "method": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "description": "A bottleneck conclusion needs correlated spans/counters/profiles, not a latency guess. Overlapping and nested spans are not additive; record critical-path attribution and unclassified time.",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "const": "observed"
+              }
+            },
+            "required": [
+              "availability"
+            ]
+          },
+          "then": {
+            "properties": {
+              "method": {
+                "type": "string"
+              },
+              "evidenceRefs": {
+                "minItems": 1
+              },
+              "reason": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "enum": [
+                  "unmeasured",
+                  "unavailable"
+                ]
+              }
+            },
+            "required": [
+              "availability"
+            ]
+          },
+          "then": {
+            "properties": {
+              "finding": {
+                "const": "unknown"
+              },
+              "reason": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ref",
+        "sha256",
+        "kind",
+        "description"
+      ],
+      "properties": {
+        "ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "kind": {
+          "enum": [
+            "counters",
+            "histograms",
+            "traces",
+            "cpu-profile",
+            "host-load",
+            "storage",
+            "dataset",
+            "configuration",
+            "harness",
+            "window-report",
+            "semantic-review",
+            "mitigation-retest",
+            "contract-need"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "description": "A sanitized artifact reference/path/URN and content digest, never credentials, private payloads or raw secrets. Preserve raw samples, result-code breakdowns, profiling/trace coverage, resource scope and the collection manifest for reproducibility. Ref identities must be unique."
+    },
+    "completeMetadata": {
+      "type": [
+        "object",
+        "array",
+        "string",
+        "number",
+        "boolean"
+      ],
+      "additionalProperties": {
+        "$ref": "#/$defs/completeMetadata"
+      },
+      "items": {
+        "$ref": "#/$defs/completeMetadata"
+      },
+      "description": "Recursively rejects null placeholders in measured reproducibility metadata. Actual types, required fields, enums and bounds come from the report properties."
+    },
+    "requiredMetric": {
+      "$ref": "#/$defs/metric",
+      "properties": {
+        "availability": {
+          "enum": [
+            "unmeasured",
+            "measured",
+            "unavailable"
+          ]
+        }
+      }
+    },
+    "countMetric": {
+      "$ref": "#/$defs/requiredMetric",
+      "properties": {
+        "value": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      }
+    },
+    "ratioMetric": {
+      "$ref": "#/$defs/requiredMetric",
+      "properties": {
+        "value": {
+          "maximum": 1
+        }
+      }
+    },
+    "percentMetric": {
+      "$ref": "#/$defs/requiredMetric",
+      "properties": {
+        "value": {
+          "maximum": 100
+        }
+      }
+    },
+    "minimumSlo": {
+      "$ref": "#/$defs/slo",
+      "properties": {
+        "applicability": {
+          "const": "required"
+        },
+        "operator": {
+          "const": ">="
+        }
+      }
+    },
+    "maximumSlo": {
+      "$ref": "#/$defs/slo",
+      "properties": {
+        "applicability": {
+          "const": "required"
+        },
+        "operator": {
+          "const": "<="
+        }
+      }
+    },
+    "providerSlo": {
+      "$ref": "#/$defs/slo",
+      "properties": {
+        "operator": {
+          "const": "<="
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "template"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "qualification": {
+            "const": "not-evaluated"
+          },
+          "metrics": {
+            "additionalProperties": {
+              "properties": {
+                "availability": {
+                  "const": "unmeasured"
+                }
+              }
+            }
+          },
+          "attribution": {
+            "additionalProperties": {
+              "properties": {
+                "availability": {
+                  "const": "unmeasured"
+                }
+              }
+            }
+          },
+          "evaluation": {
+            "properties": {
+              "semanticReviewComplete": {
+                "const": false
+              },
+              "metricResults": {
+                "additionalProperties": {
+                  "properties": {
+                    "outcome": {
+                      "const": "not-evaluated"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "decision": {
+            "properties": {
+              "action": {
+                "const": "not-evaluated"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "measured"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "reportId": {
+            "$ref": "#/$defs/completeMetadata"
+          },
+          "workload": {
+            "$ref": "#/$defs/completeMetadata"
+          },
+          "environment": {
+            "$ref": "#/$defs/completeMetadata"
+          },
+          "software": {
+            "$ref": "#/$defs/completeMetadata"
+          },
+          "sqlite": {
+            "$ref": "#/$defs/completeMetadata"
+          },
+          "reproduction": {
+            "$ref": "#/$defs/completeMetadata"
+          },
+          "measurement": {
+            "$ref": "#/$defs/completeMetadata"
+          },
+          "metrics": {
+            "additionalProperties": {
+              "properties": {
+                "availability": {
+                  "enum": [
+                    "measured",
+                    "unavailable"
+                  ]
+                }
+              }
+            },
+            "properties": {
+              "externalProviderP95Ms": {
+                "properties": {
+                  "availability": {
+                    "enum": [
+                      "measured",
+                      "unavailable",
+                      "not-applicable"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "attribution": {
+            "additionalProperties": {
+              "properties": {
+                "availability": {
+                  "enum": [
+                    "observed",
+                    "unavailable"
+                  ]
+                }
+              }
+            }
+          },
+          "rawEvidence": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "qualification": {
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "measured"
+          },
+          "slos": {
+            "properties": {
+              "configurationId": {
+                "not": {
+                  "type": "null"
+                }
+              },
+              "owner": {
+                "not": {
+                  "type": "null"
+                }
+              },
+              "configurationEvidenceRef": {
+                "not": {
+                  "type": "null"
+                }
+              },
+              "evaluationWindowSeconds": {
+                "not": {
+                  "type": "null"
+                }
+              },
+              "minimumReadOperations": {
+                "not": {
+                  "type": "null"
+                }
+              },
+              "minimumWriteOperations": {
+                "not": {
+                  "type": "null"
+                }
+              },
+              "minimumSamplesPerMetric": {
+                "not": {
+                  "type": "null"
+                }
+              },
+              "requiredRepetitions": {
+                "not": {
+                  "type": "null"
+                }
+              },
+              "consecutiveViolationWindows": {
+                "not": {
+                  "type": "null"
+                }
+              },
+              "retestPolicy": {
+                "not": {
+                  "type": "null"
+                }
+              },
+              "limits": {
+                "additionalProperties": {
+                  "properties": {
+                    "target": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "properties": {
+                  "externalProviderP95Ms": {
+                    "anyOf": [
+                      {
+                        "properties": {
+                          "applicability": {
+                            "const": "required"
+                          },
+                          "target": {
+                            "type": "number"
+                          }
+                        }
+                      },
+                      {
+                        "properties": {
+                          "applicability": {
+                            "const": "not-applicable"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "metrics": {
+            "additionalProperties": {
+              "properties": {
+                "availability": {
+                  "const": "measured"
+                }
+              }
+            },
+            "properties": {
+              "externalProviderP95Ms": {
+                "properties": {
+                  "availability": {
+                    "enum": [
+                      "measured",
+                      "not-applicable"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "attribution": {
+            "additionalProperties": {
+              "properties": {
+                "availability": {
+                  "const": "observed"
+                },
+                "finding": {
+                  "enum": [
+                    "dominant",
+                    "contributing",
+                    "not-observed"
+                  ]
+                }
+              }
+            }
+          },
+          "evaluation": {
+            "properties": {
+              "semanticReviewComplete": {
+                "const": true
+              },
+              "reviewer": {
+                "type": "string"
+              },
+              "reviewedAt": {
+                "type": "string"
+              },
+              "reviewEvidenceRefs": {
+                "minItems": 1
+              },
+              "windowEvidenceRefs": {
+                "minItems": 1
+              },
+              "observedConsecutiveViolationWindows": {
+                "type": "integer"
+              },
+              "metricResults": {
+                "additionalProperties": {
+                  "properties": {
+                    "outcome": {
+                      "enum": [
+                        "pass",
+                        "fail"
+                      ]
+                    }
+                  }
+                },
+                "properties": {
+                  "externalProviderP95Ms": {
+                    "properties": {
+                      "outcome": {
+                        "enum": [
+                          "pass",
+                          "fail",
+                          "not-applicable"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "decision": {
+            "properties": {
+              "rationale": {
+                "type": "string"
+              },
+              "evidenceRefs": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "qualification": {
+            "const": "pass"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "workload": {
+            "properties": {
+              "requiredWriteHosts": {
+                "const": 1
+              }
+            }
+          },
+          "evaluation": {
+            "properties": {
+              "metricResults": {
+                "additionalProperties": {
+                  "properties": {
+                    "outcome": {
+                      "const": "pass"
+                    }
+                  }
+                },
+                "properties": {
+                  "externalProviderP95Ms": {
+                    "properties": {
+                      "outcome": {
+                        "enum": [
+                          "pass",
+                          "not-applicable"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "decision": {
+            "properties": {
+              "action": {
+                "enum": [
+                  "keep-sqlite",
+                  "consider-data-gateway"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "qualification": {
+            "const": "fail"
+          }
+        }
+      },
+      "then": {
+        "allOf": [
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "evaluation": {
+                    "properties": {
+                      "metricResults": {
+                        "not": {
+                          "additionalProperties": {
+                            "properties": {
+                              "outcome": {
+                                "enum": [
+                                  "pass",
+                                  "not-applicable"
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "workload": {
+                    "properties": {
+                      "requiredWriteHosts": {
+                        "minimum": 2
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "properties": {
+              "decision": {
+                "properties": {
+                  "action": {
+                    "enum": [
+                      "investigate",
+                      "mitigate-and-retest",
+                      "consider-data-gateway",
+                      "consider-postgresql",
+                      "consider-rust"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "qualification": {
+            "enum": [
+              "not-evaluated",
+              "inconclusive"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "decision": {
+            "properties": {
+              "action": {
+                "enum": [
+                  "not-evaluated",
+                  "investigate"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "properties": {
+              "action": {
+                "const": "consider-data-gateway"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "decision": {
+            "properties": {
+              "contractNeedEvidenceRefs": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "properties": {
+              "action": {
+                "const": "consider-postgresql"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "allOf": [
+          {
+            "properties": {
+              "decision": {
+                "properties": {
+                  "mitigationAndRetestEvidenceRefs": {
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "workload": {
+                    "properties": {
+                      "writerProcesses": {
+                        "minimum": 2
+                      }
+                    }
+                  },
+                  "attribution": {
+                    "properties": {
+                      "sqliteLocks": {
+                        "properties": {
+                          "availability": {
+                            "const": "observed"
+                          },
+                          "finding": {
+                            "enum": [
+                              "dominant",
+                              "contributing"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "evaluation": {
+                    "properties": {
+                      "observedConsecutiveViolationWindows": {
+                        "minimum": 1
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "workload": {
+                    "properties": {
+                      "requiredWriteHosts": {
+                        "minimum": 2
+                      }
+                    }
+                  },
+                  "decision": {
+                    "properties": {
+                      "contractNeedEvidenceRefs": {
+                        "minItems": 1
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "properties": {
+              "action": {
+                "const": "consider-rust"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "allOf": [
+          {
+            "properties": {
+              "attribution": {
+                "properties": {
+                  "applicationCpu": {
+                    "properties": {
+                      "availability": {
+                        "const": "observed"
+                      },
+                      "finding": {
+                        "const": "dominant"
+                      }
+                    }
+                  }
+                }
+              },
+              "decision": {
+                "properties": {
+                  "mitigationAndRetestEvidenceRefs": {
+                    "minItems": 1
+                  }
+                }
+              },
+              "rawEvidence": {
+                "contains": {
+                  "properties": {
+                    "kind": {
+                      "const": "cpu-profile"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "evaluation": {
+                    "properties": {
+                      "metricResults": {
+                        "properties": {
+                          "applicationCpuMsPerOp": {
+                            "properties": {
+                              "outcome": {
+                                "const": "fail"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "evaluation": {
+                    "properties": {
+                      "metricResults": {
+                        "properties": {
+                          "readTransactionP50Ms": {
+                            "properties": {
+                              "outcome": {
+                                "const": "fail"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "evaluation": {
+                    "properties": {
+                      "metricResults": {
+                        "properties": {
+                          "readTransactionP95Ms": {
+                            "properties": {
+                              "outcome": {
+                                "const": "fail"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "evaluation": {
+                    "properties": {
+                      "metricResults": {
+                        "properties": {
+                          "readTransactionP99Ms": {
+                            "properties": {
+                              "outcome": {
+                                "const": "fail"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "evaluation": {
+                    "properties": {
+                      "metricResults": {
+                        "properties": {
+                          "writeTransactionP50Ms": {
+                            "properties": {
+                              "outcome": {
+                                "const": "fail"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "evaluation": {
+                    "properties": {
+                      "metricResults": {
+                        "properties": {
+                          "writeTransactionP95Ms": {
+                            "properties": {
+                              "outcome": {
+                                "const": "fail"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "evaluation": {
+                    "properties": {
+                      "metricResults": {
+                        "properties": {
+                          "writeTransactionP99Ms": {
+                            "properties": {
+                              "outcome": {
+                                "const": "fail"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "measured"
+          },
+          "metrics": {
+            "properties": {
+              "externalProviderP95Ms": {
+                "properties": {
+                  "availability": {
+                    "const": "not-applicable"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "metrics": {
+            "properties": {
+              "externalProviderCallCount": {
+                "properties": {
+                  "availability": {
+                    "const": "measured"
+                  },
+                  "value": {
+                    "const": 0
+                  }
+                }
+              }
+            }
+          },
+          "slos": {
+            "properties": {
+              "limits": {
+                "properties": {
+                  "externalProviderP95Ms": {
+                    "properties": {
+                      "applicability": {
+                        "const": "not-applicable"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "measured"
+          },
+          "slos": {
+            "properties": {
+              "limits": {
+                "properties": {
+                  "externalProviderP95Ms": {
+                    "properties": {
+                      "applicability": {
+                        "const": "not-applicable"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "metrics": {
+            "properties": {
+              "externalProviderP95Ms": {
+                "properties": {
+                  "availability": {
+                    "const": "not-applicable"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "qualification": {
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          },
+          "slos": {
+            "properties": {
+              "limits": {
+                "properties": {
+                  "externalProviderP95Ms": {
+                    "properties": {
+                      "applicability": {
+                        "const": "required"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "metrics": {
+            "properties": {
+              "externalProviderP95Ms": {
+                "properties": {
+                  "availability": {
+                    "const": "measured"
+                  }
+                }
+              }
+            }
+          },
+          "evaluation": {
+            "properties": {
+              "metricResults": {
+                "properties": {
+                  "externalProviderP95Ms": {
+                    "properties": {
+                      "outcome": {
+                        "enum": [
+                          "pass",
+                          "fail"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "qualification": {
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          },
+          "slos": {
+            "properties": {
+              "limits": {
+                "properties": {
+                  "externalProviderP95Ms": {
+                    "properties": {
+                      "applicability": {
+                        "const": "not-applicable"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "evaluation": {
+            "properties": {
+              "metricResults": {
+                "properties": {
+                  "externalProviderP95Ms": {
+                    "properties": {
+                      "outcome": {
+                        "const": "not-applicable"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "x-invariants": [
+    {
+      "source": "../STANDARD.md",
+      "requirements": "Preserve DP-001..004 POA/CQRS/ES, one authority/writer per stream, ES-012 atomic append/idempotency and MIG-061 authority transfer. This performance profile, SLOs, hashes, plans and reports grant no write, review, migration or takeover authority."
+    },
+    {
+      "source": "../spec/SQLITE_COEXISTENCE.md",
+      "requirements": "WAL on local storage shared only by processes on the same host; synchronous=FULL for durable acknowledged writes; foreign_keys=ON for every connection. Preserve atomic event/projection/outbox capture in the same SQLite file, retries using the same idempotency key, authority fencing and no offline multi-master assumption."
+    },
+    {
+      "source": "sqlite-embedded-es-v1.json",
+      "requirements": "Retain SQLite authority, requiredArchitecture=[POA,CQRS,ES], oneWriterPerStream=true, sourceOfTruth=event-store, redisRequired=false and replayExternalEffects=false. A queue of contending processes does not create multiple authorized writers per stream."
+    },
+    {
+      "source": "../spec/LOW_RAM.md",
+      "requirements": "low-ram-v1 remains the default. Bound queues, queue deadlines, query/handle counts, batch rows AND bytes, results, native memory and total process/cgroup scope. Preserve streaming replay, one bounded projector and default Redis-off behavior. Batching may not weaken FULL durability, atomicity or memory limits."
+    },
+    {
+      "source": "low-ram-v1.json",
+      "requirements": "Existing limits remain applicable; qualification never silently increases them. Measure PSS or correctly scoped cgroup memory.current/peak for idle, cold/warm start, replay, multi-source queries, slow clients, source failures and applicable Redis off/on scenarios. An extension needs an explicit accepted resource budget, not a benchmark claim."
+    }
+  ],
+  "x-measurementProcedure": [
+    "Choose representative production scenarios and concurrency points from adopter demand, not a historical eight-client benchmark. Preserve realistic record sizes, read/write mix, indexes, retention, bursts, cache states and background load. One report covers one scenario/concurrency/repetition/window; retain the full campaign, including failures.",
+    "Pin source/base, harness, dataset digest, seed and sanitized setup/run/collection invocations. Record storage class/locality/topology/filesystem, OS/runtime/SQLite/driver/compile options, CPU/RAM limits and all effective SQLite and bounded resource settings.",
+    "Configure the adopter SLOs and minimum samples before the run. Warm up for the recorded duration/operations, exclude warmup from ALL measured counters/histograms and choose a window long enough to observe checkpoint and tail behavior. Use monotonic elapsed times with UTC start/end labels.",
+    "Collect bounded histograms and counters for successful and failed operations, retries and zeros; state percentile estimator/precision and coordinated-omission treatment. Sample queues, WAL/checkpoint progress, device and host load at samplingIntervalMs; high-water counters must retain short spikes. Preserve trace coverage, dropped samples, in-flight operations and instrumentation overhead.",
+    "Keep SQLite lock wait, transaction wall time, COMMIT wall time, durability-sync time, device I/O, application/SQLite CPU and provider spans distinct. Correlate overlapping spans on the critical path; do not sum nested spans or infer CPU from wall latency. Missing instrumentation is unavailable with a reason.",
+    "Produce content-addressed sanitized rawEvidence and one report for each window/repetition. Set status=measured only with complete reproducibility metadata and measured/unavailable metrics. Never substitute zero for missing data or label the supplied template as performance evidence.",
+    "Validate the schema offline, then perform every x-semanticChecks obligation and record evidence-bound semantic review. No configuration gives not-evaluated; incomplete samples/instrumentation, confounded host load or missing repetitions give inconclusive. Only representative complete measurements meeting all configured SLOs yield pass."
+  ],
+  "x-semanticChecks": [
+    {
+      "id": "window-and-counts",
+      "check": "Verify endedAt > startedAt and monotonic durationSeconds agrees within the documented clock precision; warmup precedes startedAt and is excluded. samplingIntervalMs must cover the window at the declared resolution, gaps must be accounted for, repetitionIndex<=repetitionCount and windowIndex identify real runs. Sum read/write attempts to sqliteTransactionAttempts and successful+failed outcomes to logical read/write counts; reconcile BUSY/retries/exhaustion with raw counters."
+    },
+    {
+      "id": "population-and-quantiles",
+      "check": "Check p50<=p95<=p99 and nonnegative observed values, queue percentiles<=high-water maximum, population-specific sample counts and the declared percentile method. Throughput counts only successful logical operations over the whole window. Recompute ratios, CPU/op and logical/physical bytes per record with nonzero denominators. Do not average percentiles across repetitions. readFraction+writeFraction=1 and observed mix must match declared workload within its stated sampling tolerance."
+    },
+    {
+      "id": "configuration-and-coverage",
+      "check": "All applicable SLO targets must be configured by the adopter with matching metric units and inclusive operators; no schema default is a performance target. Check durationSeconds equals evaluationWindowSeconds (document timing tolerance), read/write counts meet minima, each applicable metric has minimumSamplesPerMetric, and windowEvidenceRefs cover requiredRepetitions and evaluation windows under the same config/source/storage/workload. Any missing applicable metric/threshold, unavailable attribution, sampling gap affecting tails or inadequate coverage prevents pass/fail: use not-evaluated for absent configuration, otherwise inconclusive."
+    },
+    {
+      "id": "external-provider-absence",
+      "check": "externalProviderP95Ms may be not-applicable only with externalProviderCallCount=0, full observed trace coverage, sampleCount=0, a reason, a matching not-applicable SLO/result and evidence refs. Missing provider instrumentation or calls whose timeouts were dropped is unavailable/inconclusive, never not-applicable. Every other metric and SLO is applicable."
+    },
+    {
+      "id": "compare-all-slos",
+      "check": "For EVERY applicable metric recompute observed value >= target for throughput or <= target for maxima. metricResults must agree with the actual comparison and reference the underlying raw evidence. pass requires every applicable result pass, semanticReviewComplete=true and complete review evidence; fail requires complete evidence and at least one real SLO breach or an independently evidenced unmet multi-host write requirement. A fully qualified SQLite engine may still need data-gateway for its audit/idempotency contract; keep SQLite and record that separate contract need. Boolean review claims alone are insufficient; independently check and retain the comparison record."
+    },
+    {
+      "id": "persistence-and-retest",
+      "check": "Recompute observedConsecutiveViolationWindows from distinct consecutive equal-duration windows; no double-counting overlapping/reused windows or treating client count as a persistence threshold. Check all required independent repetitions, bounded mitigation configuration/digests, before/after load and retest policy. Persistence is adopter-configured, never inferred from a single run. The contention route to PostgreSQL must have observedConsecutiveViolationWindows >= slos.consecutiveViolationWindows AFTER bounded mitigation, with breached lock-wait/contention SLOs and writerProcesses>=2. The multi-host alternative requires a demonstrated requirement and single-host routing feasibility assessment; a single client-count observation is insufficient."
+    },
+    {
+      "id": "attribution-and-load",
+      "check": "Reconcile applicationCpu/sqliteLocks/commitFsync/storageIo/externalProvider/hostSaturation findings with correlated spans, symbols, counter coverage and raw profiles. Separate SQLite native CPU from application CPU and durability sync wait from lock waits; provider time and saturated competing host workloads must not be blamed on SQLite. Unclassified or unavailable evidence yields unknown, requires investigation/retest and cannot justify engine or language changes. consideration of Rust requires the application CPU profile (not merely SQLite native or kernel CPU) to establish the dominant critical-path cost, an actual CPU/op or transaction-latency breach, and evidence of bounded algorithm/allocation/serialization optimization and retest."
+    },
+    {
+      "id": "evidence-and-contracts",
+      "check": "Resolve every evidence reference (including configuration, dataset, harness, authority/fencing and resource budget) to a sanitized rawEvidence entry, verify SHA-256 and unique ref identities. Verify software/base, effective connection settings, filesystem locality, resource limits and existing authority contracts. Review every x-decisionRules precondition; this profile never grants authority or relaxes the existing standards."
+    }
+  ],
+  "x-decisionRules": [
+    {
+      "id": "DQ-01-keep-sqlite",
+      "when": "Representative, adequately sampled and repeated windows pass all adopter SLOs under the declared host/storage load and invariants.",
+      "action": "keep-sqlite",
+      "evidence": "Complete reviewed metrics, configuration, trace/profile coverage and window references. Client count, including eight clients, is metadata only; no benchmark number is a universal escalation threshold."
+    },
+    {
+      "id": "DQ-02-investigate",
+      "when": "Configuration, instrumentation, sample coverage, repetition evidence or attribution is missing, or host load makes the result unrepresentative.",
+      "action": "investigate",
+      "evidence": "Record unknown/unavailable and not-evaluated/inconclusive, remedy instrumentation or isolate/restore representative host load and repeat. Never invent a zero or migrate based on unknown bottlenecks."
+    },
+    {
+      "id": "DQ-03-bound-first",
+      "when": "A complete report breaches an adopter SLO.",
+      "action": "mitigate-and-retest",
+      "evidence": "First test short bounded transactions, batching limited in rows AND bytes, bounded single-writer queues/backpressure, busy-retry deadlines and appropriate indexes/checkpoint scheduling. Preserve FULL durability, atomic idempotent append and low-RAM limits. Record before/after settings, throughput/tails, queue rejection, host load and repeat the same representative windows; no unbounded queue or relaxed durability workaround."
+    },
+    {
+      "id": "DQ-04-storage",
+      "when": "Correlated commit/fsync and device telemetry identify storage latency, saturation, checkpoint pressure or competing I/O as the dominant cost.",
+      "action": "investigate",
+      "evidence": "Separate COMMIT from fsync and device service/queue latency, inspect device/cache/filesystem/checkpoint policy and free space, then mitigate within durability constraints and retest. Storage wait alone does not justify Rust or prove SQLite lock contention; PostgreSQL on the same storage may retain the bottleneck."
+    },
+    {
+      "id": "DQ-05-provider",
+      "when": "External-provider spans dominate the critical path while local SQLite metrics satisfy their SLOs.",
+      "action": "investigate",
+      "evidence": "Use provider-specific bounded concurrency, deadlines/backpressure or independently authorized provider remediation; retest. Do not blame provider/network wait on SQLite or expect a Rust rewrite/database migration to remove it."
+    },
+    {
+      "id": "DQ-06-gateway-contract",
+      "when": "A demonstrated audit/idempotency contract gap requires the data-gateway contract after local bounded mitigation/retest has been considered.",
+      "action": "consider-data-gateway",
+      "evidence": "contractNeedEvidenceRefs must describe the unmet audit/idempotency obligation and why the current adapter cannot meet it. data-gateway is a contract choice only when needed, never an automatic performance escalation, universal throughput fix or authority transfer. It may retain SQLite."
+    },
+    {
+      "id": "DQ-07-postgresql",
+      "when": "After bounded batching/queues/backpressure and representative retesting, SQLite lock contention remains persistently above adopter SLOs across configured consecutive windows with multiple writer processes; OR an independently evidenced multi-host write requirement cannot be served by one same-host SQLite writer.",
+      "action": "consider-postgresql",
+      "evidence": "Record mitigationAndRetestEvidenceRefs for the contention path and the persistence comparison. For multi-host demand record requirement evidence and the feasibility assessment of routing through one host, explaining why a shared WAL-file test is prohibited; this assessment occupies the same evidence field. Distinguish locks from fsync/storage/provider wait. PostgreSQL consideration preserves one authority per stream and requires MIG-061 freeze/drain/barrier/idempotency transfer/epoch increment/fencing before any future transfer."
+    },
+    {
+      "id": "DQ-08-rust",
+      "when": "After bounded database/queue mitigation, representative symbolized profiling shows application CPU is dominant on the critical path and its CPU/op or latency SLO is breached.",
+      "action": "consider-rust",
+      "evidence": "applicationCpu must be observed and dominant, backed by CPU profiles, scoped CPU/op and end-to-end attribution. First optimize measured algorithms/serialization/allocation and retest. SQLite-native CPU, lock sleep, fsync/device wait, host interference and provider latency do not justify rewriting the application in Rust. No universal CPU percentage or client-count trigger is supplied."
+    }
+  ]
+}
